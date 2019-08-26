@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="elevation_toolbar">4dp</dimen>
+
+    <dimen name="spacing4">4dp</dimen>
+    <dimen name="spacing8">8dp</dimen>
+    <dimen name="spacing16">16dp</dimen>
+    <dimen name="spacing24">24dp</dimen>
+</resources>

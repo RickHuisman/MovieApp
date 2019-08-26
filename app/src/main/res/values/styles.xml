@@ -1,11 +1,35 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="MovieAppTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+
+        <item name="android:windowBackground">@color/color_primary_light</item>
+        <item name="android:navigationBarColor">@color/navigation_bar</item>
+    </style>
+
+    <style name="MovieAppToolbar">
+        <item name="titleTextAppearance">@style/MovieAppToolbarTitleAppearance</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/toolbar</item>
+    </style>
+
+    <style name="MovieAppToolbarTitleAppearance">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/color_accent</item>
+        <item name="android:fontFamily">@font_roboto_regular</item>
+        <item name="android:elevation">@dimen/elevation_toolbar</item>
+    </style>
+
+    <style name="MovieAppSeparator">
+        <item name="android:background">@color/white_opacity_05</item>
+    </style>
+
+    <style name="MovieAppSeparator.VerticalContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
     </style>
 
 </resources>
