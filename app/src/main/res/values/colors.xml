@@ -7,4 +7,13 @@
 
     <color name="toolbar">@color/color_primary</color>
     <color name="navigation_bar">@color/gray_950</color>
+
+    <array name="loading_placeholders_dark">
+        <item>#ff191919</item>
+        <item>#ff212121</item>
+        <item>#ff232323</item>
+        <item>#ff252525</item>
+    </array>
+
+    <color name="mid_grey">#40808080</color>
 </resources>

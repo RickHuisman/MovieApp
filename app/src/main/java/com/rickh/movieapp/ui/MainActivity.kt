@@ -1,11 +1,12 @@
-package com.rickh.movieapp
+package com.rickh.movieapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.widget.ArrayAdapter
+import com.rickh.movieapp.R
+import com.rickh.movieapp.ui.movies.MoviesFragment
+import com.rickh.movieapp.util.ViewUtils
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,23 +16,25 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
         setupSpinner()
+
+        // Start fragment
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, MoviesFragment(this)).commit()
     }
 
     private fun setupSpinner() {
         val categories = resources.getStringArray(R.array.movie_app_categories)
-        val adapter = ArrayAdapter(
+        val categoriesAdapter = ArrayAdapter(
             this,
             R.layout.spinner_category_selected_item,
             android.R.id.text1,
             categories
         )
+        categoriesAdapter.setDropDownViewResource(R.layout.item_spinner_category)
 
-        adapter.setDropDownViewResource(R.layout.item_spinner_category)
-        spinner.adapter = adapter
-        spinner.dropDownVerticalOffset = dpToPix(8)
-    }
-
-    private fun dpToPix(dp: Int): Int {
-        return (dp * (resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
+        with(spinner) {
+            adapter = categoriesAdapter
+            dropDownVerticalOffset = ViewUtils.dpToPix(context, 8)
+        }
     }
 }
