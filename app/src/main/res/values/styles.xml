@@ -6,6 +6,8 @@
         <item name="colorAccent">@color/color_accent</item>
         <item name="android:windowBackground">@color/color_primary_light</item>
         <item name="android:navigationBarColor">@color/navigation_bar</item>
+
+        <item name="popupMenuStyle">@style/MovieAppPopupMenu</item>
     </style>
 
     <style name="MovieAppToolbar">
@@ -20,6 +22,15 @@
         <item name="android:textColor">@color/color_accent</item>
         <item name="android:fontFamily">@font_roboto_regular</item>
         <item name="android:elevation">@dimen/elevation_toolbar</item>
+    </style>
+
+    <style name="MovieAppPopupMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:popupBackground">@color/color_primary</item>
+    </style>
+
+    <style name="MovieAppPopupMenu.MoviesSort">
+        <item name="android:dropDownHorizontalOffset">0dp</item>
+        <item name="android:dropDownVerticalOffset">-4dp</item>
     </style>
 
     <style name="MovieAppSeparator">
