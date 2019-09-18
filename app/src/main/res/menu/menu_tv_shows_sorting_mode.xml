@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_movies_sorting_popular"
+        android:title="@string/sorting_mode_popular" />
+
+    <item
+        android:id="@+id/action_movies_sorting_top_rated"
+        android:title="@string/sorting_mode_top_rated" />
+
+    <item
+        android:id="@+id/action_tv_shows_sorting_on_tv"
+        android:title="@string/sorting_mode_on_tv" />
+
+    <item
+        android:id="@+id/action_tv_shows_sorting_airing_today"
+        android:title="@string/sorting_mode_airing_today" />
+
+    <item
+        android:id="@+id/action_tv_shows_sorting_trending"
+        android:title="@string/sorting_mode_trending" />
+</menu>

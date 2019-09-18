@@ -3,6 +3,7 @@ package com.rickh.movieapp.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
+import android.view.Menu
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.PopupMenu
 import com.rickh.movieapp.ui.movies.MoviesFragment
@@ -11,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
 import androidx.core.view.get
 import com.rickh.movieapp.R
 
@@ -45,7 +47,45 @@ class MainActivity : AppCompatActivity() {
         with(spinner) {
             adapter = categoriesAdapter
             dropDownVerticalOffset = ViewUtils.dpToPix(context, 8)
+            spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
+                ) {
+                    when (position) {
+                        0 -> {
+                            createMoviesSortOptions()
+                            sort.showSort()
+                        }
+                        1 -> {
+                            createTvShowsSortOptions()
+                            sort.showSort()
+                        }
+                        2 -> sort.showFilter()
+                        3 -> sort.disappear()
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+
+                }
+            }
         }
+    }
+
+    private fun createMoviesSortOptions() {
+        sortOptionsMenu.menu.clear()
+        sortOptionsMenu.menuInflater.inflate(R.menu.menu_movies_sorting_mode, sortOptionsMenu.menu)
+    }
+
+    private fun createTvShowsSortOptions() {
+        sortOptionsMenu.menu.clear()
+        sortOptionsMenu.menuInflater.inflate(
+            R.menu.menu_tv_shows_sorting_mode,
+            sortOptionsMenu.menu
+        )
     }
 
     private fun setupSortMenu() {
