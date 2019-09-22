@@ -3,27 +3,30 @@ package com.rickh.movieapp.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
-import android.view.Menu
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.PopupMenu
 import com.rickh.movieapp.ui.movies.MoviesFragment
 import com.rickh.movieapp.util.ViewUtils
 import kotlinx.android.synthetic.main.activity_main.*
-import timber.log.Timber
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import androidx.core.view.get
+import androidx.lifecycle.ViewModelProviders
 import com.rickh.movieapp.R
+import com.rickh.movieapp.ui.movies.MoviesViewModel
 
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var viewModel: MoviesViewModel
     private lateinit var sortOptionsMenu: PopupMenu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        viewModel = ViewModelProviders.of(this).get(MoviesViewModel::class.java)
 
         setSupportActionBar(toolbar)
         setupSpinner()
@@ -102,14 +105,14 @@ class MainActivity : AppCompatActivity() {
         )
 
         sortOptionsMenu.menuInflater.inflate(R.menu.menu_movies_sorting_mode, sortOptionsMenu.menu)
-        sortOptionsMenu.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.action_movies_sorting_popular -> Timber.d("Popular")
-                R.id.action_movies_sorting_top_rated -> Timber.d("Top rated")
-                R.id.action_movies_sorting_upcoming -> Timber.d("Upcoming")
-                R.id.action_movies_sorting_now_playing -> Timber.d("Now playing")
+        sortOptionsMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_movies_sorting_popular -> viewModel.setSortMode("Popular")
+                R.id.action_movies_sorting_top_rated -> viewModel.setSortMode("Top rated")
+                R.id.action_movies_sorting_upcoming -> viewModel.setSortMode("Upcoming")
+                R.id.action_movies_sorting_now_playing -> viewModel.setSortMode("Now playing")
             }
-            highlightActiveSorting(menuItem)
+            highlightActiveSorting(it)
             true
         }
     }

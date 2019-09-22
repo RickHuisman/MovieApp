@@ -43,7 +43,7 @@ class MoviesFragment(
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(MoviesViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!).get(MoviesViewModel::class.java)
         moviesAdapter = MoviesGridAdapter(columns, test)
 
         initViewModelObservers()
@@ -76,7 +76,7 @@ class MoviesFragment(
 
         val infiniteScrollListener = object : InfiniteScrollListener(gridLayoutManager) {
             override fun onLoadMore() {
-                viewModel.loadMoreMovies()
+                viewModel.loadMore()
             }
 
             override fun isDataLoading(): Boolean {
@@ -100,8 +100,7 @@ class MoviesFragment(
     }
 
     private fun checkEmptyState() {
-        if (moviesAdapter.movies.isNotEmpty()) {
-            loadingBar.visibility = View.GONE
-        }
+        val empty = moviesAdapter.movies.isEmpty()
+        loadingBar.visibility = if (empty) View.VISIBLE else View.GONE
     }
 }

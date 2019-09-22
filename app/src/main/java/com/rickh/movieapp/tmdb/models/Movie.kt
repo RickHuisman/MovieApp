@@ -9,7 +9,7 @@ data class Movie(
     val vote_average: Double,
     val video: Boolean,
     val poster_path: String,
-    val backdrop_path: String,
+    val backdrop_path: String?,
     val adult: Boolean,
     val original_language: String,
     val original_title: String,
