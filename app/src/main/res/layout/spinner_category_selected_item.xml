@@ -16,7 +16,7 @@
         tools:text="Movies" />
 
     <com.github.zagum.expandicon.ExpandIconView
-        android:id="@+id/subreddit_toolbar_title_arrow"
+        android:id="@+id/toolbar_title_arrow"
         android:layout_width="24dp"
         android:layout_height="match_parent"
         android:layout_marginStart="4dp"

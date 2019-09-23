@@ -6,6 +6,12 @@
 
     <string name="sort_movies">Sort movies</string>
 
+    <!-- Category -->
+    <string name="category_tab_movies">Movies</string>
+    <string name="category_tab_tv_shows">TV Shows</string>
+    <string name="category_tab_discover">Discover</string>
+    <string name="category_tab_popular_people">Popular people</string>
+
     <!-- Sort options -->
     <string name="sorting_mode_popular">Popular</string>
     <string name="sorting_mode_top_rated">Top rated</string>

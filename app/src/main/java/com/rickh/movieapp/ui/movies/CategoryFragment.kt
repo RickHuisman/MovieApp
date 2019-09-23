@@ -1,6 +1,5 @@
 package com.rickh.movieapp.ui.movies
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,15 +16,23 @@ import com.rickh.movieapp.R
 import com.rickh.movieapp.tmdb.models.Movie
 
 
-class MoviesFragment(
-    private val test: Context
-) : Fragment() {
+class CategoryFragment : Fragment() {
 
     private lateinit var viewModel: MoviesViewModel
+    private lateinit var moviesAdapter: MoviesGridAdapter
+    private lateinit var category: Category
+    private val columns: Int = 3
+
     private lateinit var loadingBar: ProgressBar
     private lateinit var grid: RecyclerView
-    private lateinit var moviesAdapter: MoviesGridAdapter
-    private val columns: Int = 3
+
+    fun create(category: Category): CategoryFragment {
+        val fragment = CategoryFragment()
+        val bundle = Bundle(1)
+        bundle.putSerializable(KEY_CATEGORY, category)
+        fragment.arguments = bundle
+        return fragment
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,11 +47,13 @@ class MoviesFragment(
         return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        category = arguments!!.getSerializable(KEY_CATEGORY) as Category
 
         viewModel = ViewModelProviders.of(activity!!).get(MoviesViewModel::class.java)
-        moviesAdapter = MoviesGridAdapter(columns, test)
+        moviesAdapter = MoviesGridAdapter(columns, activity!!)
 
         initViewModelObservers()
         setupGrid()
@@ -66,7 +75,7 @@ class MoviesFragment(
     }
 
     private fun setupGrid() {
-        val gridLayoutManager = GridLayoutManager(context, columns).apply {
+        val gridLayoutManager = GridLayoutManager(activity, columns).apply {
             spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return moviesAdapter.getItemColumnSpan(position)
@@ -102,5 +111,9 @@ class MoviesFragment(
     private fun checkEmptyState() {
         val empty = moviesAdapter.movies.isEmpty()
         loadingBar.visibility = if (empty) View.VISIBLE else View.GONE
+    }
+
+    companion object {
+        private const val KEY_CATEGORY = "category"
     }
 }

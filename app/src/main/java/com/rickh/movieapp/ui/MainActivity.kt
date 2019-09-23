@@ -5,22 +5,21 @@ import android.os.Bundle
 import android.view.Gravity
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.PopupMenu
-import com.rickh.movieapp.ui.movies.MoviesFragment
 import com.rickh.movieapp.util.ViewUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
-import androidx.core.view.get
 import androidx.lifecycle.ViewModelProviders
 import com.rickh.movieapp.R
-import com.rickh.movieapp.ui.movies.MoviesViewModel
+import com.rickh.movieapp.ui.movies.*
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MoviesViewModel
     private lateinit var sortOptionsMenu: PopupMenu
+    private lateinit var categoryPagerAdapter: CategoryPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +31,7 @@ class MainActivity : AppCompatActivity() {
         setupSpinner()
         setupSortMenu()
 
-        // Start fragment
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, MoviesFragment(this)).commit()
+        categoryPagerAdapter = CategoryPagerAdapter(supportFragmentManager)
     }
 
     private fun setupSpinner() {
@@ -57,17 +54,28 @@ class MainActivity : AppCompatActivity() {
                     position: Int,
                     id: Long
                 ) {
-                    when (position) {
-                        0 -> {
+                    val currentFragment = categoryPagerAdapter.instantiateItem(
+                        fragment_container,
+                        position
+                    ) as CategoryFragment
+                    categoryPagerAdapter.setPrimaryItem(fragment_container, position, currentFragment)
+
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, currentFragment)
+                        .commit()
+
+                    when (Category.ALL[position]) {
+                        Category.MOVIES -> {
                             createMoviesSortOptions()
                             sort.showSort()
                         }
-                        1 -> {
+                        Category.TV_SHOWS -> {
                             createTvShowsSortOptions()
                             sort.showSort()
                         }
-                        2 -> sort.showFilter()
-                        3 -> sort.disappear()
+                        Category.DISCOVER -> sort.showFilter()
+                        Category.POPULAR_PEOPLE -> sort.disappear()
                     }
                 }
 
@@ -106,27 +114,22 @@ class MainActivity : AppCompatActivity() {
 
         sortOptionsMenu.menuInflater.inflate(R.menu.menu_movies_sorting_mode, sortOptionsMenu.menu)
         sortOptionsMenu.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.action_movies_sorting_popular -> viewModel.setSortMode("Popular")
-                R.id.action_movies_sorting_top_rated -> viewModel.setSortMode("Top rated")
-                R.id.action_movies_sorting_upcoming -> viewModel.setSortMode("Upcoming")
-                R.id.action_movies_sorting_now_playing -> viewModel.setSortMode("Now playing")
-            }
-            highlightActiveSorting(it)
+            setActiveSorting(it)
             true
         }
     }
 
-    private fun highlightActiveSorting(selMenuItem: MenuItem) {
-        val menu = sortOptionsMenu.menu
-
+    private fun setActiveSorting(selMenuItem: MenuItem) {
         // Reset highlighted items
-        menu.setGroupEnabled(0, true)
+        sortOptionsMenu.menu.setGroupEnabled(0, true)
 
-        for (i in 0 until menu.size()) {
-            if (selMenuItem.title == menu[i].title) {
-                menu[i].isEnabled = false
-            }
+        selMenuItem.isEnabled = false
+
+        when (selMenuItem.itemId) {
+            R.id.action_movies_sorting_popular -> viewModel.setSortMode(MoviesSortOptions.POPULAR)
+            R.id.action_movies_sorting_top_rated -> viewModel.setSortMode(MoviesSortOptions.TOP_RATED)
+            R.id.action_movies_sorting_upcoming -> viewModel.setSortMode(MoviesSortOptions.UPCOMING)
+            R.id.action_movies_sorting_now_playing -> viewModel.setSortMode(MoviesSortOptions.NOW_PLAYING)
         }
     }
 }

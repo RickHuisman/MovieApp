@@ -54,7 +54,7 @@ class MoviesGridAdapter(
         val layoutInflater = LayoutInflater.from(context)
         return when (viewType) {
             TYPE_MOVIE -> MovieViewHolder(
-                layoutInflater.inflate(R.layout.item_movie, parent, false), context
+                layoutInflater.inflate(R.layout.item_movie, parent, false)
             )
             TYPE_LOADING_MORE -> LoadingMoreHolder(
                 layoutInflater.inflate(R.layout.infinite_loading, parent, false)
@@ -128,15 +128,15 @@ class MoviesGridAdapter(
         )
     }
 
-    private class MovieViewHolder(itemView: View, private val context: Context) :
+    private class MovieViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
         private var moviePoster: ImageView = itemView.findViewById(R.id.movie_poster)
 
         fun bind(movie: Movie, placeholder: ColorDrawable) {
-            Glide.with(context)
+            Glide.with(moviePoster)
                 .load(
-                    context.getString(R.string.tmdb_base_img_url, movie.poster_path)
+                    moviePoster.context.getString(R.string.tmdb_base_img_url, movie.poster_path)
                 )
                 .placeholder(placeholder)
                 .diskCacheStrategy(DiskCacheStrategy.DATA)

@@ -18,7 +18,7 @@ class MoviesViewModel : ViewModel() {
     val loadingProgress: LiveData<Boolean>
         get() = _loadingProgress
 
-    private var sortMode: String = SORT_MODE_NOW_PLAYING
+    private var sortMode = MoviesSortOptions.TOP_RATED
     private var pageIndex: Int = 1
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.IO)
@@ -27,15 +27,9 @@ class MoviesViewModel : ViewModel() {
         loadMore()
     }
 
-    fun setSortMode(sortMode: String) {
+    fun setSortMode(sortMode: MoviesSortOptions) {
         clearList()
-        this.sortMode = when (sortMode) {
-            "Popular" -> SORT_MODE_POPULAR
-            "Top rated" -> SORT_MODE_TOP_RATED
-            "Upcoming" -> SORT_MODE_UPCOMING
-            "Now playing" -> SORT_MODE_NOW_PLAYING
-            else -> throw IllegalStateException("Unsupported sort mode")
-        }
+        this.sortMode = sortMode
         loadMore()
     }
 
@@ -49,11 +43,10 @@ class MoviesViewModel : ViewModel() {
             _loadingProgress.postValue(true)
 
             val getMoviesDeferred = when (sortMode) {
-                SORT_MODE_POPULAR -> MoviesRepository.getPopular(pageIndex)
-                SORT_MODE_TOP_RATED -> MoviesRepository.getTopRated(pageIndex)
-                SORT_MODE_UPCOMING -> MoviesRepository.getUpcoming(pageIndex)
-                SORT_MODE_NOW_PLAYING -> MoviesRepository.getNowPlaying(pageIndex)
-                else -> throw IllegalStateException("Unsupported sort mode")
+                MoviesSortOptions.POPULAR -> MoviesRepository.getPopular(pageIndex)
+                MoviesSortOptions.TOP_RATED -> MoviesRepository.getTopRated(pageIndex)
+                MoviesSortOptions.UPCOMING -> MoviesRepository.getUpcoming(pageIndex)
+                MoviesSortOptions.NOW_PLAYING -> MoviesRepository.getNowPlaying(pageIndex)
             }
 
             withContext(Dispatchers.Main) {
@@ -78,12 +71,5 @@ class MoviesViewModel : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
-    }
-
-    companion object {
-        private const val SORT_MODE_POPULAR = "Popular"
-        private const val SORT_MODE_TOP_RATED = "Top rated"
-        private const val SORT_MODE_UPCOMING = "Upcoming"
-        private const val SORT_MODE_NOW_PLAYING = "Now playing"
     }
 }
