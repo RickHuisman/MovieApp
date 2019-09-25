@@ -19,5 +19,4 @@
     <string name="sorting_mode_now_playing">Now playing</string>
     <string name="sorting_mode_on_tv">On TV</string>
     <string name="sorting_mode_airing_today">Airing today</string>
-    <string name="sorting_mode_trending">Trending</string>
 </resources>

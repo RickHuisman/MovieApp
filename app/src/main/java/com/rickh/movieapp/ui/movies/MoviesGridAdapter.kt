@@ -14,6 +14,7 @@ import com.bumptech.glide.ListPreloader
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.rickh.movieapp.R
+import com.rickh.movieapp.ui.GridItem
 import info.movito.themoviedbapi.model.MovieDb
 
 
@@ -22,15 +23,15 @@ class MoviesGridAdapter(
     private val context: Context
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(),
-    ListPreloader.PreloadModelProvider<MovieDb> {
+    ListPreloader.PreloadModelProvider<GridItem> {
 
-    var movies: List<MovieDb> = emptyList()
-        set(newMovies) {
+    var items: List<GridItem> = emptyList()
+        set(newItems) {
             val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
-                MovieDiffCallback(field, newMovies)
+                MovieDiffCallback(field, newItems)
             )
 
-            field = newMovies
+            field = newItems
             diffResult.dispatchUpdatesTo(this)
         }
 
@@ -66,15 +67,15 @@ class MoviesGridAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
             TYPE_MOVIE -> (holder as MovieViewHolder).bind(
-                movies[position],
+                items[position],
                 shotLoadingPlaceholders[position % shotLoadingPlaceholders.size]!!
             )
             TYPE_LOADING_MORE -> (holder as LoadingMoreHolder).bind(position, showLoadingMore)
         }
     }
 
-    private fun getItem(position: Int): MovieDb? {
-        return if (position < 0 || position >= movies.size) null else movies[position]
+    private fun getItem(position: Int): GridItem? {
+        return if (position < 0 || position >= items.size) null else items[position]
     }
 
     fun getItemColumnSpan(position: Int): Int {
@@ -82,7 +83,7 @@ class MoviesGridAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (position < movies.size && movies.isNotEmpty()) {
+        if (position < items.size && items.isNotEmpty()) {
             return TYPE_MOVIE
         }
         return TYPE_LOADING_MORE
@@ -92,12 +93,12 @@ class MoviesGridAdapter(
         return if (getItemViewType(position) == TYPE_LOADING_MORE) {
             -1L
         } else {
-            movies[position].id.toLong()
+            items[position].id
         }
     }
 
     override fun getItemCount(): Int {
-        return movies.size + if (showLoadingMore) 1 else 0
+        return items.size + if (showLoadingMore) 1 else 0
     }
 
     fun dataStartedLoading() {
@@ -113,18 +114,18 @@ class MoviesGridAdapter(
         notifyItemRemoved(loadingPos)
     }
 
-    override fun getPreloadItems(position: Int): List<MovieDb> {
-        val movie = getItem(position)
-        return if (movie is MovieDb) {
-            listOf(movie)
+    override fun getPreloadItems(position: Int): List<GridItem> {
+        val item = getItem(position)
+        return if (item is GridItem) {
+            listOf(item)
         } else {
             emptyList()
         }
     }
 
-    override fun getPreloadRequestBuilder(movie: MovieDb): RequestBuilder<*>? {
+    override fun getPreloadRequestBuilder(item: GridItem): RequestBuilder<*>? {
         return Glide.with(context).load(
-            context.getString(R.string.tmdb_base_img_url, movie.posterPath)
+            context.getString(R.string.tmdb_base_img_url, item.posterPath)
         )
     }
 
@@ -133,10 +134,10 @@ class MoviesGridAdapter(
 
         private var moviePoster: ImageView = itemView.findViewById(R.id.movie_poster)
 
-        fun bind(movie: MovieDb, placeholder: ColorDrawable) {
+        fun bind(item: GridItem, placeholder: ColorDrawable) {
             Glide.with(moviePoster)
                 .load(
-                    moviePoster.context.getString(R.string.tmdb_base_img_url, movie.posterPath)
+                    moviePoster.context.getString(R.string.tmdb_base_img_url, item.posterPath)
                 )
                 .placeholder(placeholder)
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
@@ -157,23 +158,23 @@ class MoviesGridAdapter(
     }
 
     class MovieDiffCallback(
-        private var oldMovieList: List<MovieDb>,
-        private var newMovieList: List<MovieDb>
+        private var oldItemsList: List<GridItem>,
+        private var newItemsList: List<GridItem>
     ) : DiffUtil.Callback() {
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldMovieList[oldItemPosition].id == newMovieList[newItemPosition].id
+            return oldItemsList[oldItemPosition].id == newItemsList[newItemPosition].id
         }
 
         override fun getOldListSize(): Int {
-            return oldMovieList.size
+            return oldItemsList.size
         }
 
         override fun getNewListSize(): Int {
-            return newMovieList.size
+            return newItemsList.size
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldMovieList[oldItemPosition] == newMovieList[newItemPosition]
+            return oldItemsList[oldItemPosition] == newItemsList[newItemPosition]
         }
     }
 

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
 import com.bumptech.glide.util.ViewPreloadSizeProvider
 import com.rickh.movieapp.R
+import com.rickh.movieapp.ui.GridItem
 import info.movito.themoviedbapi.model.MovieDb
 
 
@@ -57,11 +58,16 @@ class CategoryFragment : Fragment() {
 
         initViewModelObservers()
         setupGrid()
+
+        when(category) {
+            Category.MOVIES -> viewModel.setSortMode(SortOptions.MOVIES_TOP_RATED)
+            Category.TV_SHOWS -> viewModel.setSortMode(SortOptions.TV_SHOWS_TOP_RATED)
+        }
     }
 
     private fun initViewModelObservers() {
-        viewModel.movies.observe(this, Observer {
-            moviesAdapter.movies = it
+        viewModel.items.observe(this, Observer {
+            moviesAdapter.items = it
             checkEmptyState()
         })
 
@@ -96,7 +102,7 @@ class CategoryFragment : Fragment() {
         val moviePreloader = RecyclerViewPreloader(
             this,
             moviesAdapter,
-            ViewPreloadSizeProvider<MovieDb>(),
+            ViewPreloadSizeProvider<GridItem>(),
             6
         )
 
@@ -109,7 +115,7 @@ class CategoryFragment : Fragment() {
     }
 
     private fun checkEmptyState() {
-        val empty = moviesAdapter.movies.isEmpty()
+        val empty = moviesAdapter.items.isEmpty()
         loadingBar.visibility = if (empty) View.VISIBLE else View.GONE
     }
 

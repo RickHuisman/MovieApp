@@ -126,10 +126,15 @@ class MainActivity : AppCompatActivity() {
         selMenuItem.isEnabled = false
 
         when (selMenuItem.itemId) {
-            R.id.action_movies_sorting_popular -> viewModel.setSortMode(MoviesSortOptions.POPULAR)
-            R.id.action_movies_sorting_top_rated -> viewModel.setSortMode(MoviesSortOptions.TOP_RATED)
-            R.id.action_movies_sorting_upcoming -> viewModel.setSortMode(MoviesSortOptions.UPCOMING)
-            R.id.action_movies_sorting_now_playing -> viewModel.setSortMode(MoviesSortOptions.NOW_PLAYING)
+            R.id.action_movies_sorting_popular -> viewModel.setSortMode(SortOptions.MOVIES_POPULAR)
+            R.id.action_movies_sorting_top_rated -> viewModel.setSortMode(SortOptions.MOVIES_TOP_RATED)
+            R.id.action_movies_sorting_upcoming -> viewModel.setSortMode(SortOptions.MOVIES_UPCOMING)
+            R.id.action_movies_sorting_now_playing -> viewModel.setSortMode(SortOptions.MOVIES_NOW_PLAYING)
+
+            R.id.action_tv_shows_sorting_popular -> viewModel.setSortMode(SortOptions.TV_SHOWS_POPULAR)
+            R.id.action_tv_shows_sorting_top_rated -> viewModel.setSortMode(SortOptions.TV_SHOWS_TOP_RATED)
+            R.id.action_tv_shows_sorting_on_tv -> viewModel.setSortMode(SortOptions.TV_SHOWS_ON_TV)
+            R.id.action_tv_shows_sorting_airing_today -> viewModel.setSortMode(SortOptions.TV_SHOWS_AIRING_TODAY)
         }
     }
 }
