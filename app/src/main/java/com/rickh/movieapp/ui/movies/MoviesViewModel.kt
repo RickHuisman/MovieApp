@@ -4,14 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.rickh.movieapp.tmdb.MoviesRepository
-import com.rickh.movieapp.tmdb.models.Movie
+import com.rickh.movieapp.tmdb.TvShowsRepository
+import info.movito.themoviedbapi.TmdbApi
+import info.movito.themoviedbapi.model.MovieDb
 import kotlinx.coroutines.*
 
 
 class MoviesViewModel : ViewModel() {
 
-    private val _movies = MutableLiveData<List<Movie>>()
-    val movies: LiveData<List<Movie>>
+    private val _movies = MutableLiveData<List<MovieDb>>()
+    val movies: LiveData<List<MovieDb>>
         get() = _movies
 
     private val _loadingProgress = MutableLiveData<Boolean>()
@@ -42,7 +44,7 @@ class MoviesViewModel : ViewModel() {
         coroutineScope.launch {
             _loadingProgress.postValue(true)
 
-            val getMoviesDeferred = when (sortMode) {
+            val results = when (sortMode) {
                 MoviesSortOptions.POPULAR -> MoviesRepository.getPopular(pageIndex)
                 MoviesSortOptions.TOP_RATED -> MoviesRepository.getTopRated(pageIndex)
                 MoviesSortOptions.UPCOMING -> MoviesRepository.getUpcoming(pageIndex)
@@ -51,7 +53,7 @@ class MoviesViewModel : ViewModel() {
 
             withContext(Dispatchers.Main) {
                 val oldMovies = movies.value.orEmpty()
-                _movies.value = getMoviesForDisplay(oldMovies, getMoviesDeferred.results)
+                _movies.value = getMoviesForDisplay(oldMovies, results)
 
                 pageIndex++
                 _loadingProgress.postValue(false)
@@ -60,9 +62,9 @@ class MoviesViewModel : ViewModel() {
     }
 
     private fun getMoviesForDisplay(
-        oldMovies: List<Movie>,
-        newMovies: List<Movie>
-    ): List<Movie> {
+        oldMovies: List<MovieDb>,
+        newMovies: List<MovieDb>
+    ): List<MovieDb> {
         val moviesToBeDisplayed = oldMovies.toMutableList()
         moviesToBeDisplayed.addAll(newMovies)
         return moviesToBeDisplayed

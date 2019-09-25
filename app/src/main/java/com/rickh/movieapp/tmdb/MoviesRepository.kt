@@ -1,25 +1,26 @@
 package com.rickh.movieapp.tmdb
 
-import com.rickh.movieapp.tmdb.models.Feed
+import info.movito.themoviedbapi.TmdbApi
+import info.movito.themoviedbapi.model.MovieDb
 
 
 object MoviesRepository {
 
-    private val tmdbApi = TmdbRepository.retrofitService
+    private val tmdbApi = TmdbApi("ea75e60dfc33c0ff92d6e331c9debbea").movies
 
-    suspend fun getPopular(pageIndex: Int): Feed {
-        return tmdbApi.getPopularMovies(pageIndex)
+    fun getPopular(pageIndex: Int): List<MovieDb> {
+        return tmdbApi.getPopularMovies("en", pageIndex).results
     }
 
-    suspend fun getTopRated(pageIndex: Int): Feed {
-        return tmdbApi.getTopRatedMovies(pageIndex)
+    fun getTopRated(pageIndex: Int): List<MovieDb> {
+        return tmdbApi.getTopRatedMovies("en", pageIndex).results
     }
 
-    suspend fun getUpcoming(pageIndex: Int): Feed {
-        return tmdbApi.getUpcomingMovies(pageIndex)
+    fun getUpcoming(pageIndex: Int): List<MovieDb> {
+        return tmdbApi.getUpcoming("en", pageIndex, "").results
     }
 
-    suspend fun getNowPlaying(pageIndex: Int): Feed {
-        return tmdbApi.getNowPlayingMovies(pageIndex)
+    fun getNowPlaying(pageIndex: Int): List<MovieDb> {
+        return tmdbApi.getNowPlayingMovies("en", pageIndex, "").results
     }
 }

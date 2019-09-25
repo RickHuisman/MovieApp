@@ -32,6 +32,9 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    //  themoviedbapi
+    implementation 'com.github.holgerbrandl:themoviedbapi:v1.9'
+
     // Material Components
     implementation 'com.google.android.material:material:1.1.0-alpha09'
 

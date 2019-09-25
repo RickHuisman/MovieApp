@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
 import com.bumptech.glide.util.ViewPreloadSizeProvider
 import com.rickh.movieapp.R
-import com.rickh.movieapp.tmdb.models.Movie
+import info.movito.themoviedbapi.model.MovieDb
 
 
 class CategoryFragment : Fragment() {
@@ -96,7 +96,7 @@ class CategoryFragment : Fragment() {
         val moviePreloader = RecyclerViewPreloader(
             this,
             moviesAdapter,
-            ViewPreloadSizeProvider<Movie>(),
+            ViewPreloadSizeProvider<MovieDb>(),
             6
         )
 
