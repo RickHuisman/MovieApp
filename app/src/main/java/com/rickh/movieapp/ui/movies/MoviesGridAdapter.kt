@@ -1,7 +1,13 @@
 package com.rickh.movieapp.ui.movies
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.content.Context
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -12,10 +18,17 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.ListPreloader
 import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.rickh.movieapp.R
 import com.rickh.movieapp.ui.GridItem
-import info.movito.themoviedbapi.model.MovieDb
+import com.rickh.movieapp.util.AnimUtils
+import com.rickh.movieapp.util.ObservableColorMatrix
+import timber.log.Timber
 
 
 class MoviesGridAdapter(
@@ -132,17 +145,70 @@ class MoviesGridAdapter(
     private class MovieViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        private var moviePoster: ImageView = itemView.findViewById(R.id.movie_poster)
+        private var poster: ImageView = itemView.findViewById(R.id.movie_poster)
+
+        init {
+            darkenImage()
+        }
 
         fun bind(item: GridItem, placeholder: ColorDrawable) {
-            Glide.with(moviePoster)
+            Glide.with(poster)
                 .load(
-                    moviePoster.context.getString(R.string.tmdb_base_img_url, item.posterPath)
+                    poster.context.getString(R.string.tmdb_base_img_url, item.posterPath)
                 )
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ) = false
+
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        if (!item.hasFadedIn) {
+                            fade()
+                            item.hasFadedIn = true
+                        }
+                        return false
+                    }
+                })
                 .placeholder(placeholder)
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .centerCrop()
-                .into(MovieTarget(moviePoster))
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(MovieTarget(poster))
+        }
+
+        private fun fade() {
+            poster.setHasTransientState(true)
+            val cm = ObservableColorMatrix()
+            ObjectAnimator.ofFloat(cm, ObservableColorMatrix.SATURATION, 0f, 1f).apply {
+                addUpdateListener {
+                    // Setting the saturation overwrites any darkening so need to reapply.
+                    // Just animating the color matrix does not invalidate the
+                    // drawable so need this update listener.  Also have to create a
+                    // new CMCF as the matrix is immutable :(
+                    darkenImage(cm)
+                }
+                duration = 2000L
+                interpolator = AnimUtils.getFastOutSlowInInterpolator(poster.context)
+                addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        poster.setHasTransientState(false)
+                    }
+                })
+                start()
+            }
+        }
+
+        private fun darkenImage(colorMatrix: ColorMatrix = ColorMatrix()) {
+            poster.colorFilter = ColorMatrixColorFilter(colorMatrix)
         }
     }
 
