@@ -2,6 +2,7 @@ package com.rickh.movieapp.util
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.RippleDrawable
@@ -13,6 +14,8 @@ import kotlin.math.roundToInt
 class ViewUtils {
 
     companion object {
+        private var statusBarHeight = -1
+
         fun dpToPix(context: Context, dp: Int): Int {
             return (dp * (context.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
         }
@@ -52,6 +55,18 @@ class ViewUtils {
                 ColorStateList.valueOf(rippleColor), null,
                 if (bounded) ColorDrawable(Color.WHITE) else null
             )
+        }
+
+        fun statusBarHeight(resources: Resources): Int {
+            if (statusBarHeight == -1) {
+                val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+                if (resourceId > 0) {
+                    statusBarHeight = resources.getDimensionPixelSize(resourceId)
+                } else {
+                    statusBarHeight = 0
+                }
+            }
+            return statusBarHeight
         }
     }
 }

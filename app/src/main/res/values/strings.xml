@@ -19,4 +19,11 @@
     <string name="sorting_mode_now_playing">Now playing</string>
     <string name="sorting_mode_on_tv">On TV</string>
     <string name="sorting_mode_airing_today">Airing today</string>
+
+    <!-- Movie detail Popup -->
+    <string name="popup_movie_detail_add_to_watchlist">Watchlist</string>
+    <string name="popup_movie_detail_more_info">More info</string>
+    <string name="popup_movie_detail_rating">Rating</string>
+    <string name="popup_movie_detail_released">Released</string>
+    <string name="popup_movie_detail_runtime">Runtime</string>
 </resources>

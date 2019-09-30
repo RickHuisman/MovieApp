@@ -183,6 +183,14 @@ class MoviesGridAdapter(
                 .centerCrop()
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(MovieTarget(poster))
+
+            itemView.setOnLongClickListener {
+                val popup = MovieDetailPopup(poster.context)
+                popup.showWithAnchor(poster)
+
+                Timber.d("${item.id}")
+                true
+            }
         }
 
         private fun fade() {

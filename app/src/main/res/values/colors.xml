@@ -16,4 +16,6 @@
     </array>
 
     <color name="mid_grey">#40808080</color>
+
+    <color name="dialog_background">#393a3c</color>
 </resources>

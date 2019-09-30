@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="MovieAppTheme" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="MovieAppTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
@@ -8,6 +8,7 @@
         <item name="android:navigationBarColor">@color/navigation_bar</item>
 
         <item name="popupMenuStyle">@style/MovieAppPopupMenu</item>
+        <item name="android:buttonStyle">@style/MovieAppButton</item>
     </style>
 
     <style name="MovieAppToolbar">
@@ -42,4 +43,43 @@
         <item name="android:layout_height">1dp</item>
     </style>
 
+    <style name="MovieAppSeparator.HorizontalContent">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="MovieAppPopupWindow">
+        <item name="android:popupElevation">@dimen/spacing16</item>
+    </style>
+
+    <!-- User profile popup -->
+    <style name="MovieAppMovieDetailPopupStatsContainer">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="MovieAppMovieDetailPopupStatsValue">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/gray_300</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="MovieAppMovieDetailPopupStatsLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/gray_500</item>
+        <item name="android:layout_marginTop">@dimen/spacing4</item>
+    </style>
+
+    <style name="MovieAppButton" parent="Widget.AppCompat.Button">
+
+    </style>
+
+    <style name="MovieAppButton.Borderless" parent="@style/Widget.AppCompat.Button.Borderless">
+
+    </style>
 </resources>
