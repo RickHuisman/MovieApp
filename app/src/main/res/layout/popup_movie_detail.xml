@@ -17,7 +17,7 @@
         tools:ignore="UseCompoundDrawables">
 
         <TextView
-            android:id="@+id/userprofilepopup_username"
+            android:id="@+id/moviedetailpopup_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -58,7 +58,7 @@
                 <LinearLayout style="@style/MovieAppMovieDetailPopupStatsContainer">
 
                     <TextView
-                        android:id="@+id/userprofilepopup_account_age"
+                        android:id="@+id/moviedetailpopup_rating"
                         style="@style/MovieAppMovieDetailPopupStatsValue"
                         tools:text="7.4" />
 
@@ -70,7 +70,7 @@
                 <LinearLayout style="@style/MovieAppMovieDetailPopupStatsContainer">
 
                     <TextView
-                        android:id="@+id/userprofilepopup_link_karma"
+                        android:id="@+id/moviedetailpopup_year_released"
                         style="@style/MovieAppMovieDetailPopupStatsValue"
                         tools:text="2017" />
 
@@ -82,7 +82,7 @@
                 <LinearLayout style="@style/MovieAppMovieDetailPopupStatsContainer">
 
                     <TextView
-                        android:id="@+id/userprofilepopup_comment_karma"
+                        android:id="@+id/moviedetailpopup_runtime"
                         style="@style/MovieAppMovieDetailPopupStatsValue"
                         tools:text="1h 47m" />
 

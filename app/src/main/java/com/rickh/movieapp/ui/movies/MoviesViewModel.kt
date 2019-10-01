@@ -1,14 +1,13 @@
 package com.rickh.movieapp.ui.movies
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.rickh.movieapp.tmdb.MoviesRepository
 import com.rickh.movieapp.tmdb.TvShowsRepository
 import com.rickh.movieapp.ui.GridItem
 import info.movito.themoviedbapi.model.MovieDb
 import info.movito.themoviedbapi.model.tv.TvSeries
 import kotlinx.coroutines.*
+import timber.log.Timber
 
 
 class MoviesViewModel : ViewModel() {
@@ -23,8 +22,6 @@ class MoviesViewModel : ViewModel() {
 
     private var sortMode = SortOptions.MOVIES_TOP_RATED
     private var pageIndex: Int = 1
-    private var viewModelJob = Job()
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.IO)
 
     fun setSortMode(sortMode: SortOptions) {
         clearList()
@@ -38,7 +35,7 @@ class MoviesViewModel : ViewModel() {
     }
 
     fun loadMore() {
-        coroutineScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _loadingProgress.postValue(true)
 
             var results = when (sortMode) {
@@ -89,8 +86,7 @@ class MoviesViewModel : ViewModel() {
         return itemsToBeDisplayed
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
+    fun getMovie(movieId: Long) = liveData(Dispatchers.IO) {
+        emit(MoviesRepository.getMovie(movieId))
     }
 }

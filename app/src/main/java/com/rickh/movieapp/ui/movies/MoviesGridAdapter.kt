@@ -3,6 +3,7 @@ package com.rickh.movieapp.ui.movies
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
+import android.app.Activity
 import android.content.Context
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
@@ -33,7 +34,7 @@ import timber.log.Timber
 
 class MoviesGridAdapter(
     private val columns: Int,
-    private val context: Context
+    private val activity: Activity
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(),
     ListPreloader.PreloadModelProvider<GridItem> {
@@ -57,7 +58,7 @@ class MoviesGridAdapter(
     init {
         setHasStableIds(true)
 
-        val placeholderColors = context.resources.getIntArray(R.array.loading_placeholders_dark)
+        val placeholderColors = activity.resources.getIntArray(R.array.loading_placeholders_dark)
         shotLoadingPlaceholders = arrayOfNulls(placeholderColors.size)
         placeholderColors.indices.forEach {
             shotLoadingPlaceholders[it] = ColorDrawable(placeholderColors[it])
@@ -65,7 +66,7 @@ class MoviesGridAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val layoutInflater = LayoutInflater.from(context)
+        val layoutInflater = LayoutInflater.from(activity)
         return when (viewType) {
             TYPE_MOVIE -> MovieViewHolder(
                 layoutInflater.inflate(R.layout.item_movie, parent, false)
@@ -81,7 +82,8 @@ class MoviesGridAdapter(
         when (getItemViewType(position)) {
             TYPE_MOVIE -> (holder as MovieViewHolder).bind(
                 items[position],
-                shotLoadingPlaceholders[position % shotLoadingPlaceholders.size]!!
+                shotLoadingPlaceholders[position % shotLoadingPlaceholders.size]!!,
+                activity
             )
             TYPE_LOADING_MORE -> (holder as LoadingMoreHolder).bind(position, showLoadingMore)
         }
@@ -137,8 +139,8 @@ class MoviesGridAdapter(
     }
 
     override fun getPreloadRequestBuilder(item: GridItem): RequestBuilder<*>? {
-        return Glide.with(context).load(
-            context.getString(R.string.tmdb_base_img_url, item.posterPath)
+        return Glide.with(activity).load(
+            activity.getString(R.string.tmdb_base_img_url, item.posterPath)
         )
     }
 
@@ -151,7 +153,7 @@ class MoviesGridAdapter(
             darkenImage()
         }
 
-        fun bind(item: GridItem, placeholder: ColorDrawable) {
+        fun bind(item: GridItem, placeholder: ColorDrawable, activity: Activity) {
             Glide.with(poster)
                 .load(
                     poster.context.getString(R.string.tmdb_base_img_url, item.posterPath)
@@ -185,10 +187,9 @@ class MoviesGridAdapter(
                 .into(MovieTarget(poster))
 
             itemView.setOnLongClickListener {
-                val popup = MovieDetailPopup(poster.context)
+                val popup = MovieDetailPopup(activity, item.id)
                 popup.showWithAnchor(poster)
 
-                Timber.d("${item.id}")
                 true
             }
         }

@@ -53,7 +53,10 @@ class CategoryFragment : Fragment() {
 
         category = arguments!!.getSerializable(KEY_CATEGORY) as Category
 
-        viewModel = ViewModelProviders.of(activity!!).get(MoviesViewModel::class.java)
+        activity?.let {
+            viewModel = ViewModelProviders.of(it).get(MoviesViewModel::class.java)
+        }
+
         moviesAdapter = MoviesGridAdapter(columns, activity!!)
 
         initViewModelObservers()

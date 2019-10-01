@@ -23,4 +23,8 @@ object MoviesRepository {
     fun getNowPlaying(pageIndex: Int): List<MovieDb> {
         return tmdbApi.getNowPlayingMovies("en", pageIndex, "").results
     }
+
+    fun getMovie(movieId: Long): MovieDb {
+        return tmdbApi.getMovie(movieId.toInt(), "en")
+    }
 }
