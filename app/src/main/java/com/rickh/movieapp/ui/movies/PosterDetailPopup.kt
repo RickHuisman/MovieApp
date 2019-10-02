@@ -10,16 +10,16 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.rickh.movieapp.R
-import com.rickh.movieapp.ui.MainActivity
+import com.rickh.movieapp.ui.HomeActivity
 import com.rickh.movieapp.ui.widgets.PopupWindowWithMaterialTransition
 import info.movito.themoviedbapi.model.MovieDb
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
 
-class MovieDetailPopup(private val activity: Activity, private val movieId: Long) :
+class PosterDetailPopup(private val activity: Activity, private val movieId: Long) :
     PopupWindowWithMaterialTransition(activity) {
 
-    private val viewModel: MoviesViewModel
+    private val viewModel: HomeViewModel
 
     private lateinit var titleTextView: TextView
     private lateinit var ratingTextView: TextView
@@ -30,7 +30,7 @@ class MovieDetailPopup(private val activity: Activity, private val movieId: Long
         val popupView = LayoutInflater.from(activity).inflate(R.layout.popup_movie_detail, null)
         contentView = popupView
 
-        viewModel = ViewModelProviders.of(activity as MainActivity).get(MoviesViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity as HomeActivity).get(HomeViewModel::class.java)
         initViewBindings()
         initViewModelObservers()
     }
@@ -51,7 +51,7 @@ class MovieDetailPopup(private val activity: Activity, private val movieId: Long
     }
 
     private fun initViewModelObservers() {
-        viewModel.getMovie(movieId).observe(activity as MainActivity, Observer {
+        viewModel.getMovie(movieId).observe(activity as HomeActivity, Observer {
             renderMovieDetail(it)
         })
     }

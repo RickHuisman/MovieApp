@@ -3,17 +3,18 @@ package com.rickh.movieapp.ui.movies
 import androidx.lifecycle.*
 import com.rickh.movieapp.tmdb.MoviesRepository
 import com.rickh.movieapp.tmdb.TvShowsRepository
-import com.rickh.movieapp.ui.GridItem
+import com.rickh.movieapp.ui.PosterItem
 import info.movito.themoviedbapi.model.MovieDb
 import info.movito.themoviedbapi.model.tv.TvSeries
 import kotlinx.coroutines.*
 import timber.log.Timber
+import java.lang.IllegalArgumentException
 
 
-class MoviesViewModel : ViewModel() {
+class HomeViewModel : ViewModel() {
 
-    private val _items = MutableLiveData<List<GridItem>>()
-    val items: LiveData<List<GridItem>>
+    private val _items = MutableLiveData<List<PosterItem>>()
+    val items: LiveData<List<PosterItem>>
         get() = _items
 
     private val _loadingProgress = MutableLiveData<Boolean>()
@@ -38,7 +39,7 @@ class MoviesViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             _loadingProgress.postValue(true)
 
-            var results = when (sortMode) {
+            val results = when (sortMode) {
                 SortOptions.MOVIES_POPULAR -> MoviesRepository.getPopular(pageIndex)
                 SortOptions.MOVIES_TOP_RATED -> MoviesRepository.getTopRated(pageIndex)
                 SortOptions.MOVIES_UPCOMING -> MoviesRepository.getUpcoming(pageIndex)
@@ -50,37 +51,29 @@ class MoviesViewModel : ViewModel() {
                 SortOptions.TV_SHOWS_AIRING_TODAY -> TvShowsRepository.getAiringToday(pageIndex)
             }
 
-            results = convertToGridItemList(results)
+            val oldItems = items.value.orEmpty()
+            _items.postValue(getItemsForDisplay(oldItems, convertToPosterItemList(results)))
 
-            withContext(Dispatchers.Main) {
-                val oldItems = items.value.orEmpty()
-                _items.value = getItemsForDisplay(oldItems, results)
-
-                pageIndex++
-                _loadingProgress.postValue(false)
-            }
+            pageIndex++
+            _loadingProgress.postValue(false)
         }
     }
 
-    private fun convertToGridItemList(items: List<Any>): List<GridItem> {
-        var list = listOf<GridItem>()
+    private fun convertToPosterItemList(items: List<Any>): List<PosterItem> {
         val item = items[0]
         if (item is MovieDb) {
             items as List<MovieDb>
-
-            list = items.map { GridItem(it.id.toLong(), it.posterPath) }
-        } else if (item is TvSeries) {
+            return items.map { PosterItem(it.id.toLong(), it.posterPath) }
+        } else {
             items as List<TvSeries>
-
-            list = items.map { GridItem(it.id.toLong(), it.posterPath) }
+            return items.map { PosterItem(it.id.toLong(), it.posterPath) }
         }
-        return list
     }
 
     private fun getItemsForDisplay(
-        oldItems: List<GridItem>,
-        newItems: List<GridItem>
-    ): List<GridItem> {
+        oldItems: List<PosterItem>,
+        newItems: List<PosterItem>
+    ): List<PosterItem> {
         val itemsToBeDisplayed = oldItems.toMutableList()
         itemsToBeDisplayed.addAll(newItems)
         return itemsToBeDisplayed

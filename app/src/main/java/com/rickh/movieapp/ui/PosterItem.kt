@@ -1,6 +1,6 @@
 package com.rickh.movieapp.ui
 
-class GridItem(
+class PosterItem(
     val id: Long,
     val posterPath: String?
 ) {

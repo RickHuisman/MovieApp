@@ -9,7 +9,7 @@ import android.transition.TransitionManager
 import android.view.*
 import android.widget.PopupWindow
 import com.rickh.movieapp.R
-import com.rickh.movieapp.util.ViewUtils
+import com.rickh.movieapp.utils.ViewUtils
 
 /**
  * Mimics {@link PopupMenu}'s API 23+ entry animation and enables dismiss-on-outside-touch.

@@ -1,4 +1,4 @@
-package com.rickh.movieapp.util
+package com.rickh.movieapp.utils
 
 import android.content.Context
 import android.os.Build
@@ -6,7 +6,6 @@ import android.util.FloatProperty
 import android.util.Property
 import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
-
 
 class AnimUtils {
 

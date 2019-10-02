@@ -1,6 +1,5 @@
 package com.rickh.movieapp.ui.movies
 
-
 enum class SortOptions {
     MOVIES_POPULAR,
     MOVIES_TOP_RATED,

@@ -5,10 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.rickh.movieapp.ui.movies.Category.Companion.ALL
 
-
-class CategoryPagerAdapter(manager: FragmentManager) : FragmentStatePagerAdapter(
-    manager
-) {
+class CategoryPagerAdapter(manager: FragmentManager) : FragmentStatePagerAdapter(manager) {
 
     override fun getItem(position: Int): Fragment {
         return CategoryFragment().create(ALL[position])

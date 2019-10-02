@@ -4,7 +4,6 @@ import info.movito.themoviedbapi.TmdbApi
 import info.movito.themoviedbapi.model.MovieDb
 import info.movito.themoviedbapi.model.tv.TvSeries
 
-
 object TvShowsRepository {
 
     private val tmdbApi = TmdbApi("ea75e60dfc33c0ff92d6e331c9debbea").tvSeries

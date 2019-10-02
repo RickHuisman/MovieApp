@@ -1,4 +1,4 @@
-package com.rickh.movieapp.util
+package com.rickh.movieapp.utils
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -9,7 +9,6 @@ import android.graphics.drawable.RippleDrawable
 import android.util.DisplayMetrics
 import androidx.palette.graphics.Palette
 import kotlin.math.roundToInt
-
 
 class ViewUtils {
 

@@ -1,9 +1,7 @@
-package com.rickh.movieapp.util
-
+package com.rickh.movieapp.utils
 
 import android.graphics.ColorMatrix
 import android.util.Property
-
 
 /**
  * An extension to [ColorMatrix] which caches the saturation value for animation purposes.

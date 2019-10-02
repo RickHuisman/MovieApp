@@ -8,11 +8,15 @@ import com.bumptech.glide.request.target.DrawableImageViewTarget
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.request.transition.Transition
 import com.rickh.movieapp.R
-import com.rickh.movieapp.util.ViewUtils
+import com.rickh.movieapp.utils.ViewUtils
 
-class MovieTarget(
-    private val movieImageView: ImageView
-) : DrawableImageViewTarget(movieImageView), Palette.PaletteAsyncListener {
+/**
+ * A Glide [com.bumptech.glide.request.target.ViewTarget]
+ * It applies a palette generated ripple.
+ */
+class PosterTarget(
+    private val posterImageView: ImageView
+) : DrawableImageViewTarget(posterImageView), Palette.PaletteAsyncListener {
 
     override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
         super.onResourceReady(resource, transition)
@@ -20,7 +24,7 @@ class MovieTarget(
     }
 
     override fun onGenerated(palette: Palette?) {
-        movieImageView.foreground = ViewUtils.createRipple(
+        posterImageView.foreground = ViewUtils.createRipple(
             palette, 0.25f, 0.5f,
             ContextCompat.getColor(view.context, R.color.mid_grey), true
         )

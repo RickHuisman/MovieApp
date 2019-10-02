@@ -3,7 +3,13 @@ package com.rickh.movieapp.ui.movies
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-
+/**
+ * A scroll listener for RecyclerView to load more items as you approach the end.
+ *
+ * Copied from:
+ * "https://github.com/android/plaid/blob/master/core/src/main/
+ * java/io/plaidapp/core/ui/recyclerview/InfiniteScrollListener.kt"
+ */
 abstract class InfiniteScrollListener(
     private val layoutManager: LinearLayoutManager
 ) : RecyclerView.OnScrollListener() {
@@ -28,6 +34,6 @@ abstract class InfiniteScrollListener(
 
     companion object {
         // The minimum number of items remaining before we should loading more.
-        private const val VISIBLE_THRESHOLD = 4
+        private const val VISIBLE_THRESHOLD = 6
     }
 }

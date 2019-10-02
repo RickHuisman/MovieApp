@@ -1,5 +1,4 @@
-package com.rickh.movieapp.util
-
+package com.rickh.movieapp.utils
 
 class ColorUtils {
 

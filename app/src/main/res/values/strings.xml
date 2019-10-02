@@ -4,7 +4,7 @@
     <!--    The Movie Database    -->
     <string name="tmdb_base_img_url">http://image.tmdb.org/t/p/original%s</string>
 
-    <string name="sort_movies">Sort movies</string>
+    <string name="sort">Sort</string>
 
     <!-- Category -->
     <string name="category_tab_movies">Movies</string>

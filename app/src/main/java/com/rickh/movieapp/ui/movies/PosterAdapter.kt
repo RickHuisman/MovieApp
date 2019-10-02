@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.app.Activity
-import android.content.Context
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.drawable.ColorDrawable
@@ -26,23 +25,25 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.rickh.movieapp.R
-import com.rickh.movieapp.ui.GridItem
-import com.rickh.movieapp.util.AnimUtils
-import com.rickh.movieapp.util.ObservableColorMatrix
-import timber.log.Timber
+import com.rickh.movieapp.ui.PosterItem
+import com.rickh.movieapp.ui.PosterViewHolder
+import com.rickh.movieapp.utils.AnimUtils
+import com.rickh.movieapp.utils.ObservableColorMatrix
 
-
-class MoviesGridAdapter(
+/**
+ * RecyclerView.Adapter for displaying movies and tvshows posters
+ */
+class PosterAdapter(
     private val columns: Int,
     private val activity: Activity
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(),
-    ListPreloader.PreloadModelProvider<GridItem> {
+    ListPreloader.PreloadModelProvider<PosterItem> {
 
-    var items: List<GridItem> = emptyList()
+    var items: List<PosterItem> = emptyList()
         set(newItems) {
             val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
-                MovieDiffCallback(field, newItems)
+                PosterDiffCallback(field, newItems)
             )
 
             field = newItems
@@ -68,8 +69,8 @@ class MoviesGridAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(activity)
         return when (viewType) {
-            TYPE_MOVIE -> MovieViewHolder(
-                layoutInflater.inflate(R.layout.item_movie, parent, false)
+            TYPE_POSTER -> PosterViewHolder(
+                layoutInflater.inflate(R.layout.item_poster, parent, false)
             )
             TYPE_LOADING_MORE -> LoadingMoreHolder(
                 layoutInflater.inflate(R.layout.infinite_loading, parent, false)
@@ -80,7 +81,7 @@ class MoviesGridAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            TYPE_MOVIE -> (holder as MovieViewHolder).bind(
+            TYPE_POSTER -> (holder as PosterViewHolder).bind(
                 items[position],
                 shotLoadingPlaceholders[position % shotLoadingPlaceholders.size]!!,
                 activity
@@ -89,7 +90,7 @@ class MoviesGridAdapter(
         }
     }
 
-    private fun getItem(position: Int): GridItem? {
+    private fun getItem(position: Int): PosterItem? {
         return if (position < 0 || position >= items.size) null else items[position]
     }
 
@@ -99,7 +100,7 @@ class MoviesGridAdapter(
 
     override fun getItemViewType(position: Int): Int {
         if (position < items.size && items.isNotEmpty()) {
-            return TYPE_MOVIE
+            return TYPE_POSTER
         }
         return TYPE_LOADING_MORE
     }
@@ -129,96 +130,19 @@ class MoviesGridAdapter(
         notifyItemRemoved(loadingPos)
     }
 
-    override fun getPreloadItems(position: Int): List<GridItem> {
+    override fun getPreloadItems(position: Int): List<PosterItem> {
         val item = getItem(position)
-        return if (item is GridItem) {
+        return if (item is PosterItem) {
             listOf(item)
         } else {
             emptyList()
         }
     }
 
-    override fun getPreloadRequestBuilder(item: GridItem): RequestBuilder<*>? {
+    override fun getPreloadRequestBuilder(item: PosterItem): RequestBuilder<*>? {
         return Glide.with(activity).load(
             activity.getString(R.string.tmdb_base_img_url, item.posterPath)
         )
-    }
-
-    private class MovieViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-
-        private var poster: ImageView = itemView.findViewById(R.id.movie_poster)
-
-        init {
-            darkenImage()
-        }
-
-        fun bind(item: GridItem, placeholder: ColorDrawable, activity: Activity) {
-            Glide.with(poster)
-                .load(
-                    poster.context.getString(R.string.tmdb_base_img_url, item.posterPath)
-                )
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(
-                        e: GlideException?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        isFirstResource: Boolean
-                    ) = false
-
-                    override fun onResourceReady(
-                        resource: Drawable?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        dataSource: DataSource?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        if (!item.hasFadedIn) {
-                            fade()
-                            item.hasFadedIn = true
-                        }
-                        return false
-                    }
-                })
-                .placeholder(placeholder)
-                .diskCacheStrategy(DiskCacheStrategy.DATA)
-                .centerCrop()
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(MovieTarget(poster))
-
-            itemView.setOnLongClickListener {
-                val popup = MovieDetailPopup(activity, item.id)
-                popup.showWithAnchor(poster)
-
-                true
-            }
-        }
-
-        private fun fade() {
-            poster.setHasTransientState(true)
-            val cm = ObservableColorMatrix()
-            ObjectAnimator.ofFloat(cm, ObservableColorMatrix.SATURATION, 0f, 1f).apply {
-                addUpdateListener {
-                    // Setting the saturation overwrites any darkening so need to reapply.
-                    // Just animating the color matrix does not invalidate the
-                    // drawable so need this update listener.  Also have to create a
-                    // new CMCF as the matrix is immutable :(
-                    darkenImage(cm)
-                }
-                duration = 2000L
-                interpolator = AnimUtils.getFastOutSlowInInterpolator(poster.context)
-                addListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        poster.setHasTransientState(false)
-                    }
-                })
-                start()
-            }
-        }
-
-        private fun darkenImage(colorMatrix: ColorMatrix = ColorMatrix()) {
-            poster.colorFilter = ColorMatrixColorFilter(colorMatrix)
-        }
     }
 
     private class LoadingMoreHolder internal constructor(itemView: View) :
@@ -232,9 +156,9 @@ class MoviesGridAdapter(
         }
     }
 
-    class MovieDiffCallback(
-        private var oldItemsList: List<GridItem>,
-        private var newItemsList: List<GridItem>
+    class PosterDiffCallback(
+        private var oldItemsList: List<PosterItem>,
+        private var newItemsList: List<PosterItem>
     ) : DiffUtil.Callback() {
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             return oldItemsList[oldItemPosition].id == newItemsList[newItemPosition].id
@@ -254,7 +178,7 @@ class MoviesGridAdapter(
     }
 
     companion object {
-        private const val TYPE_MOVIE = 0
+        private const val TYPE_POSTER = 0
         private const val TYPE_LOADING_MORE = -1
     }
 }
