@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="movie_app_categories">
-        <item>Movies</item>
-        <item>TV Shows</item>
-        <item>Discover</item>
-        <item>Popular people</item>
-    </string-array>
-</resources>

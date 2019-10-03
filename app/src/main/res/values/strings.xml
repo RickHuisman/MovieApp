@@ -7,10 +7,10 @@
     <string name="sort">Sort</string>
 
     <!-- Category -->
-    <string name="category_tab_movies">Movies</string>
-    <string name="category_tab_tv_shows">TV Shows</string>
-    <string name="category_tab_discover">Discover</string>
-    <string name="category_tab_popular_people">Popular people</string>
+    <string name="category_movies">Movies</string>
+    <string name="category_tv_shows">TV Shows</string>
+    <string name="category_discover">Discover</string>
+    <string name="category_popular_people">Popular people</string>
 
     <!-- Sort options -->
     <string name="sorting_mode_popular">Popular</string>

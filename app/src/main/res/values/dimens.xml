@@ -2,6 +2,7 @@
 <resources>
     <dimen name="elevation_toolbar">4dp</dimen>
 
+    <dimen name="spacing0">0dp</dimen>
     <dimen name="spacing2">2dp</dimen>
     <dimen name="spacing4">4dp</dimen>
     <dimen name="spacing8">8dp</dimen>

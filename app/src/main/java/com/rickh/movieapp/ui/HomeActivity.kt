@@ -3,9 +3,7 @@ package com.rickh.movieapp.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
-import android.widget.ArrayAdapter
 import androidx.appcompat.widget.PopupMenu
-import com.rickh.movieapp.utils.ViewUtils
 import kotlinx.android.synthetic.main.activity_home.*
 import android.view.MenuItem
 import android.view.View
@@ -14,6 +12,8 @@ import android.widget.FrameLayout
 import androidx.lifecycle.ViewModelProviders
 import com.rickh.movieapp.R
 import com.rickh.movieapp.ui.movies.*
+import com.rickh.movieapp.ui.widgets.CategoriesSpinnerAdapter
+import com.rickh.movieapp.utils.ViewUtils
 
 /**
  * Main activity
@@ -40,17 +40,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupSpinner() {
-        val categories = resources.getStringArray(R.array.movie_app_categories)
-        val categoriesAdapter = ArrayAdapter(
-            this,
-            R.layout.spinner_category_selected_item,
-            android.R.id.text1,
-            categories
-        )
-        categoriesAdapter.setDropDownViewResource(R.layout.item_spinner_category)
-
         with(spinner) {
-            adapter = categoriesAdapter
+            adapter = CategoriesSpinnerAdapter(context)
             dropDownVerticalOffset = ViewUtils.dpToPix(context, 8)
             onItemSelectedListener = spinnerOnItemSelected
         }
