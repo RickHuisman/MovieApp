@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.Gravity
 import androidx.appcompat.widget.PopupMenu
 import kotlinx.android.synthetic.main.activity_home.*
-import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.FrameLayout
@@ -57,8 +56,8 @@ class HomeActivity : AppCompatActivity() {
 
             // Sort options
             when (Category.ALL[position]) {
-                Category.MOVIES -> setSortOptions(R.menu.menu_movies_sorting_mode)
-                Category.TV_SHOWS -> setSortOptions(R.menu.menu_tv_shows_sorting_mode)
+                Category.MOVIES -> setSortOptions(R.menu.menu_movies_sorting_mode, SortOptions.MOVIES_TOP_RATED)
+                Category.TV_SHOWS -> setSortOptions(R.menu.menu_tv_shows_sorting_mode, SortOptions.TV_SHOWS_TOP_RATED)
                 Category.DISCOVER -> sort_filter_button.showFilter()
                 Category.POPULAR_PEOPLE -> sort_filter_button.disappear()
             }
@@ -85,40 +84,30 @@ class HomeActivity : AppCompatActivity() {
         with(sortOptionsMenu) {
             menuInflater.inflate(R.menu.menu_movies_sorting_mode, sortOptionsMenu.menu)
             setOnMenuItemClickListener {
-                setActiveSortOption(it)
+                setActiveSortOption(it.itemId)
                 true
             }
         }
-
         sort_filter_button.setOnClickListener {
             sortOptionsMenu.show()
         }
     }
 
-    private fun setSortOptions(menuResId: Int) {
+    private fun setSortOptions(menuResId: Int, defaultSortOption: SortOptions) {
         sortOptionsMenu.menu.clear()
         sortOptionsMenu.menuInflater.inflate(menuResId, sortOptionsMenu.menu)
         sort_filter_button.showSort()
+        setActiveSortOption(defaultSortOption.menuItemId())
     }
 
-    private fun setActiveSortOption(selMenuItem: MenuItem) {
+    private fun setActiveSortOption(menuItemId: Int) {
         // Reset highlighted items
         sortOptionsMenu.menu.setGroupEnabled(0, true)
 
-        selMenuItem.isEnabled = false
+        val selectedMenuItem = sortOptionsMenu.menu.findItem(menuItemId)
+        selectedMenuItem.isEnabled = false
 
-        val sortOption = when (selMenuItem.itemId) {
-            R.id.action_movies_sorting_popular -> SortOptions.MOVIES_POPULAR
-            R.id.action_movies_sorting_top_rated -> SortOptions.MOVIES_TOP_RATED
-            R.id.action_movies_sorting_upcoming -> SortOptions.MOVIES_UPCOMING
-            R.id.action_movies_sorting_now_playing -> SortOptions.MOVIES_NOW_PLAYING
-
-            R.id.action_tv_shows_sorting_popular -> SortOptions.TV_SHOWS_POPULAR
-            R.id.action_tv_shows_sorting_top_rated -> SortOptions.TV_SHOWS_TOP_RATED
-            R.id.action_tv_shows_sorting_on_tv -> SortOptions.TV_SHOWS_ON_TV
-            R.id.action_tv_shows_sorting_airing_today -> SortOptions.TV_SHOWS_AIRING_TODAY
-            else -> throw IllegalArgumentException("No sort option for selected menu item")
-        }
+        val sortOption = SortOptions.findItem(menuItemId)
         viewModel.setSortMode(sortOption)
     }
 }

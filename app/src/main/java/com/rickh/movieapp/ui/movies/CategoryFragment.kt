@@ -13,6 +13,7 @@ import com.bumptech.glide.util.ViewPreloadSizeProvider
 import com.rickh.movieapp.R
 import com.rickh.movieapp.ui.PosterItem
 import kotlinx.android.synthetic.main.poster_grid_fragment.*
+import java.lang.IllegalArgumentException
 
 /**
  * Fragment displaying movies and tvshows posters in a grid.
@@ -24,24 +25,6 @@ class CategoryFragment : Fragment() {
 
     private val columns: Int = 3
     private lateinit var posterAdapter: PosterAdapter
-
-    private val gridLayoutManager = GridLayoutManager(activity, columns).apply {
-        spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                return posterAdapter.getItemColumnSpan(position)
-            }
-        }
-    }
-
-    private val infiniteScrollListener = object : InfiniteScrollListener(gridLayoutManager) {
-        override fun onLoadMore() {
-            viewModel.loadMore()
-        }
-
-        override fun isDataLoading(): Boolean {
-            return viewModel.loadingProgress.value ?: false
-        }
-    }
 
     fun create(category: Category): CategoryFragment {
         return CategoryFragment().apply {
@@ -72,10 +55,12 @@ class CategoryFragment : Fragment() {
         setupGrid()
 
         category = arguments!!.getSerializable(KEY_CATEGORY) as Category
-        when (category) {
-            Category.MOVIES -> viewModel.setSortMode(SortOptions.MOVIES_TOP_RATED)
-            Category.TV_SHOWS -> viewModel.setSortMode(SortOptions.TV_SHOWS_TOP_RATED)
+        val sortOption = when (category) {
+            Category.MOVIES -> SortOptions.MOVIES_TOP_RATED
+            Category.TV_SHOWS -> SortOptions.TV_SHOWS_TOP_RATED
+            else -> throw IllegalArgumentException("No default sort option for category: $category")
         }
+        viewModel.setSortMode(sortOption)
     }
 
     private fun initViewModelObservers() {
@@ -94,6 +79,22 @@ class CategoryFragment : Fragment() {
     }
 
     private fun setupGrid() {
+        val gridLayoutManager = GridLayoutManager(activity, columns).apply {
+            spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return posterAdapter.getItemColumnSpan(position)
+                }
+            }
+        }
+        val infiniteScrollListener = object : InfiniteScrollListener(gridLayoutManager) {
+            override fun onLoadMore() {
+                viewModel.loadMore()
+            }
+
+            override fun isDataLoading(): Boolean {
+                return viewModel.loadingProgress.value ?: false
+            }
+        }
         val posterPreloader = RecyclerViewPreloader(
             this,
             posterAdapter,
