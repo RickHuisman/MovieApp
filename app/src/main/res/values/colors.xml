@@ -6,7 +6,7 @@
     <color name="color_accent">#1DE9B6</color>
 
     <color name="toolbar">@color/color_primary</color>
-    <color name="navigation_bar">@color/gray_950</color>
+    <color name="status_bar">@color/color_primary_dark</color>
 
     <array name="loading_placeholders_dark">
         <item>#ff191919</item>

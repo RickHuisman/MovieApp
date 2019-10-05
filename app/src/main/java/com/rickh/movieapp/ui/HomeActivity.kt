@@ -2,12 +2,12 @@ package com.rickh.movieapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Gravity
+import android.view.*
 import androidx.appcompat.widget.PopupMenu
 import kotlinx.android.synthetic.main.activity_home.*
-import android.view.View
 import android.widget.AdapterView
 import android.widget.FrameLayout
+import android.widget.RelativeLayout
 import androidx.lifecycle.ViewModelProviders
 import com.rickh.movieapp.R
 import com.rickh.movieapp.ui.movies.*
@@ -36,6 +36,37 @@ class HomeActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         setupSpinner()
         setupSortOptionsMenu()
+
+        window.decorView.apply {
+            // Transparent navigation bar
+            systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            // Add inset because fitsSystemWindows does not work when you hide the navigation bar
+            setOnApplyWindowInsetsListener { _, insets ->
+                handleInsets(insets)
+                insets.consumeSystemWindowInsets()
+            }
+        }
+    }
+
+    private fun handleInsets(insets: WindowInsets) {
+        // inset the toolbar down by the status bar height
+        val lpToolbar = (toolbar.layoutParams as ViewGroup.MarginLayoutParams).apply {
+            topMargin += insets.systemWindowInsetTop
+            leftMargin += insets.systemWindowInsetLeft
+            rightMargin += insets.systemWindowInsetRight
+        }
+        toolbar.layoutParams = lpToolbar
+
+        // we place a background behind the status bar to combine with it's semi-transparent
+        // color to get the desired appearance.  Set it's height to the status bar height
+        val statusBarBackground = findViewById<View>(R.id.status_bar_background)
+        val lpStatus = (statusBarBackground.layoutParams as RelativeLayout.LayoutParams).apply {
+            height = insets.systemWindowInsetTop
+        }
+        statusBarBackground.layoutParams = lpStatus
+
+        // clear this listener so insets aren't re-applied
+        window.decorView.setOnApplyWindowInsetsListener(null)
     }
 
     private fun setupSpinner() {
@@ -56,8 +87,14 @@ class HomeActivity : AppCompatActivity() {
 
             // Sort options
             when (Category.ALL[position]) {
-                Category.MOVIES -> setSortOptions(R.menu.menu_movies_sorting_mode, SortOptions.MOVIES_TOP_RATED)
-                Category.TV_SHOWS -> setSortOptions(R.menu.menu_tv_shows_sorting_mode, SortOptions.TV_SHOWS_TOP_RATED)
+                Category.MOVIES -> setSortOptions(
+                    R.menu.menu_movies_sorting_mode,
+                    SortOptions.MOVIES_TOP_RATED
+                )
+                Category.TV_SHOWS -> setSortOptions(
+                    R.menu.menu_tv_shows_sorting_mode,
+                    SortOptions.TV_SHOWS_TOP_RATED
+                )
                 Category.DISCOVER -> sort_filter_button.showFilter()
                 Category.POPULAR_PEOPLE -> sort_filter_button.disappear()
             }
