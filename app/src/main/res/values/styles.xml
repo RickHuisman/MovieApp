@@ -51,7 +51,7 @@
         <item name="android:popupElevation">@dimen/spacing16</item>
     </style>
 
-    <!-- User profile popup -->
+    <!-- Movie detail popup -->
     <style name="MovieAppMovieDetailPopupStatsContainer">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>

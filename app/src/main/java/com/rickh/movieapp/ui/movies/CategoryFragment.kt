@@ -12,7 +12,7 @@ import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
 import com.bumptech.glide.util.ViewPreloadSizeProvider
 import com.rickh.movieapp.R
 import com.rickh.movieapp.ui.PosterItem
-import kotlinx.android.synthetic.main.poster_grid_fragment.*
+import kotlinx.android.synthetic.main.fragment_poster_grid.*
 import java.lang.IllegalArgumentException
 
 /**
@@ -39,7 +39,7 @@ class CategoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.poster_grid_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_poster_grid, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,7 +47,7 @@ class CategoryFragment : Fragment() {
 
         activity?.let {
             viewModel = ViewModelProviders.of(it).get(HomeViewModel::class.java)
-        }
+        } ?: throw Exception("Invalid Activity")
 
         posterAdapter = PosterAdapter(columns, activity!!)
 

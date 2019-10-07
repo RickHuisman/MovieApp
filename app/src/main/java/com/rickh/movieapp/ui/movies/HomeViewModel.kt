@@ -2,14 +2,15 @@ package com.rickh.movieapp.ui.movies
 
 import androidx.lifecycle.*
 import com.rickh.movieapp.tmdb.MoviesRepository
+import com.rickh.movieapp.tmdb.PeopleRepository
 import com.rickh.movieapp.tmdb.TvShowsRepository
 import com.rickh.movieapp.ui.PosterItem
 import info.movito.themoviedbapi.model.MovieDb
+import info.movito.themoviedbapi.model.people.PersonPeople
 import info.movito.themoviedbapi.model.tv.TvSeries
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.lang.IllegalArgumentException
-
 
 class HomeViewModel : ViewModel() {
 
@@ -23,6 +24,16 @@ class HomeViewModel : ViewModel() {
 
     private var sortMode = SortOptions.MOVIES_TOP_RATED
     private var pageIndex: Int = 1
+
+    private val _people = MutableLiveData<List<PersonPeople>>()
+    val people: LiveData<List<PersonPeople>>
+        get() = _people
+
+    private val _peopleLoadingProgress = MutableLiveData<Boolean>()
+    val peopleLoadingProgress: LiveData<Boolean>
+        get() = _peopleLoadingProgress
+
+    private var peoplePageIndex: Int = 1
 
     fun setSortMode(sortMode: SortOptions) {
         clearList()
@@ -61,12 +72,12 @@ class HomeViewModel : ViewModel() {
 
     private fun convertToPosterItemList(items: List<Any>): List<PosterItem> {
         val item = items[0]
-        if (item is MovieDb) {
+        return if (item is MovieDb) {
             items as List<MovieDb>
-            return items.map { PosterItem(it.id.toLong(), it.posterPath) }
+            items.map { PosterItem(it.id.toLong(), it.posterPath) }
         } else {
             items as List<TvSeries>
-            return items.map { PosterItem(it.id.toLong(), it.posterPath) }
+            items.map { PosterItem(it.id.toLong(), it.posterPath) }
         }
     }
 
@@ -81,5 +92,28 @@ class HomeViewModel : ViewModel() {
 
     fun getMovie(movieId: Long) = liveData(Dispatchers.IO) {
         emit(MoviesRepository.getMovie(movieId))
+    }
+
+    fun getPopularPeople() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _peopleLoadingProgress.postValue(true)
+
+            val oldItems = people.value.orEmpty()
+            val result = PeopleRepository.getPopular(peoplePageIndex)
+
+            _people.postValue(getItemsForDisplayPopularPeople(oldItems, result))
+
+            peoplePageIndex++
+            _peopleLoadingProgress.postValue(false)
+        }
+    }
+
+    private fun getItemsForDisplayPopularPeople(
+        oldItems: List<PersonPeople>,
+        newItems: List<PersonPeople>
+    ): List<PersonPeople> {
+        val itemsToBeDisplayed = oldItems.toMutableList()
+        itemsToBeDisplayed.addAll(newItems)
+        return itemsToBeDisplayed
     }
 }

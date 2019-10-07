@@ -5,5 +5,4 @@
     android:layout_height="200dp"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="@drawable/mid_grey_ripple"
-    android:stateListAnimator="@animator/raise" />
+    android:foreground="@drawable/mid_grey_ripple" />

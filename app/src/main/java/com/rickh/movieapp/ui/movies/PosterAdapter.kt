@@ -1,34 +1,19 @@
 package com.rickh.movieapp.ui.movies
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
 import android.app.Activity
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.ListPreloader
 import com.bumptech.glide.RequestBuilder
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.rickh.movieapp.R
 import com.rickh.movieapp.ui.PosterItem
 import com.rickh.movieapp.ui.PosterViewHolder
-import com.rickh.movieapp.utils.AnimUtils
-import com.rickh.movieapp.utils.ObservableColorMatrix
 
 /**
  * RecyclerView.Adapter for displaying movies and tvshows posters
@@ -145,7 +130,7 @@ class PosterAdapter(
         )
     }
 
-    private class LoadingMoreHolder internal constructor(itemView: View) :
+    private class LoadingMoreHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
         private val progress = itemView as ProgressBar

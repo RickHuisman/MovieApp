@@ -8,5 +8,5 @@
     android:layout_marginBottom="@dimen/spacing64"
     android:layout_gravity="center"
     android:indeterminate="true"
-    android:indeterminateTint="#40808080"
+    android:indeterminateTint="@color/color_accent"
     android:indeterminateTintMode="src_in" />

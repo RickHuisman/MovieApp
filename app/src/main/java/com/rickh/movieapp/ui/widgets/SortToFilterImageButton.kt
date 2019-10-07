@@ -68,7 +68,7 @@ class SortToFilterImageButton @JvmOverloads constructor(
 
         drawable?.registerAnimationCallback(object : Animatable2Compat.AnimationCallback() {
             override fun onAnimationEnd(drawable: Drawable?) {
-                visibility = View.INVISIBLE
+                visibility = View.GONE
             }
         })
     }

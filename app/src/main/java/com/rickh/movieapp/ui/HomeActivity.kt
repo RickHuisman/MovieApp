@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.activity_home.*
 import android.widget.AdapterView
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.rickh.movieapp.R
 import com.rickh.movieapp.ui.movies.*
@@ -105,7 +106,7 @@ class HomeActivity : AppCompatActivity() {
         val currentFragment = categoryPagerAdapter.instantiateItem(
             fragmentContainer,
             position
-        ) as CategoryFragment
+        ) as Fragment
         categoryPagerAdapter.setPrimaryItem(fragmentContainer, position, currentFragment)
 
         supportFragmentManager

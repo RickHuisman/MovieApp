@@ -24,6 +24,7 @@
                 android:layout_width="0dp"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_weight="1"
+                android:layout_marginEnd="@dimen/spacing16"
                 android:background="?attr/selectableItemBackgroundBorderless" />
 
             <com.rickh.movieapp.ui.widgets.SortToFilterImageButton
@@ -31,7 +32,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/spacing24"
                 android:layout_marginEnd="@dimen/spacing8"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/sort"
