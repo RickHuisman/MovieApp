@@ -83,7 +83,7 @@ class HomeActivity : AppCompatActivity() {
 
         }
 
-        override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+        override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
             setCurrentFragment(position)
 
             // Sort options

@@ -8,13 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
+import com.bumptech.glide.util.ViewPreloadSizeProvider
 import com.rickh.movieapp.R
 import com.rickh.movieapp.ui.movies.HomeViewModel
 import com.rickh.movieapp.ui.movies.InfiniteScrollListener
+import info.movito.themoviedbapi.model.people.PersonPeople
 import kotlinx.android.synthetic.main.fragment_popular_people.*
-import kotlinx.android.synthetic.main.fragment_poster_grid.*
 import kotlinx.android.synthetic.main.fragment_poster_grid.loading
-import timber.log.Timber
 
 class PopularPeopleFragment : Fragment() {
 
@@ -43,13 +44,13 @@ class PopularPeopleFragment : Fragment() {
     }
 
     private fun initViewModelObservers() {
-        viewModel.getPopularPeople()
-        viewModel.people.observe(this, Observer {
+        viewModel.peoplePaginator.loadMore()
+        viewModel.peoplePaginator.items.observe(this, Observer {
             peopleAdapter.people = it
             checkEmptyState()
         })
 
-        viewModel.peopleLoadingProgress.observe(this, Observer {
+        viewModel.peoplePaginator.loadingProgress.observe(this, Observer {
             if (it) {
                 peopleAdapter.dataStartedLoading()
             } else {
@@ -62,17 +63,24 @@ class PopularPeopleFragment : Fragment() {
         val linearLayoutManager = LinearLayoutManager(context)
         val infiniteScrollListener = object : InfiniteScrollListener(linearLayoutManager) {
             override fun onLoadMore() {
-                viewModel.getPopularPeople()
+                viewModel.peoplePaginator.loadMore()
             }
 
             override fun isDataLoading(): Boolean {
-                return viewModel.peopleLoadingProgress.value ?: false
+                return viewModel.peoplePaginator.loadingProgress.value ?: false
             }
         }
+        val personPreloader = RecyclerViewPreloader(
+            this,
+            peopleAdapter,
+            ViewPreloadSizeProvider<PersonPeople>(),
+            6
+        )
         with(people_list) {
             layoutManager = linearLayoutManager
             adapter = peopleAdapter
             addOnScrollListener(infiniteScrollListener)
+            addOnScrollListener(personPreloader)
         }
     }
 

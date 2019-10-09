@@ -2,15 +2,12 @@ package com.rickh.movieapp.ui.movies
 
 import androidx.lifecycle.*
 import com.rickh.movieapp.tmdb.MoviesRepository
-import com.rickh.movieapp.tmdb.PeopleRepository
 import com.rickh.movieapp.tmdb.TvShowsRepository
 import com.rickh.movieapp.ui.PosterItem
+import com.rickh.movieapp.ui.people.PopularPeoplePaginator
 import info.movito.themoviedbapi.model.MovieDb
-import info.movito.themoviedbapi.model.people.PersonPeople
 import info.movito.themoviedbapi.model.tv.TvSeries
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import timber.log.Timber
+import kotlinx.coroutines.*
 
 class HomeViewModel : ViewModel() {
 
@@ -25,15 +22,7 @@ class HomeViewModel : ViewModel() {
     private var sortMode = SortOptions.MOVIES_TOP_RATED
     private var pageIndex: Int = 1
 
-    private val _people = MutableLiveData<List<PersonPeople>>()
-    val people: LiveData<List<PersonPeople>>
-        get() = _people
-
-    private val _peopleLoadingProgress = MutableLiveData<Boolean>()
-    val peopleLoadingProgress: LiveData<Boolean>
-        get() = _peopleLoadingProgress
-
-    private var peoplePageIndex: Int = 1
+    val peoplePaginator = PopularPeoplePaginator()
 
     fun setSortMode(sortMode: SortOptions) {
         clearList()
@@ -94,26 +83,8 @@ class HomeViewModel : ViewModel() {
         emit(MoviesRepository.getMovie(movieId))
     }
 
-    fun getPopularPeople() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _peopleLoadingProgress.postValue(true)
-
-            val oldItems = people.value.orEmpty()
-            val result = PeopleRepository.getPopular(peoplePageIndex)
-
-            _people.postValue(getItemsForDisplayPopularPeople(oldItems, result))
-
-            peoplePageIndex++
-            _peopleLoadingProgress.postValue(false)
-        }
-    }
-
-    private fun getItemsForDisplayPopularPeople(
-        oldItems: List<PersonPeople>,
-        newItems: List<PersonPeople>
-    ): List<PersonPeople> {
-        val itemsToBeDisplayed = oldItems.toMutableList()
-        itemsToBeDisplayed.addAll(newItems)
-        return itemsToBeDisplayed
+    override fun onCleared() {
+        super.onCleared()
+        peoplePaginator.cancelLoading()
     }
 }

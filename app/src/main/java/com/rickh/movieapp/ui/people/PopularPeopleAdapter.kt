@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.ListPreloader
+import com.bumptech.glide.RequestBuilder
 import com.rickh.movieapp.R
 import info.movito.themoviedbapi.model.people.PersonPeople
 
@@ -19,13 +21,21 @@ import info.movito.themoviedbapi.model.people.PersonPeople
 class PopularPeopleAdapter(
     private val context: Context
 ) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+    ListPreloader.PreloadModelProvider<PersonPeople> {
 
     var people: List<PersonPeople> = emptyList()
         set(newItems) {
+            val diffCallback = PeopleDiffCallback(people, newItems)
+            val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffCallback)
+
             field = newItems
-            notifyDataSetChanged()
+            diffResult.dispatchUpdatesTo(this)
         }
+
+    init {
+        setHasStableIds(true)
+    }
 
     private var showLoadingMore = false
     private val loadingMoreItemPosition: Int
@@ -49,6 +59,10 @@ class PopularPeopleAdapter(
             TYPE_PERSON -> (holder as PersonViewHolder).bind(people[position])
             TYPE_LOADING_MORE -> (holder as LoadingMoreHolder).bind(position, showLoadingMore)
         }
+    }
+
+    private fun getItem(position: Int): PersonPeople? {
+        return if (position < 0 || position >= people.size) null else people[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -81,6 +95,21 @@ class PopularPeopleAdapter(
         val loadingPos = loadingMoreItemPosition
         showLoadingMore = false
         notifyItemRemoved(loadingPos)
+    }
+
+    override fun getPreloadItems(position: Int): List<PersonPeople> {
+        val item = getItem(position)
+        return if (item is PersonPeople) {
+            listOf(item)
+        } else {
+            emptyList()
+        }
+    }
+
+    override fun getPreloadRequestBuilder(item: PersonPeople): RequestBuilder<*>? {
+        return Glide.with(context).load(
+            context.getString(R.string.tmdb_base_img_url, item.profilePath)
+        )
     }
 
     class PersonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
