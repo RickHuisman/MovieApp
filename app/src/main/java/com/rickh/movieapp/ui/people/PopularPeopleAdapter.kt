@@ -14,7 +14,9 @@ import com.bumptech.glide.ListPreloader
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.omertron.themoviedbapi.model.movie.MovieBasic
 import com.omertron.themoviedbapi.model.person.PersonFind
+import com.omertron.themoviedbapi.model.tv.TVBasic
 import com.rickh.movieapp.R
 
 /**
@@ -127,9 +129,22 @@ class PopularPeopleAdapter(
                 .circleCrop()
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(image)
-
             name.text = person.name
-            detail.text = "Jumanji: Welcome to the Jungle · Fast & Furious 6 · Moana"
+
+            val builder = StringBuilder()
+            var count = 0
+            for (media in person.knownFor) {
+                if (media is MovieBasic) {
+                    builder.append(media.originalTitle)
+                } else if (media is TVBasic) {
+                    builder.append(media.originalName)
+                }
+                if(count < 2) {
+                    builder.append(" · ")
+                }
+                count++
+            }
+            detail.text = builder.toString()
         }
     }
 
