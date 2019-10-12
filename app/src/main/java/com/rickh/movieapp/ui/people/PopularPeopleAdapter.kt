@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.ListPreloader
 import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.rickh.movieapp.R
 import info.movito.themoviedbapi.model.people.PersonPeople
 
@@ -120,8 +122,10 @@ class PopularPeopleAdapter(
         fun bind(person: PersonPeople) {
             Glide.with(image)
                 .load("https://image.tmdb.org/t/p/original${person.profilePath}")
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .centerCrop()
                 .circleCrop()
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .into(image)
 
             name.text = person.name
