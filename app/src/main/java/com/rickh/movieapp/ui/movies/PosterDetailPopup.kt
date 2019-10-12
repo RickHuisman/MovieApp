@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.omertron.themoviedbapi.model.movie.MovieInfo
 import com.rickh.movieapp.R
 import com.rickh.movieapp.ui.HomeActivity
 import com.rickh.movieapp.ui.widgets.PopupWindowWithMaterialTransition
-import info.movito.themoviedbapi.model.MovieDb
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
 
@@ -56,7 +56,7 @@ class PosterDetailPopup(private val activity: Activity, private val movieId: Lon
         })
     }
 
-    private fun renderMovieDetail(movie: MovieDb) {
+    private fun renderMovieDetail(movie: MovieInfo) {
         titleTextView.text = movie.title
         ratingTextView.text = movie.voteAverage.toString()
         yearReleasedTextView.text = getReleaseDate(movie.releaseDate)

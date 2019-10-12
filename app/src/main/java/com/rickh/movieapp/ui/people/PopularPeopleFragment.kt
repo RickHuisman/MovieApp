@@ -10,10 +10,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
 import com.bumptech.glide.util.ViewPreloadSizeProvider
+import com.omertron.themoviedbapi.model.person.PersonFind
 import com.rickh.movieapp.R
 import com.rickh.movieapp.ui.movies.HomeViewModel
 import com.rickh.movieapp.ui.movies.InfiniteScrollListener
-import info.movito.themoviedbapi.model.people.PersonPeople
 import kotlinx.android.synthetic.main.fragment_popular_people.*
 import kotlinx.android.synthetic.main.fragment_poster_grid.loading
 
@@ -73,7 +73,7 @@ class PopularPeopleFragment : Fragment() {
         val personPreloader = RecyclerViewPreloader(
             this,
             peopleAdapter,
-            ViewPreloadSizeProvider<PersonPeople>(),
+            ViewPreloadSizeProvider<PersonFind>(),
             6
         )
         with(people_list) {

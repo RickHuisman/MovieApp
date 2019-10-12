@@ -1,26 +1,25 @@
 package com.rickh.movieapp.tmdb
 
-import info.movito.themoviedbapi.TmdbApi
-import info.movito.themoviedbapi.model.MovieDb
-import info.movito.themoviedbapi.model.tv.TvSeries
+import com.omertron.themoviedbapi.TheMovieDbApi
+import com.omertron.themoviedbapi.model.tv.TVInfo
 
 object TvShowsRepository {
 
-    private val tmdbApi = TmdbApi("ea75e60dfc33c0ff92d6e331c9debbea").tvSeries
+    private val tmdbApi = TheMovieDbApi("ea75e60dfc33c0ff92d6e331c9debbea")
 
-    fun getPopular(pageIndex: Int): List<TvSeries> {
-        return tmdbApi.getPopular("en", pageIndex).results
+    fun getPopular(pageIndex: Int): List<TVInfo> {
+        return tmdbApi.getTVPopular(pageIndex, "en").results
     }
 
-    fun getTopRated(pageIndex: Int): List<TvSeries> {
-        return tmdbApi.getTopRated("en", pageIndex).results
+    fun getTopRated(pageIndex: Int): List<TVInfo> {
+        return tmdbApi.getTVTopRated(pageIndex, "en").results
     }
 
-    fun getOnTheAir(pageIndex: Int): List<TvSeries> {
-        return tmdbApi.getOnTheAir("en", pageIndex).results
+    fun getOnTheAir(pageIndex: Int): List<TVInfo> {
+        return tmdbApi.getTVOnTheAir(pageIndex, "en").results
     }
 
-    fun getAiringToday(pageIndex: Int): List<TvSeries> {
-        return tmdbApi.getAiringToday("en", pageIndex, null).results
+    fun getAiringToday(pageIndex: Int): List<TVInfo> {
+        return tmdbApi.getTVAiringToday(pageIndex, "en", "AD").results
     }
 }

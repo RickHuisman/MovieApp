@@ -1,12 +1,12 @@
 package com.rickh.movieapp.ui.movies
 
 import androidx.lifecycle.*
+import com.omertron.themoviedbapi.model.movie.MovieInfo
+import com.omertron.themoviedbapi.model.tv.TVInfo
 import com.rickh.movieapp.tmdb.MoviesRepository
 import com.rickh.movieapp.tmdb.TvShowsRepository
 import com.rickh.movieapp.ui.PosterItem
 import com.rickh.movieapp.ui.people.PopularPeoplePaginator
-import info.movito.themoviedbapi.model.MovieDb
-import info.movito.themoviedbapi.model.tv.TvSeries
 import kotlinx.coroutines.*
 
 class HomeViewModel : ViewModel() {
@@ -61,11 +61,11 @@ class HomeViewModel : ViewModel() {
 
     private fun convertToPosterItemList(items: List<Any>): List<PosterItem> {
         val item = items[0]
-        return if (item is MovieDb) {
-            items as List<MovieDb>
+        return if (item is MovieInfo) {
+            items as List<MovieInfo>
             items.map { PosterItem(it.id.toLong(), it.posterPath) }
         } else {
-            items as List<TvSeries>
+            items as List<TVInfo>
             items.map { PosterItem(it.id.toLong(), it.posterPath) }
         }
     }

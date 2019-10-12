@@ -14,8 +14,8 @@ import com.bumptech.glide.ListPreloader
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.omertron.themoviedbapi.model.person.PersonFind
 import com.rickh.movieapp.R
-import info.movito.themoviedbapi.model.people.PersonPeople
 
 /**
  * RecyclerView.Adapter for displaying popular people
@@ -24,9 +24,9 @@ class PopularPeopleAdapter(
     private val context: Context
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(),
-    ListPreloader.PreloadModelProvider<PersonPeople> {
+    ListPreloader.PreloadModelProvider<PersonFind> {
 
-    var people: List<PersonPeople> = emptyList()
+    var people: List<PersonFind> = emptyList()
         set(newItems) {
             val diffCallback = PeopleDiffCallback(people, newItems)
             val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffCallback)
@@ -63,7 +63,7 @@ class PopularPeopleAdapter(
         }
     }
 
-    private fun getItem(position: Int): PersonPeople? {
+    private fun getItem(position: Int): PersonFind? {
         return if (position < 0 || position >= people.size) null else people[position]
     }
 
@@ -99,16 +99,16 @@ class PopularPeopleAdapter(
         notifyItemRemoved(loadingPos)
     }
 
-    override fun getPreloadItems(position: Int): List<PersonPeople> {
+    override fun getPreloadItems(position: Int): List<PersonFind> {
         val item = getItem(position)
-        return if (item is PersonPeople) {
+        return if (item is PersonFind) {
             listOf(item)
         } else {
             emptyList()
         }
     }
 
-    override fun getPreloadRequestBuilder(item: PersonPeople): RequestBuilder<*>? {
+    override fun getPreloadRequestBuilder(item: PersonFind): RequestBuilder<*>? {
         return Glide.with(context).load(
             context.getString(R.string.tmdb_base_img_url, item.profilePath)
         )
@@ -119,7 +119,7 @@ class PopularPeopleAdapter(
         private val name: TextView = itemView.findViewById(R.id.name)
         private val detail: TextView = itemView.findViewById(R.id.detail)
 
-        fun bind(person: PersonPeople) {
+        fun bind(person: PersonFind) {
             Glide.with(image)
                 .load("https://image.tmdb.org/t/p/original${person.profilePath}")
                 .diskCacheStrategy(DiskCacheStrategy.DATA)

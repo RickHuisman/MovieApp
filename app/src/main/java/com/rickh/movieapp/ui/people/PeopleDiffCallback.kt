@@ -1,11 +1,11 @@
 package com.rickh.movieapp.ui.people
 
 import androidx.recyclerview.widget.DiffUtil
-import info.movito.themoviedbapi.model.people.PersonPeople
+import com.omertron.themoviedbapi.model.person.PersonFind
 
 class PeopleDiffCallback(
-    private val oldList: List<PersonPeople>,
-    private val newList: List<PersonPeople>
+    private val oldList: List<PersonFind>,
+    private val newList: List<PersonFind>
 ) : DiffUtil.Callback() {
 
     override fun getOldListSize() = oldList.size

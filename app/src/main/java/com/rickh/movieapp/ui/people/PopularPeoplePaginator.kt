@@ -1,10 +1,10 @@
 package com.rickh.movieapp.ui.people
 
+import com.omertron.themoviedbapi.model.person.PersonFind
 import com.rickh.movieapp.tmdb.PeopleRepository
-import info.movito.themoviedbapi.model.people.PersonPeople
 import kotlinx.coroutines.launch
 
-class PopularPeoplePaginator : Paginator<PersonPeople>() {
+class PopularPeoplePaginator : Paginator<PersonFind>() {
     override fun loadMore() {
         scope.launch {
             loadingProgress.postValue(true)
@@ -19,9 +19,9 @@ class PopularPeoplePaginator : Paginator<PersonPeople>() {
     }
 
     private fun getItemsForDisplay(
-        oldItems: List<PersonPeople>,
-        newItems: List<PersonPeople>
-    ): List<PersonPeople> {
+        oldItems: List<PersonFind>,
+        newItems: List<PersonFind>
+    ): List<PersonFind> {
         val itemsToBeDisplayed = oldItems.toMutableList()
         itemsToBeDisplayed.addAll(newItems)
         return itemsToBeDisplayed
