@@ -20,6 +20,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.rickh.movieapp.R
 import com.rickh.movieapp.ui.movies.PosterDetailPopup
+import com.rickh.movieapp.ui.movies.PosterItem
 import com.rickh.movieapp.ui.movies.PosterTarget
 import com.rickh.movieapp.utils.AnimUtils
 import com.rickh.movieapp.utils.ObservableColorMatrix

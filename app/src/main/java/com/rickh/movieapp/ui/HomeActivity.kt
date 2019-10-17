@@ -14,6 +14,7 @@ import com.rickh.movieapp.R
 import com.rickh.movieapp.ui.movies.*
 import com.rickh.movieapp.ui.widgets.CategoriesSpinnerAdapter
 import com.rickh.movieapp.utils.ViewUtils
+import timber.log.Timber
 
 /**
  * Main activity
@@ -88,14 +89,8 @@ class HomeActivity : AppCompatActivity() {
 
             // Sort options
             when (Category.ALL[position]) {
-                Category.MOVIES -> setSortOptions(
-                    R.menu.menu_movies_sorting_mode,
-                    SortOptions.MOVIES_TOP_RATED
-                )
-                Category.TV_SHOWS -> setSortOptions(
-                    R.menu.menu_tv_shows_sorting_mode,
-                    SortOptions.TV_SHOWS_TOP_RATED
-                )
+                Category.MOVIES -> setSortOptions(R.menu.menu_movies_sorting_mode)
+                Category.TV_SHOWS -> setSortOptions(R.menu.menu_tv_shows_sorting_mode)
                 Category.DISCOVER -> sort_filter_button.showFilter()
                 Category.POPULAR_PEOPLE -> sort_filter_button.disappear()
             }
@@ -131,21 +126,40 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun setSortOptions(menuResId: Int, defaultSortOption: SortOptions) {
+    private fun setSortOptions(menuResId: Int) {
         sortOptionsMenu.menu.clear()
         sortOptionsMenu.menuInflater.inflate(menuResId, sortOptionsMenu.menu)
         sort_filter_button.showSort()
-        setActiveSortOption(defaultSortOption.menuItemId())
+        if (menuResId == R.menu.menu_movies_sorting_mode) {
+            setActiveSortOption(R.id.action_movies_sorting_top_rated)
+        } else {
+            setActiveSortOption(R.id.action_tv_shows_sorting_top_rated)
+        }
+//        setActiveSortOption(menuResId, defaultSortOption.menuItemId()) TODO set default sort option
     }
 
     private fun setActiveSortOption(menuItemId: Int) {
+        Timber.d("setActiveSortOption()")
         // Reset highlighted items
         sortOptionsMenu.menu.setGroupEnabled(0, true)
 
         val selectedMenuItem = sortOptionsMenu.menu.findItem(menuItemId)
         selectedMenuItem.isEnabled = false
 
-        val sortOption = SortOptions.findItem(menuItemId)
-        viewModel.setSortMode(sortOption)
+        when (menuItemId) {
+            R.id.action_movies_sorting_popular -> viewModel.moviesPaginator.setSortMode(MoviesSortOptions.POPULAR)
+            R.id.action_movies_sorting_top_rated -> viewModel.moviesPaginator.setSortMode(MoviesSortOptions.TOP_RATED)
+            R.id.action_movies_sorting_upcoming -> viewModel.moviesPaginator.setSortMode(MoviesSortOptions.UPCOMING)
+            R.id.action_movies_sorting_now_playing -> viewModel.moviesPaginator.setSortMode(MoviesSortOptions.NOW_PLAYING)
+
+            R.id.action_tv_shows_sorting_popular -> viewModel.tvShowsPaginator.setSortMode(TVShowsSortOptions.POPULAR)
+            R.id.action_tv_shows_sorting_top_rated -> viewModel.tvShowsPaginator.setSortMode(TVShowsSortOptions.TOP_RATED)
+            R.id.action_tv_shows_sorting_on_tv -> viewModel.tvShowsPaginator.setSortMode(TVShowsSortOptions.ON_TV)
+            R.id.action_tv_shows_sorting_airing_today -> viewModel.tvShowsPaginator.setSortMode(TVShowsSortOptions.AIRING_TODAY)
+            else -> throw IllegalArgumentException("No sort option for menu item id: $menuItemId")
+        }
+
+//        val sortOption = SortOptions.findItem(menuItemId)
+//        viewModel.moviesPaginator.setSortMode(MoviesSortOptions.POPULAR)
     }
 }

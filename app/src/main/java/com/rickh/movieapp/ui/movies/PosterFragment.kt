@@ -10,25 +10,26 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
 import com.bumptech.glide.util.ViewPreloadSizeProvider
+import com.omertron.themoviedbapi.model.media.MediaBasic
 import com.rickh.movieapp.R
-import com.rickh.movieapp.ui.PosterItem
+import com.rickh.movieapp.ui.people.Paginator
 import kotlinx.android.synthetic.main.fragment_poster_grid.*
-import java.lang.IllegalArgumentException
 
 /**
  * Fragment displaying movies and tvshows posters in a grid.
  */
-class CategoryFragment : Fragment() {
+class PosterFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var category: Category
+    private lateinit var paginator: Paginator<*>
 
     private val columns: Int = 3
     private lateinit var posterAdapter: PosterAdapter
 
-    fun create(category: Category): CategoryFragment {
-        return CategoryFragment().apply {
-            val bundle = Bundle(1)
+    fun create(category: Category): PosterFragment {
+        return PosterFragment().apply {
+            val bundle = Bundle(2)
             bundle.putSerializable(KEY_CATEGORY, category)
             arguments = bundle
         }
@@ -51,25 +52,26 @@ class CategoryFragment : Fragment() {
 
         posterAdapter = PosterAdapter(columns, activity!!)
 
+        category = arguments!!.getSerializable(KEY_CATEGORY) as Category
+
+        if (category == Category.MOVIES) {
+            paginator = viewModel.moviesPaginator
+        } else if (category == Category.TV_SHOWS) {
+            paginator = viewModel.tvShowsPaginator
+        }
+
         initViewModelObservers()
         setupGrid()
-
-        category = arguments!!.getSerializable(KEY_CATEGORY) as Category
-        val sortOption = when (category) {
-            Category.MOVIES -> SortOptions.MOVIES_TOP_RATED
-            Category.TV_SHOWS -> SortOptions.TV_SHOWS_TOP_RATED
-            else -> throw IllegalArgumentException("No default sort option for category: $category")
-        }
-        viewModel.setSortMode(sortOption)
     }
 
     private fun initViewModelObservers() {
-        viewModel.items.observe(this, Observer {
-            posterAdapter.items = it
+        paginator.loadMore()
+        paginator.items.observe(this, Observer {
+            posterAdapter.items = paginator.convertToPosterItems(it as List<MediaBasic>)
             checkEmptyState()
         })
 
-        viewModel.loadingProgress.observe(this, Observer {
+        paginator.loadingProgress.observe(this, Observer {
             if (it) {
                 posterAdapter.dataStartedLoading()
             } else {
@@ -88,11 +90,11 @@ class CategoryFragment : Fragment() {
         }
         val infiniteScrollListener = object : InfiniteScrollListener(gridLayoutManager) {
             override fun onLoadMore() {
-                viewModel.loadMore()
+                paginator.loadMore()
             }
 
             override fun isDataLoading(): Boolean {
-                return viewModel.loadingProgress.value ?: false
+                return paginator.loadingProgress.value ?: false
             }
         }
         val posterPreloader = RecyclerViewPreloader(

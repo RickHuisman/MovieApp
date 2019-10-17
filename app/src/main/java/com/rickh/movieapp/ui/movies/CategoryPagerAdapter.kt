@@ -10,8 +10,8 @@ class CategoryPagerAdapter(manager: FragmentManager) : FragmentStatePagerAdapter
 
     override fun getItem(position: Int): Fragment {
         return when (ALL[position]) {
-            Category.MOVIES -> CategoryFragment().create(Category.MOVIES)
-            Category.TV_SHOWS -> CategoryFragment().create(Category.TV_SHOWS)
+            Category.MOVIES -> PosterFragment().create(Category.MOVIES)
+            Category.TV_SHOWS -> PosterFragment().create(Category.TV_SHOWS)
             Category.DISCOVER -> TODO()
             Category.POPULAR_PEOPLE -> PopularPeopleFragment()
         }

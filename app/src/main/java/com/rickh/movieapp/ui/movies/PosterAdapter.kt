@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.ListPreloader
 import com.bumptech.glide.RequestBuilder
 import com.rickh.movieapp.R
-import com.rickh.movieapp.ui.PosterItem
 import com.rickh.movieapp.ui.PosterViewHolder
 
 /**
@@ -94,7 +93,7 @@ class PosterAdapter(
         return if (getItemViewType(position) == TYPE_LOADING_MORE) {
             -1L
         } else {
-            items[position].id
+            items[position].id.toLong()
         }
     }
 
