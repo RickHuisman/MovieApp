@@ -18,4 +18,6 @@
     <color name="mid_grey">#40808080</color>
 
     <color name="dialog_background">#393a3c</color>
+
+    <color name="placeholder">#ff232323</color>
 </resources>

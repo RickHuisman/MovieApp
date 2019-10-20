@@ -17,7 +17,7 @@
         android:layout_marginBottom="@dimen/spacing16"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="@drawable/touchindicator_person_thumbnail"
+        android:foreground="@drawable/round_mid_grey_ripple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -93,7 +93,7 @@ class PosterAdapter(
         return if (getItemViewType(position) == TYPE_LOADING_MORE) {
             -1L
         } else {
-            items[position].id.toLong()
+            items[position].id
         }
     }
 

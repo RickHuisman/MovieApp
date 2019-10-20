@@ -14,7 +14,6 @@ import com.rickh.movieapp.R
 import com.rickh.movieapp.ui.movies.*
 import com.rickh.movieapp.ui.widgets.CategoriesSpinnerAdapter
 import com.rickh.movieapp.utils.ViewUtils
-import timber.log.Timber
 
 /**
  * Main activity
@@ -37,12 +36,12 @@ class HomeActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
         setupSpinner()
-        setupSortOptionsMenu()
+        setupSortOptions()
 
         window.decorView.apply {
             // Transparent navigation bar
             systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            // Add inset because fitsSystemWindows does not work when you hide the navigation bar
+            // Add inset because fitsSystemWindows doesn't work when you hide the navigation bar
             setOnApplyWindowInsetsListener { _, insets ->
                 handleInsets(insets)
                 insets.consumeSystemWindowInsets()
@@ -87,7 +86,6 @@ class HomeActivity : AppCompatActivity() {
         override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
             setCurrentFragment(position)
 
-            // Sort options
             when (Category.ALL[position]) {
                 Category.MOVIES -> setSortOptions(R.menu.menu_movies_sorting_mode)
                 Category.TV_SHOWS -> setSortOptions(R.menu.menu_tv_shows_sorting_mode)
@@ -110,7 +108,7 @@ class HomeActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun setupSortOptionsMenu() {
+    private fun setupSortOptions() {
         sortOptionsMenu = PopupMenu(
             this, sort_filter_button, Gravity.END, 0, R.style.MovieAppPopupMenu_MoviesSort
         )
@@ -130,16 +128,17 @@ class HomeActivity : AppCompatActivity() {
         sortOptionsMenu.menu.clear()
         sortOptionsMenu.menuInflater.inflate(menuResId, sortOptionsMenu.menu)
         sort_filter_button.showSort()
-        if (menuResId == R.menu.menu_movies_sorting_mode) {
-            setActiveSortOption(R.id.action_movies_sorting_top_rated)
-        } else {
-            setActiveSortOption(R.id.action_tv_shows_sorting_top_rated)
-        }
-//        setActiveSortOption(menuResId, defaultSortOption.menuItemId()) TODO set default sort option
+
+        // Default sort option
+        val defaultSortOption =
+            if (menuResId == R.menu.menu_movies_sorting_mode)
+                R.id.action_movies_sorting_top_rated
+            else
+                R.id.action_tv_shows_sorting_top_rated
+        setActiveSortOption(defaultSortOption)
     }
 
     private fun setActiveSortOption(menuItemId: Int) {
-        Timber.d("setActiveSortOption()")
         // Reset highlighted items
         sortOptionsMenu.menu.setGroupEnabled(0, true)
 
@@ -156,10 +155,7 @@ class HomeActivity : AppCompatActivity() {
             R.id.action_tv_shows_sorting_top_rated -> viewModel.tvShowsPaginator.setSortMode(TVShowsSortOptions.TOP_RATED)
             R.id.action_tv_shows_sorting_on_tv -> viewModel.tvShowsPaginator.setSortMode(TVShowsSortOptions.ON_TV)
             R.id.action_tv_shows_sorting_airing_today -> viewModel.tvShowsPaginator.setSortMode(TVShowsSortOptions.AIRING_TODAY)
-            else -> throw IllegalArgumentException("No sort option for menu item id: $menuItemId")
+            else -> throw IllegalArgumentException("No sort option for menuItemId: $menuItemId")
         }
-
-//        val sortOption = SortOptions.findItem(menuItemId)
-//        viewModel.moviesPaginator.setSortMode(MoviesSortOptions.POPULAR)
     }
 }
