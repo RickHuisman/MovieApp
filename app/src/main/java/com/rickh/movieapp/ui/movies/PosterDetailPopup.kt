@@ -11,10 +11,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.omertron.themoviedbapi.model.movie.MovieInfo
 import com.rickh.movieapp.R
+import com.rickh.movieapp.tmdb.Result
 import com.rickh.movieapp.ui.HomeActivity
 import com.rickh.movieapp.ui.widgets.PopupWindowWithMaterialTransition
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
+import timber.log.Timber
 
 class PosterDetailPopup(private val activity: Activity, private val movieId: Long) :
     PopupWindowWithMaterialTransition(activity) {
@@ -52,7 +54,10 @@ class PosterDetailPopup(private val activity: Activity, private val movieId: Lon
 
     private fun initViewModelObservers() {
         viewModel.getMovie(movieId).observe(activity as HomeActivity, Observer {
-            renderMovieDetail(it)
+            when (it) {
+                is Result.Success -> renderMovieDetail(it.data)
+                is Result.Error -> Timber.d(it.exception)
+            }
         })
     }
 

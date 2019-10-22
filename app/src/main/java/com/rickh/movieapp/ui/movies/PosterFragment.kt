@@ -12,8 +12,10 @@ import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
 import com.bumptech.glide.util.ViewPreloadSizeProvider
 import com.omertron.themoviedbapi.model.media.MediaBasic
 import com.rickh.movieapp.R
+import com.rickh.movieapp.tmdb.Result
 import com.rickh.movieapp.ui.people.Paginator
 import kotlinx.android.synthetic.main.fragment_poster_grid.*
+import timber.log.Timber
 
 /**
  * Fragment displaying movies and tvshows posters in a grid.
@@ -67,7 +69,12 @@ class PosterFragment : Fragment() {
     private fun initViewModelObservers() {
         paginator.loadMore()
         paginator.items.observe(this, Observer {
-            posterAdapter.items = paginator.convertToPosterItems(it as List<MediaBasic>)
+            when(it) {
+                is Result.Success -> {
+                    posterAdapter.items = paginator.convertToPosterItems((it.data) as List<MediaBasic>)
+                }
+                is Result.Error -> Timber.d(it.exception)
+            }
             checkEmptyState()
         })
 
