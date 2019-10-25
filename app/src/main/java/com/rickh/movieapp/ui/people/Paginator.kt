@@ -19,20 +19,25 @@ abstract class Paginator<T> {
         scope.launch {
             loadingProgress.postValue(true)
 
-            loadData()
+            val resultForDisplay = when (val result = loadData()) {
+                is Result.Success -> {
+                    pageIndex++
+                    getItemsForDisplay(result as Result<List<T>>)
+                }
+                is Result.Error -> result
+            }
+            items.postValue(resultForDisplay)
 
-            pageIndex++
             loadingProgress.postValue(false)
         }
     }
 
-    protected abstract fun loadData()
+    protected abstract fun loadData(): Result<Any>
 
-    protected fun getItemsForDisplay(newResult: Result<List<T>>): Result<List<T>> {
+    private fun getItemsForDisplay(newResult: Result<List<T>>): Result<List<T>> {
         val oldResult = items.value
         if (oldResult is Result.Success) {
             val oldItems = oldResult.data
-
             if (newResult is Result.Success) {
                 val itemsToBeDisplayed = oldItems.toMutableList()
                 itemsToBeDisplayed.addAll(newResult.data)
@@ -42,6 +47,7 @@ abstract class Paginator<T> {
         return newResult
     }
 
+    // TODO move this function to a helper class
     fun convertToPosterItems(items: List<MediaBasic>): List<PosterItem> {
         return items.map {
             PosterItem(

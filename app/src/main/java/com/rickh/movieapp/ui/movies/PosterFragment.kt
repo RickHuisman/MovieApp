@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewStub
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -13,7 +14,9 @@ import com.bumptech.glide.util.ViewPreloadSizeProvider
 import com.omertron.themoviedbapi.model.media.MediaBasic
 import com.rickh.movieapp.R
 import com.rickh.movieapp.tmdb.Result
+import com.rickh.movieapp.ui.movies.Category.*
 import com.rickh.movieapp.ui.people.Paginator
+import com.rickh.movieapp.ui.widgets.ErrorStateView
 import kotlinx.android.synthetic.main.fragment_poster_grid.*
 import timber.log.Timber
 
@@ -25,6 +28,7 @@ class PosterFragment : Fragment() {
     private lateinit var viewModel: HomeViewModel
     private lateinit var category: Category
     private lateinit var paginator: Paginator<*>
+    private lateinit var errorStateView: ErrorStateView
 
     private val columns: Int = 3
     private lateinit var posterAdapter: PosterAdapter
@@ -56,14 +60,19 @@ class PosterFragment : Fragment() {
 
         category = arguments!!.getSerializable(KEY_CATEGORY) as Category
 
-        if (category == Category.MOVIES) {
-            paginator = viewModel.moviesPaginator
-        } else if (category == Category.TV_SHOWS) {
-            paginator = viewModel.tvShowsPaginator
+        paginator = when (category) {
+            MOVIES -> viewModel.moviesPaginator
+            TV_SHOWS -> viewModel.tvShowsPaginator
+            DISCOVER -> TODO()
+            POPULAR_PEOPLE -> TODO()
         }
 
         initViewModelObservers()
         setupGrid()
+
+        error.setOnRetryClickListener(View.OnClickListener {
+            paginator.loadMore()
+        })
     }
 
     private fun initViewModelObservers() {
@@ -72,10 +81,13 @@ class PosterFragment : Fragment() {
             when(it) {
                 is Result.Success -> {
                     posterAdapter.items = paginator.convertToPosterItems((it.data) as List<MediaBasic>)
+                    checkEmptyState()
                 }
-                is Result.Error -> Timber.d(it.exception)
+                is Result.Error -> {
+                    Timber.d(it.exception)
+                    showErrorState()
+                }
             }
-            checkEmptyState()
         })
 
         paginator.loadingProgress.observe(this, Observer {
@@ -122,6 +134,12 @@ class PosterFragment : Fragment() {
     private fun checkEmptyState() {
         val empty = posterAdapter.items.isEmpty()
         loading.visibility = if (empty) View.VISIBLE else View.GONE
+        error.visibility = View.GONE
+    }
+
+    private fun showErrorState() {
+        loading.visibility = View.GONE
+        error.visibility = View.VISIBLE
     }
 
     companion object {

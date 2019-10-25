@@ -9,17 +9,12 @@ class MoviesPaginator : Paginator<MovieInfo>() {
 
     private var sortOption = MoviesSortOptions.TOP_RATED
 
-    override fun loadData() {
-        val result = when (sortOption) {
+    override fun loadData(): Result<Any> {
+        return when (sortOption) {
             MoviesSortOptions.POPULAR -> MoviesRepository.getPopular(pageIndex)
             MoviesSortOptions.TOP_RATED -> MoviesRepository.getTopRated(pageIndex)
             MoviesSortOptions.UPCOMING -> MoviesRepository.getUpcoming(pageIndex)
             MoviesSortOptions.NOW_PLAYING -> MoviesRepository.getNowPlaying(pageIndex)
-        }
-
-        when (result) {
-            is Result.Success -> items.postValue(getItemsForDisplay(result))
-            is Result.Error -> items.postValue(result)
         }
     }
 

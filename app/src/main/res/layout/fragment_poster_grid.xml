@@ -21,4 +21,11 @@
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical" />
 
+    <com.rickh.movieapp.ui.widgets.ErrorStateView
+        android:id="@+id/error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
 </RelativeLayout>
