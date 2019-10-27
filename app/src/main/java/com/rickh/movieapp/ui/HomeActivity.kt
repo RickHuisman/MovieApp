@@ -14,6 +14,7 @@ import com.rickh.movieapp.R
 import com.rickh.movieapp.ui.movies.*
 import com.rickh.movieapp.ui.widgets.CategoriesSpinnerAdapter
 import com.rickh.movieapp.utils.ViewUtils
+import timber.log.Timber
 
 /**
  * Main activity
@@ -37,6 +38,7 @@ class HomeActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         setupSpinner()
         setupSortOptions()
+        setUpLogin()
 
         window.decorView.apply {
             // Transparent navigation bar
@@ -68,6 +70,13 @@ class HomeActivity : AppCompatActivity() {
 
         // clear this listener so insets aren't re-applied
         window.decorView.setOnApplyWindowInsetsListener(null)
+    }
+
+    private fun setUpLogin() {
+        profile.setOnClickListener {
+            // Open login dialog
+            Timber.d("Login dialog")
+        }
     }
 
     private fun setupSpinner() {
