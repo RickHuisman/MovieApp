@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewStub
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -80,7 +79,7 @@ class PosterFragment : Fragment() {
         paginator.items.observe(this, Observer {
             when(it) {
                 is Result.Success -> {
-                    posterAdapter.items = paginator.convertToPosterItems((it.data) as List<MediaBasic>)
+                    posterAdapter.items = paginator.toPosterItems((it.data) as List<MediaBasic>)
                     checkEmptyState()
                 }
                 is Result.Error -> {

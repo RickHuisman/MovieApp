@@ -3,7 +3,9 @@ package com.rickh.movieapp.ui.people
 import androidx.lifecycle.MutableLiveData
 import com.omertron.themoviedbapi.enumeration.MediaType
 import com.omertron.themoviedbapi.model.media.MediaBasic
+import com.omertron.themoviedbapi.model.person.PersonFind
 import com.rickh.movieapp.tmdb.Result
+import com.rickh.movieapp.ui.movies.Category
 import com.rickh.movieapp.ui.movies.PosterItem
 import kotlinx.coroutines.*
 
@@ -48,7 +50,7 @@ abstract class Paginator<T> {
     }
 
     // TODO move this function to a helper class
-    fun convertToPosterItems(items: List<MediaBasic>): List<PosterItem> {
+    fun toPosterItems(items: List<MediaBasic>): List<PosterItem> {
         return items.map {
             PosterItem(
                 it.id.toLong(),

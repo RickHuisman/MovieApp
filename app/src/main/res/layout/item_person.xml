@@ -9,7 +9,7 @@
     android:foreground="?attr/selectableItemBackground">
 
     <ImageView
-        android:id="@+id/image"
+        android:id="@+id/profile_image"
         android:layout_width="@dimen/spacing64"
         android:layout_height="@dimen/spacing64"
         android:layout_marginStart="@dimen/spacing16"
@@ -31,8 +31,8 @@
         android:textColor="@color/gray_100"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/image"
-        app:layout_constraintTop_toTopOf="@+id/image"
+        app:layout_constraintStart_toEndOf="@id/profile_image"
+        app:layout_constraintTop_toTopOf="@+id/profile_image"
         tools:text="Firstname Lastname" />
 
     <TextView
@@ -46,7 +46,7 @@
         android:textSize="14sp"
         android:maxLines="2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image"
+        app:layout_constraintStart_toEndOf="@+id/profile_image"
         app:layout_constraintTop_toBottomOf="@+id/name"
         tools:text="Credit" />
 
