@@ -32,11 +32,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing8"
+                android:layout_marginEnd="@dimen/spacing16"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/sort"
                 android:padding="@dimen/spacing4"
                 android:src="@drawable/ic_sort_24dp" />
+
+            <ImageButton
+                android:id="@+id/profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing8"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/profile"
+                android:padding="@dimen/spacing4"
+                android:src="@drawable/ic_profile_24dp" />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
