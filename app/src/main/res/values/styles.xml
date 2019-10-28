@@ -74,6 +74,18 @@
         <item name="android:layout_marginTop">@dimen/spacing4</item>
     </style>
 
+    <style name="MovieAppTheme.TransparentBackground">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+    </style>
+
+    <style name="MovieAppTheme.DialogLikeActivity" parent="MovieAppTheme.TransparentBackground">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:navigationBarColor">@color/transparent</item>
+    </style>
+
     <style name="MovieAppButton" parent="Widget.AppCompat.Button">
 
     </style>
