@@ -1,5 +1,6 @@
 package com.rickh.movieapp.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
@@ -11,6 +12,7 @@ import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.rickh.movieapp.R
+import com.rickh.movieapp.ui.login.LoginActivity
 import com.rickh.movieapp.ui.movies.*
 import com.rickh.movieapp.ui.widgets.CategoriesSpinnerAdapter
 import com.rickh.movieapp.utils.ViewUtils
@@ -38,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         setupSpinner()
         setupSortOptions()
-        setUpLogin()
+        setUpProfile()
 
         window.decorView.apply {
             // Transparent navigation bar
@@ -72,10 +74,9 @@ class HomeActivity : AppCompatActivity() {
         window.decorView.setOnApplyWindowInsetsListener(null)
     }
 
-    private fun setUpLogin() {
+    private fun setUpProfile() {
         profile.setOnClickListener {
-            // Open login dialog
-            Timber.d("Login dialog")
+            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 
@@ -155,15 +156,31 @@ class HomeActivity : AppCompatActivity() {
         selectedMenuItem.isEnabled = false
 
         when (menuItemId) {
-            R.id.action_movies_sorting_popular -> viewModel.moviesPaginator.setSortMode(MoviesSortOptions.POPULAR)
-            R.id.action_movies_sorting_top_rated -> viewModel.moviesPaginator.setSortMode(MoviesSortOptions.TOP_RATED)
-            R.id.action_movies_sorting_upcoming -> viewModel.moviesPaginator.setSortMode(MoviesSortOptions.UPCOMING)
-            R.id.action_movies_sorting_now_playing -> viewModel.moviesPaginator.setSortMode(MoviesSortOptions.NOW_PLAYING)
+            R.id.action_movies_sorting_popular -> viewModel.moviesPaginator.setSortMode(
+                MoviesSortOptions.POPULAR
+            )
+            R.id.action_movies_sorting_top_rated -> viewModel.moviesPaginator.setSortMode(
+                MoviesSortOptions.TOP_RATED
+            )
+            R.id.action_movies_sorting_upcoming -> viewModel.moviesPaginator.setSortMode(
+                MoviesSortOptions.UPCOMING
+            )
+            R.id.action_movies_sorting_now_playing -> viewModel.moviesPaginator.setSortMode(
+                MoviesSortOptions.NOW_PLAYING
+            )
 
-            R.id.action_tv_shows_sorting_popular -> viewModel.tvShowsPaginator.setSortMode(TVShowsSortOptions.POPULAR)
-            R.id.action_tv_shows_sorting_top_rated -> viewModel.tvShowsPaginator.setSortMode(TVShowsSortOptions.TOP_RATED)
-            R.id.action_tv_shows_sorting_on_tv -> viewModel.tvShowsPaginator.setSortMode(TVShowsSortOptions.ON_TV)
-            R.id.action_tv_shows_sorting_airing_today -> viewModel.tvShowsPaginator.setSortMode(TVShowsSortOptions.AIRING_TODAY)
+            R.id.action_tv_shows_sorting_popular -> viewModel.tvShowsPaginator.setSortMode(
+                TVShowsSortOptions.POPULAR
+            )
+            R.id.action_tv_shows_sorting_top_rated -> viewModel.tvShowsPaginator.setSortMode(
+                TVShowsSortOptions.TOP_RATED
+            )
+            R.id.action_tv_shows_sorting_on_tv -> viewModel.tvShowsPaginator.setSortMode(
+                TVShowsSortOptions.ON_TV
+            )
+            R.id.action_tv_shows_sorting_airing_today -> viewModel.tvShowsPaginator.setSortMode(
+                TVShowsSortOptions.AIRING_TODAY
+            )
             else -> throw IllegalArgumentException("No sort option for menuItemId: $menuItemId")
         }
     }
