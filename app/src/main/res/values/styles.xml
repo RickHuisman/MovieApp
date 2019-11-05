@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="MovieAppTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="MovieAppTheme" parent="@style/Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
@@ -15,13 +15,13 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@color/toolbar</item>
+        <item name="android:elevation">@dimen/elevation_toolbar</item>
     </style>
 
     <style name="MovieAppToolbarTitleAppearance">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/color_accent</item>
         <item name="android:fontFamily">@font_roboto_regular</item>
-        <item name="android:elevation">@dimen/elevation_toolbar</item>
     </style>
 
     <style name="MovieAppPopupMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
@@ -86,11 +86,15 @@
         <item name="android:navigationBarColor">@color/transparent</item>
     </style>
 
+    <style name="MovieAppTextInput" parent="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">@color/color_primary</item>
+    </style>
+
     <style name="MovieAppButton" parent="Widget.AppCompat.Button">
 
     </style>
 
-    <style name="MovieAppButton.Borderless" parent="@style/Widget.AppCompat.Button.Borderless">
-
+    <style name="MovieAppButton.Borderless" parent="@style/Widget.MaterialComponents.Button.TextButton">
+        <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 </resources>
