@@ -3,6 +3,7 @@ package com.rickh.movieapp.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.*
 import androidx.appcompat.widget.PopupMenu
 import kotlinx.android.synthetic.main.activity_home.*
@@ -11,7 +12,10 @@ import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.github.zagum.expandicon.ExpandIconView
 import com.rickh.movieapp.R
+import com.rickh.movieapp.ui.discover.DiscoverFilterSheetView
+import com.rickh.movieapp.ui.discover.ToolbarExpandableSheet
 import com.rickh.movieapp.ui.login.LoginActivity
 import com.rickh.movieapp.ui.movies.*
 import com.rickh.movieapp.ui.widgets.CategoriesSpinnerAdapter
@@ -41,6 +45,7 @@ class HomeActivity : AppCompatActivity() {
         setupSpinner()
         setupSortOptions()
         setUpProfile()
+        setupToolbarSheet()
 
         window.decorView.apply {
             // Transparent navigation bar
@@ -60,7 +65,7 @@ class HomeActivity : AppCompatActivity() {
             leftMargin += insets.systemWindowInsetLeft
             rightMargin += insets.systemWindowInsetRight
         }
-        toolbar.layoutParams = lpToolbar
+        toolbar_title_container.layoutParams = lpToolbar
 
         // we place a background behind the status bar to combine with it's semi-transparent
         // color to get the desired appearance.  Set it's height to the status bar height
@@ -77,6 +82,47 @@ class HomeActivity : AppCompatActivity() {
     private fun setUpProfile() {
         profile.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
+        }
+    }
+
+    private fun setupToolbarSheet() {
+        toolbar_sheet.hideOnOutsideClick(fragment_container)
+        toolbar_sheet.setStateChangeListener { state ->
+            when (state) {
+                ToolbarExpandableSheet.State.EXPANDING -> {
+//                    if (isSubredditPickerVisible()) {
+//                        // When subreddit picker is showing, we'll show a "configure subreddits" button in the toolbar.
+//                        invalidateOptionsMenu()
+//
+//                    } else if (isUserProfileSheetVisible()) {
+//                        title = getString(
+//                            R.string.user_name_u_prefix,
+//                            userSessionRepository.get().loggedInUserName()
+//                        )
+//                    }
+
+//                    toolbarTitleArrowView.setState(ExpandIconView.LESS, true)
+                }
+
+                ToolbarExpandableSheet.State.EXPANDED -> {
+                }
+
+                ToolbarExpandableSheet.State.COLLAPSING -> {
+//                    if (isSubredditPickerVisible()) {
+//                        Keyboards.hide(this, toolbarSheet)
+//
+//                    } else if (isUserProfileSheetVisible()) {
+//                        // This will update the title.
+//                        setTitle(subredditChangesStream.getValue())
+//                    }
+//                    toolbarTitleArrowView.setState(ExpandIconView.MORE, true)
+                }
+
+                ToolbarExpandableSheet.State.COLLAPSED -> {
+                    toolbar_sheet.removeAllViews()
+                    toolbar_sheet.collapse()
+                }
+            }
         }
     }
 
@@ -99,10 +145,22 @@ class HomeActivity : AppCompatActivity() {
             when (Category.ALL[position]) {
                 Category.MOVIES -> setSortOptions(R.menu.menu_movies_sorting_mode)
                 Category.TV_SHOWS -> setSortOptions(R.menu.menu_tv_shows_sorting_mode)
-                Category.DISCOVER -> sort_filter_button.showFilter()
+                Category.DISCOVER -> setDiscoverFilter()
                 Category.POPULAR_PEOPLE -> sort_filter_button.disappear()
             }
         }
+    }
+
+    private fun setDiscoverFilter() {
+        sort_filter_button.showFilter()
+        sort_filter_button.setOnClickListener {
+            showDiscoverFilterSheet()
+        }
+    }
+
+    private fun showDiscoverFilterSheet() {
+        val filterSheet = DiscoverFilterSheetView.showIn(toolbar_sheet)
+        filterSheet.post { toolbar_sheet.expand() }
     }
 
     private fun setCurrentFragment(position: Int) {
