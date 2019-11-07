@@ -26,12 +26,15 @@ class PosterAdapter(
 
     var items: List<PosterItem> = emptyList()
         set(newItems) {
-            val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
-                PosterDiffCallback(field, newItems)
-            )
-
-            field = newItems
-            diffResult.dispatchUpdatesTo(this)
+            if (field.isNotEmpty()) {
+                val diffResult = DiffUtil.calculateDiff(
+                    PosterDiffCallback(field, newItems)
+                )
+                field = newItems
+                diffResult.dispatchUpdatesTo(this)
+            } else {
+                field = newItems
+            }
         }
 
     private val shotLoadingPlaceholders: Array<ColorDrawable?>

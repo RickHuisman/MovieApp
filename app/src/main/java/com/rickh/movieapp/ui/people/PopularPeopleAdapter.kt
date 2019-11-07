@@ -12,6 +12,7 @@ import com.bumptech.glide.ListPreloader
 import com.bumptech.glide.RequestBuilder
 import com.omertron.themoviedbapi.model.person.PersonFind
 import com.rickh.movieapp.R
+import timber.log.Timber
 
 /**
  * RecyclerView.Adapter for displaying popular people
@@ -24,11 +25,15 @@ class PopularPeopleAdapter(
 
     var people: List<PersonFind> = emptyList()
         set(newItems) {
-            val diffCallback = PeopleDiffCallback(people, newItems)
-            val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffCallback)
-
-            field = newItems
-            diffResult.dispatchUpdatesTo(this)
+            if (field.isNotEmpty()) {
+                val diffResult = DiffUtil.calculateDiff(
+                    PeopleDiffCallback(field, newItems)
+                )
+                field = newItems
+                diffResult.dispatchUpdatesTo(this)
+            } else {
+                field = newItems
+            }
         }
 
     init {
