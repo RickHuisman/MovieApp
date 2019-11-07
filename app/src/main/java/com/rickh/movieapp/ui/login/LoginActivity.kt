@@ -22,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
         login.setOnClickListener {
             viewModel.login(username.toString(), password.toString())
         }
-        signup.setOnClickListener {
+        sign_up.setOnClickListener {
 
         }
         frame.setOnClickListener {

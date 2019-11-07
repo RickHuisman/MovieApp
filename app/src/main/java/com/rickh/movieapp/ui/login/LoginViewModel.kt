@@ -7,6 +7,7 @@ import com.omertron.themoviedbapi.model.authentication.TokenSession
 import com.rickh.movieapp.tmdb.AuthenticationRepository
 import com.rickh.movieapp.tmdb.Result
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 
 class LoginViewModel : ViewModel() {
 
