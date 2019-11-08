@@ -1,8 +1,8 @@
 package com.rickh.movieapp.ui.login
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProviders
 import com.rickh.movieapp.R
