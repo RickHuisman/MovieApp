@@ -17,6 +17,10 @@ abstract class Paginator<T> {
     private var job = Job()
     private val scope = CoroutineScope(Dispatchers.IO + job)
 
+    init {
+        loadMore()
+    }
+
     fun loadMore() {
         scope.launch {
             loadingProgress.postValue(true)
