@@ -46,7 +46,6 @@ class PopularPeopleFragment : Fragment() {
     }
 
     private fun initViewModelObservers() {
-        viewModel.peoplePaginator.loadMore()
         viewModel.peoplePaginator.items.observe(this, Observer {
             when(it) {
                 is Result.Success -> peopleAdapter.people = it.data

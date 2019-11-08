@@ -75,7 +75,6 @@ class PosterFragment : Fragment() {
     }
 
     private fun initViewModelObservers() {
-        paginator.loadMore()
         paginator.items.observe(this, Observer {
             when(it) {
                 is Result.Success -> {
