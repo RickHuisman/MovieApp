@@ -1,7 +1,9 @@
 package com.rickh.movieapp.ui.login
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProviders
 import com.rickh.movieapp.R
 import kotlinx.android.synthetic.main.activity_login.*
@@ -23,11 +25,16 @@ class LoginActivity : AppCompatActivity() {
             viewModel.login(username.toString(), password.toString())
         }
         sign_up.setOnClickListener {
-
+            signUp()
         }
         frame.setOnClickListener {
             dismiss()
         }
+    }
+
+    private fun signUp() {
+        val url = "https://www.themoviedb.org/account/signup"
+        startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
     }
 
     private fun dismiss() {
