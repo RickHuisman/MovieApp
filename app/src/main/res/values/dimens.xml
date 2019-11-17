@@ -5,15 +5,19 @@
     <dimen name="spacing0">0dp</dimen>
     <dimen name="spacing2">2dp</dimen>
     <dimen name="spacing4">4dp</dimen>
+    <dimen name="spacing6">6dp</dimen>
     <dimen name="spacing8">8dp</dimen>
     <dimen name="spacing12">12dp</dimen>
     <dimen name="spacing16">16dp</dimen>
     <dimen name="spacing24">24dp</dimen>
     <dimen name="spacing32">32dp</dimen>
+    <dimen name="spacing48">48dp</dimen>
     <dimen name="spacing64">64dp</dimen>
 
     <dimen name="touch_raise">6dp</dimen>
 
     <dimen name="card_corner_radius">8dp</dimen>
     <dimen name="popupwindow_width">284dp</dimen>
+
+    <dimen name="subreddit_toolbar_sheet_elevation">10dp</dimen>
 </resources>
