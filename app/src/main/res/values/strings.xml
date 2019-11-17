@@ -37,4 +37,5 @@
     <string name="password">Password</string>
     <string name="username">Username</string>
     <string name="tmdb_login">Log in to tmdb</string>
+    <string name="login_failed">Login failed</string>
 </resources>

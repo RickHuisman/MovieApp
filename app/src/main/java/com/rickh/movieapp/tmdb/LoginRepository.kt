@@ -4,7 +4,7 @@ import com.omertron.themoviedbapi.MovieDbException
 import com.omertron.themoviedbapi.TheMovieDbApi
 import com.omertron.themoviedbapi.model.authentication.TokenSession
 
-object AuthenticationRepository {
+object LoginRepository {
 
     private val tmdbApi = TheMovieDbApi("ea75e60dfc33c0ff92d6e331c9debbea")
 

@@ -1,9 +1,13 @@
 package com.rickh.movieapp.ui.login
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.rickh.movieapp.R
 import kotlinx.android.synthetic.main.activity_login.*
@@ -21,6 +25,18 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
 
+        viewModel.uiState.observe(this, Observer {
+            val uiModel = it ?: return@Observer
+
+            showProgress(uiModel.showProgress)
+            if (uiModel.showError) showLoginFailed()
+            if (uiModel.showSuccess) {
+                showLoginSuccess()
+                setResult(Activity.RESULT_OK)
+                finish()
+            }
+        })
+
         login.setOnClickListener {
             viewModel.login(username.toString(), password.toString())
         }
@@ -33,11 +49,29 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun signUp() {
-        val url = "https://www.themoviedb.org/account/signup"
-        startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
+        val signUpUrl = "https://www.themoviedb.org/account/signup"
+        startActivity(Intent(Intent.ACTION_VIEW, signUpUrl.toUri()))
     }
 
     private fun dismiss() {
         finishAfterTransition()
+    }
+
+    private fun showProgress(show: Boolean) {
+        progress_view.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    private fun showLoginFailed() {
+        username_label.error = getString(R.string.login_failed)
+        password_label.error = getString(R.string.login_failed)
+        username_label.requestFocus()
+    }
+
+    private fun showLoginSuccess() {
+        // TODO remove this toast and open profile sheet after successful login
+        Toast(applicationContext).apply {
+            setText("Login successful")
+            duration = Toast.LENGTH_LONG
+        }.show()
     }
 }
