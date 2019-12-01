@@ -17,6 +17,7 @@ import com.omertron.themoviedbapi.model.movie.MovieBasic
 import com.omertron.themoviedbapi.model.person.PersonFind
 import com.omertron.themoviedbapi.model.tv.TVBasic
 import com.rickh.movieapp.R
+import com.rickh.movieapp.ui.persondetail.PersonDetailActivity
 
 class PersonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val profileImage: ImageView = itemView.findViewById(R.id.profile_image)
@@ -70,5 +71,10 @@ class PersonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             count++
         }
         detail.text = builder.toString()
+
+        itemView.setOnClickListener {
+            val intent = PersonDetailActivity.newIntent(profileImage.context, person)
+            profileImage.context.startActivity(intent)
+        }
     }
 }
