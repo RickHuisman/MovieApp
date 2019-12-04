@@ -13,4 +13,12 @@ class PersonDetailViewModel : ViewModel() {
     fun getPersonInfo(personId: Int) = liveData(Dispatchers.IO) {
         emit(PeopleRepository.getPersonInfo(personId))
     }
+
+    fun getMovieCredits(personId: Int) = liveData(Dispatchers.IO) {
+        emit(PeopleRepository.getMovieCredits(personId))
+    }
+
+    fun getCreditDepartments(personId: Int) = liveData(Dispatchers.IO) {
+        emit(PeopleRepository.getCreditDepartments(personId))
+    }
 }

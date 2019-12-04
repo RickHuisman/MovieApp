@@ -6,6 +6,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.omertron.themoviedbapi.model.credits.CreditMovieBasic
+import com.omertron.themoviedbapi.model.credits.CreditTVBasic
+import com.omertron.themoviedbapi.model.person.PersonCreditList
 import com.omertron.themoviedbapi.model.person.PersonFind
 import com.rickh.movieapp.R
 import com.rickh.movieapp.tmdb.Result
@@ -31,8 +35,12 @@ class PersonDetailActivity : AppCompatActivity() {
             title = person.name
         }
 
+        biography_container.setOnClickListener {
+            biography_textview.toggle()
+        }
+
         viewModel.getPersonInfo(person.id).observe(this, Observer {
-            when(it) {
+            when (it) {
                 is Result.Success -> {
                     setBiography(it.data.biography)
                 }
@@ -42,10 +50,45 @@ class PersonDetailActivity : AppCompatActivity() {
                 }
             }
         })
+
+        viewModel.getMovieCredits(person.id).observe(this, Observer {
+            when (it) {
+                is Result.Success -> {
+                    setFilmography(it.data.cast)
+                }
+                is Result.Error -> {
+                    Timber.d(it.exception)
+                }
+            }
+        })
     }
 
     private fun setBiography(biography: String) {
         biography_textview.text = biography
+    }
+
+    private fun setFilmography(credits: List<CreditMovieBasic>) {
+//        // Filters
+//        val layoutManager = LinearLayoutManager(
+//            this,
+//            LinearLayoutManager.HORIZONTAL,
+//            false
+//        )
+//
+//        // listOf("Acting", "Production", "Creator", "Writing", "Writing", "Writing")
+//
+//        val adapter = FiltersAdapter()
+//        adapter.filters = credits
+//
+//        filters_recyclerview.adapter = adapter
+//        filters_recyclerview.layoutManager = layoutManager
+
+        val adapter = KnownForAdapter()
+        adapter.credits = credits
+
+        filmography_recyclerview.isNestedScrollingEnabled = false
+        filmography_recyclerview.adapter = adapter
+        filmography_recyclerview.layoutManager = LinearLayoutManager(this)
     }
 
     override fun onSupportNavigateUp(): Boolean {

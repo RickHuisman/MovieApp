@@ -81,4 +81,19 @@
     <style name="MovieAppButton.Borderless" parent="@style/Widget.AppCompat.Button.Borderless">
 
     </style>
+
+    <style name="MovieAppButton.FilterButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:backgroundTint">#1b1b1b</item>
+        <item name="android:gravity">start|center</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingBottom">@dimen/spacing12</item>
+        <item name="android:paddingTop">@dimen/spacing12</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/gray_400</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
 </resources>
