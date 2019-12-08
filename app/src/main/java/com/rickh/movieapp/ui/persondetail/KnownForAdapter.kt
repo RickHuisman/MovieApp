@@ -15,18 +15,14 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.omertron.themoviedbapi.model.credits.CreditBasic
 import com.omertron.themoviedbapi.model.credits.CreditMovieBasic
-import com.omertron.themoviedbapi.model.person.PersonCreditList
+import com.omertron.themoviedbapi.model.credits.CreditTVBasic
 import com.rickh.movieapp.R
 import org.threeten.bp.LocalDate
 
-class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.KnownForViewHolder>() {
-
-    var credits: List<CreditMovieBasic> = emptyList()
-        set(newItems) {
-            field = newItems
-            notifyDataSetChanged()
-        }
+class KnownForAdapter(private val credits: List<CreditBasic>) :
+    RecyclerView.Adapter<KnownForAdapter.KnownForViewHolder>() {
 
     init {
         setHasStableIds(true)
@@ -49,14 +45,29 @@ class KnownForAdapter : RecyclerView.Adapter<KnownForAdapter.KnownForViewHolder>
         private val title: TextView = itemView.findViewById(R.id.title_textview)
         private val byline: TextView = itemView.findViewById(R.id.byline_textview)
 
-        fun bind(credit: CreditMovieBasic) {
-            var test = "${credit.title}"
-            if (credit.releaseDate != "") {
-                val date = LocalDate.parse(credit.releaseDate)
-                test += " • ${date.year}"
+        fun bind(credit: CreditBasic) {
+            when (credit) {
+                is CreditMovieBasic -> {
+                    var creditTitle = credit.title
+                    if (credit.releaseDate != null && credit.releaseDate.isNotEmpty()) {
+                        val date = LocalDate.parse(credit.releaseDate)
+                        creditTitle += " • ${date.year}"
+                    }
+                    title.text = creditTitle
+                    byline.text = "As ${credit.character}"
+                }
+                is CreditTVBasic -> {
+//                    var creditTitle = credit.name
+//                    if (credit.releaseDate != "") {
+//                        val date = LocalDate.parse(credit.releaseDate)
+//                        creditTitle += " • ${date.year}"
+//                    }
+//                    title.text = creditTitle
+                }
             }
-            title.text = test
-            byline.text = "As ${credit.character}"
+
+            if (credit.artworkPath == null)
+                return
 
             Glide.with(creditImage)
                 .load("https://image.tmdb.org/t/p/original${credit.artworkPath}")

@@ -4,17 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.rickh.movieapp.R
 
-
-class FiltersAdapter : RecyclerView.Adapter<FiltersAdapter.FilterViewHolder>() {
-
-    var filters: List<String> = emptyList()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+class FiltersAdapter(val filters: List<String>) : RecyclerView.Adapter<FiltersAdapter.FilterViewHolder>() {
 
     init {
         setHasStableIds(true)
@@ -36,9 +30,29 @@ class FiltersAdapter : RecyclerView.Adapter<FiltersAdapter.FilterViewHolder>() {
 
     class FilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val filterButton: Button = itemView.findViewById(R.id.item_filter)
+        private var filterActive: Boolean = true
 
         fun bind(filter: String) {
             filterButton.text = filter
+
+            itemView.setOnClickListener {
+                filterActive = !filterActive
+                setFilterMode(filterActive)
+            }
+        }
+
+        private fun setFilterMode(active: Boolean) {
+            val normalTextColor = ContextCompat.getColor(filterButton.context, R.color.gray_400)
+            val highlightedTextColor =
+                ContextCompat.getColor(filterButton.context, R.color.gray_700)
+
+            if (active) {
+                filterButton.setTextColor(normalTextColor)
+                filterButton.background.alpha = 255
+            } else {
+                filterButton.setTextColor(highlightedTextColor)
+                filterButton.background.alpha = 100
+            }
         }
     }
 }

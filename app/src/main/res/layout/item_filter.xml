@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Button android:id="@+id/item_filter"
-    style="@style/MovieAppButton.FilterButton"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_filter"
+    style="@style/MovieAppButton.FilterButton"
     android:layout_marginTop="-4dp"
-    tools:text="Title" />
+    tools:text="Actor" />

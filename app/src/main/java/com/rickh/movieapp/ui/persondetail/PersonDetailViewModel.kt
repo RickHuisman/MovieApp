@@ -14,11 +14,7 @@ class PersonDetailViewModel : ViewModel() {
         emit(PeopleRepository.getPersonInfo(personId))
     }
 
-    fun getMovieCredits(personId: Int) = liveData(Dispatchers.IO) {
-        emit(PeopleRepository.getMovieCredits(personId))
-    }
-
-    fun getCreditDepartments(personId: Int) = liveData(Dispatchers.IO) {
-        emit(PeopleRepository.getCreditDepartments(personId))
+    fun getCredits(personId: Int) = liveData(Dispatchers.IO) {
+        emit(PeopleRepository.getCredits(personId))
     }
 }

@@ -7,13 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.omertron.themoviedbapi.model.credits.CreditMovieBasic
-import com.omertron.themoviedbapi.model.credits.CreditTVBasic
+import com.omertron.themoviedbapi.model.credits.CreditBasic
 import com.omertron.themoviedbapi.model.person.PersonCreditList
 import com.omertron.themoviedbapi.model.person.PersonFind
 import com.rickh.movieapp.R
 import com.rickh.movieapp.tmdb.Result
 import kotlinx.android.synthetic.main.activity_person_detail.*
+import org.threeten.bp.LocalDateTime
 import timber.log.Timber
 
 class PersonDetailActivity : AppCompatActivity() {
@@ -51,10 +51,10 @@ class PersonDetailActivity : AppCompatActivity() {
             }
         })
 
-        viewModel.getMovieCredits(person.id).observe(this, Observer {
+        viewModel.getCredits(person.id).observe(this, Observer {
             when (it) {
                 is Result.Success -> {
-                    setFilmography(it.data.cast)
+                    setFilmography(it.data)
                 }
                 is Result.Error -> {
                     Timber.d(it.exception)
@@ -67,28 +67,44 @@ class PersonDetailActivity : AppCompatActivity() {
         biography_textview.text = biography
     }
 
-    private fun setFilmography(credits: List<CreditMovieBasic>) {
-//        // Filters
-//        val layoutManager = LinearLayoutManager(
-//            this,
-//            LinearLayoutManager.HORIZONTAL,
-//            false
-//        )
-//
-//        // listOf("Acting", "Production", "Creator", "Writing", "Writing", "Writing")
-//
-//        val adapter = FiltersAdapter()
-//        adapter.filters = credits
-//
-//        filters_recyclerview.adapter = adapter
-//        filters_recyclerview.layoutManager = layoutManager
+    private fun setFilmography(credits: PersonCreditList<CreditBasic>) {
+        setFilmographyFilters(credits)
 
-        val adapter = KnownForAdapter()
-        adapter.credits = credits
+//        credits = credits.cast.union(credits.crew)
+//        val date = LocalDate.parse(credit.releaseDate)
 
-        filmography_recyclerview.isNestedScrollingEnabled = false
-        filmography_recyclerview.adapter = adapter
-        filmography_recyclerview.layoutManager = LinearLayoutManager(this)
+        filmography_recyclerview.apply {
+            isNestedScrollingEnabled = false
+            adapter = KnownForAdapter(getSortedCreditList(credits))
+            layoutManager = LinearLayoutManager(context)
+        }
+    }
+
+    val dateTimeStrToLocalDateTime: (String) -> LocalDateTime = {
+        LocalDateTime.parse(it)
+    }
+
+    private fun getSortedCreditList(credits: PersonCreditList<CreditBasic>): List<CreditBasic> {
+//        val test = credits.cast.sortedBy { dateTimeStrToLocalDateTime(it) }
+        val creditList = credits.cast
+        return creditList
+    }
+
+    private fun setFilmographyFilters(credits: PersonCreditList<CreditBasic>) {
+        val filters = mutableSetOf<String>()
+        credits.crew.forEach {
+            filters.add(it.department)
+        }
+        if (credits.cast.size > 0) filters.add("Acting")
+
+        filters_recyclerview.apply {
+            adapter = FiltersAdapter(filters.sorted())
+            layoutManager = LinearLayoutManager(
+                context,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
