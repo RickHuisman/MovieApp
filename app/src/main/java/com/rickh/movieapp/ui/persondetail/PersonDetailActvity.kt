@@ -8,12 +8,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.omertron.themoviedbapi.model.credits.CreditBasic
+import com.omertron.themoviedbapi.model.credits.CreditMovieBasic
+import com.omertron.themoviedbapi.model.credits.CreditTVBasic
 import com.omertron.themoviedbapi.model.person.PersonCreditList
 import com.omertron.themoviedbapi.model.person.PersonFind
 import com.rickh.movieapp.R
 import com.rickh.movieapp.tmdb.Result
 import kotlinx.android.synthetic.main.activity_person_detail.*
-import org.threeten.bp.LocalDateTime
+import org.threeten.bp.LocalDate
 import timber.log.Timber
 
 class PersonDetailActivity : AppCompatActivity() {
@@ -70,9 +72,6 @@ class PersonDetailActivity : AppCompatActivity() {
     private fun setFilmography(credits: PersonCreditList<CreditBasic>) {
         setFilmographyFilters(credits)
 
-//        credits = credits.cast.union(credits.crew)
-//        val date = LocalDate.parse(credit.releaseDate)
-
         filmography_recyclerview.apply {
             isNestedScrollingEnabled = false
             adapter = KnownForAdapter(getSortedCreditList(credits))
@@ -80,14 +79,21 @@ class PersonDetailActivity : AppCompatActivity() {
         }
     }
 
-    val dateTimeStrToLocalDateTime: (String) -> LocalDateTime = {
-        LocalDateTime.parse(it)
+    val dateTimeStrToLocalDateTime: (String) -> LocalDate = {
+        if (it.isNotEmpty()) LocalDate.parse(it) else LocalDate.MAX
     }
 
     private fun getSortedCreditList(credits: PersonCreditList<CreditBasic>): List<CreditBasic> {
-//        val test = credits.cast.sortedBy { dateTimeStrToLocalDateTime(it) }
-        val creditList = credits.cast
-        return creditList
+        val creditList = credits.cast.union(credits.crew).toList()
+
+        // Sort
+        return creditList.sortedByDescending {
+            when (it) {
+                is CreditMovieBasic -> dateTimeStrToLocalDateTime(it.releaseDate)
+                is CreditTVBasic -> dateTimeStrToLocalDateTime(it.firstAirDate)
+                else -> throw IllegalArgumentException()
+            }
+        }
     }
 
     private fun setFilmographyFilters(credits: PersonCreditList<CreditBasic>) {

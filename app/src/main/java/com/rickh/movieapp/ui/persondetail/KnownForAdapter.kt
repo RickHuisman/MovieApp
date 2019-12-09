@@ -20,6 +20,7 @@ import com.omertron.themoviedbapi.model.credits.CreditMovieBasic
 import com.omertron.themoviedbapi.model.credits.CreditTVBasic
 import com.rickh.movieapp.R
 import org.threeten.bp.LocalDate
+import timber.log.Timber
 
 class KnownForAdapter(private val credits: List<CreditBasic>) :
     RecyclerView.Adapter<KnownForAdapter.KnownForViewHolder>() {
@@ -46,23 +47,28 @@ class KnownForAdapter(private val credits: List<CreditBasic>) :
         private val byline: TextView = itemView.findViewById(R.id.byline_textview)
 
         fun bind(credit: CreditBasic) {
-            when (credit) {
-                is CreditMovieBasic -> {
-                    var creditTitle = credit.title
-                    if (credit.releaseDate != null && credit.releaseDate.isNotEmpty()) {
-                        val date = LocalDate.parse(credit.releaseDate)
-                        creditTitle += " • ${date.year}"
+            if (credit.job != null) {
+                bindCrew(credit)
+            } else {
+                when (credit) {
+                    is CreditMovieBasic -> {
+                        var creditTitle = credit.title
+                        if (credit.releaseDate != null && credit.releaseDate.isNotEmpty()) {
+                            val date = LocalDate.parse(credit.releaseDate)
+                            creditTitle += " • ${date.year}"
+                        }
+                        title.text = creditTitle
+                        byline.text = "As ${credit.character}"
                     }
-                    title.text = creditTitle
-                    byline.text = "As ${credit.character}"
-                }
-                is CreditTVBasic -> {
-//                    var creditTitle = credit.name
-//                    if (credit.releaseDate != "") {
-//                        val date = LocalDate.parse(credit.releaseDate)
-//                        creditTitle += " • ${date.year}"
-//                    }
-//                    title.text = creditTitle
+                    is CreditTVBasic -> {
+                        var creditTitle = credit.name
+                        if (credit.firstAirDate != null && credit.firstAirDate.isNotEmpty()) {
+                            val date = LocalDate.parse(credit.firstAirDate)
+                            creditTitle += " • ${date.year}"
+                        }
+                        title.text = creditTitle
+                        byline.text = "As ${credit.character}"
+                    }
                 }
             }
 
@@ -99,6 +105,22 @@ class KnownForAdapter(private val credits: List<CreditBasic>) :
                 .circleCrop()
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(creditImage)
+        }
+
+        private fun bindCrew(credit: CreditBasic) {
+            title.text = when (credit) {
+                is CreditMovieBasic -> {
+                    var yearReleased = ""
+                    if (credit.releaseDate != null && credit.releaseDate.isNotEmpty()) {
+                        val date = LocalDate.parse(credit.releaseDate)
+                        yearReleased = "• ${date.year}"
+                    }
+                    "${credit.title} $yearReleased"
+                }
+                is CreditTVBasic -> credit.name
+                else -> "-"
+            }
+            byline.text = credit.job
         }
     }
 }
