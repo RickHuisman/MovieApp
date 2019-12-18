@@ -18,9 +18,10 @@ import kotlinx.android.synthetic.main.activity_person_detail.*
 import org.threeten.bp.LocalDate
 import timber.log.Timber
 
-class PersonDetailActivity : AppCompatActivity() {
+class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
 
     private lateinit var viewModel: PersonDetailViewModel
+    private var activeFilters: MutableSet<String> = mutableSetOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,14 +104,27 @@ class PersonDetailActivity : AppCompatActivity() {
         }
         if (credits.cast.size > 0) filters.add("Acting")
 
+        activeFilters = filters
+
         filters_recyclerview.apply {
-            adapter = FiltersAdapter(filters.sorted())
+            adapter = FiltersAdapter(filters.sorted(), this@PersonDetailActivity)
             layoutManager = LinearLayoutManager(
                 context,
                 LinearLayoutManager.HORIZONTAL,
                 false
             )
         }
+    }
+
+    override fun filterChanged(filter: String, active: Boolean) {
+        if (active) {
+            // Add filter
+            activeFilters.add(filter)
+        } else {
+            // Remove filter
+            activeFilters.remove(filter)
+        }
+        Timber.d("$activeFilters")
     }
 
     override fun onSupportNavigateUp(): Boolean {

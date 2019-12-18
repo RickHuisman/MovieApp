@@ -8,7 +8,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.rickh.movieapp.R
 
-class FiltersAdapter(val filters: List<String>) : RecyclerView.Adapter<FiltersAdapter.FilterViewHolder>() {
+class FiltersAdapter(
+    private val filters: List<String>,
+    private val onFilterChanged: OnFilterChanged
+) :
+    RecyclerView.Adapter<FiltersAdapter.FilterViewHolder>() {
 
     init {
         setHasStableIds(true)
@@ -28,7 +32,7 @@ class FiltersAdapter(val filters: List<String>) : RecyclerView.Adapter<FiltersAd
         holder.bind(filters[position])
     }
 
-    class FilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class FilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val filterButton: Button = itemView.findViewById(R.id.item_filter)
         private var filterActive: Boolean = true
 
@@ -38,6 +42,7 @@ class FiltersAdapter(val filters: List<String>) : RecyclerView.Adapter<FiltersAd
             itemView.setOnClickListener {
                 filterActive = !filterActive
                 setFilterMode(filterActive)
+                onFilterChanged.filterChanged(filter, filterActive)
             }
         }
 
