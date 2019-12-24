@@ -80,8 +80,8 @@ class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
         }
     }
 
-    val dateTimeStrToLocalDateTime: (String) -> LocalDate = {
-        if (it.isNotEmpty()) LocalDate.parse(it) else LocalDate.MAX
+    val dateTimeStrToLocalDateTime: (String?) -> LocalDate = {
+        if (it != null) LocalDate.parse(it) else LocalDate.MAX
     }
 
     private fun getSortedCreditList(credits: PersonCreditList<CreditBasic>): List<CreditBasic> {
