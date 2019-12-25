@@ -81,13 +81,12 @@ class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
     }
 
     val dateTimeStrToLocalDateTime: (String?) -> LocalDate = {
-        if (it != null) LocalDate.parse(it) else LocalDate.MAX
+        if (!it.isNullOrEmpty()) LocalDate.parse(it) else LocalDate.MAX
     }
 
     private fun getSortedCreditList(credits: PersonCreditList<CreditBasic>): List<CreditBasic> {
         val creditList = credits.cast.union(credits.crew).toList()
 
-        // Sort
         return creditList.sortedByDescending {
             when (it) {
                 is CreditMovieBasic -> dateTimeStrToLocalDateTime(it.releaseDate)
