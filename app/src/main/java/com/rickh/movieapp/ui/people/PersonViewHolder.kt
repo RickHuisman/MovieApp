@@ -13,6 +13,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.omertron.themoviedbapi.model.media.MediaBasic
 import com.omertron.themoviedbapi.model.movie.MovieBasic
 import com.omertron.themoviedbapi.model.person.PersonFind
 import com.omertron.themoviedbapi.model.tv.TVBasic
@@ -22,11 +23,42 @@ import com.rickh.movieapp.ui.persondetail.PersonDetailActivity
 class PersonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val profileImage: ImageView = itemView.findViewById(R.id.profile_image)
     private val name: TextView = itemView.findViewById(R.id.name)
-    private val detail: TextView = itemView.findViewById(R.id.detail)
+    private val byline: TextView = itemView.findViewById(R.id.byline)
 
     fun bind(person: PersonFind) {
+        name.text = person.name
+        byline.text = getKnownForByline(person.knownFor)
+        bindProfileImage(person.profilePath)
+
+        val intent = PersonDetailActivity.newIntent(profileImage.context, person)
+        itemView.setOnClickListener {
+            profileImage.context.startActivity(intent)
+        }
+        profileImage.setOnClickListener {
+            profileImage.context.startActivity(intent)
+        }
+    }
+
+    private fun getKnownForByline(knownFor: List<MediaBasic>): String {
+        val builder = StringBuilder()
+        for ((count, media) in knownFor.withIndex()) {
+            builder.append(
+                when (media) {
+                    is MovieBasic -> media.originalTitle
+                    is TVBasic -> media.originalName
+                    else -> "-"
+                }
+            )
+
+            if (count < (knownFor.size - 1))
+                builder.append(" · ")
+        }
+        return builder.toString()
+    }
+
+    private fun bindProfileImage(profilePath: String) {
         Glide.with(profileImage)
-            .load("https://image.tmdb.org/t/p/original${person.profilePath}")
+            .load("https://image.tmdb.org/t/p/original$profilePath")
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,
@@ -55,26 +87,5 @@ class PersonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .circleCrop()
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(profileImage)
-        name.text = person.name
-
-        val builder = StringBuilder()
-        var count = 0
-        for (media in person.knownFor) {
-            if (media is MovieBasic) {
-                builder.append(media.originalTitle)
-            } else if (media is TVBasic) {
-                builder.append(media.originalName)
-            }
-            if (count < 2) {
-                builder.append(" · ")
-            }
-            count++
-        }
-        detail.text = builder.toString()
-
-        itemView.setOnClickListener {
-            val intent = PersonDetailActivity.newIntent(profileImage.context, person)
-            profileImage.context.startActivity(intent)
-        }
     }
 }

@@ -67,7 +67,7 @@ class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
     }
 
     private fun setBiography(biography: String) {
-        biography_textview.text = biography
+        biography_textview.text = if (biography.isEmpty()) "-" else biography
     }
 
     private fun setFilmography(credits: PersonCreditList<CreditBasic>) {
