@@ -22,6 +22,7 @@ class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
 
     private lateinit var viewModel: PersonDetailViewModel
     private var activeFilters: MutableSet<String> = mutableSetOf()
+    private var knownForAdapter: KnownForAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,15 +39,11 @@ class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
             title = person.name
         }
 
-        biography_container.setOnClickListener {
-            biography_textview.toggle()
-        }
+        biography_container.setOnClickListener { biography_textview.toggle() }
 
         viewModel.getPersonInfo(person.id).observe(this, Observer {
             when (it) {
-                is Result.Success -> {
-                    setBiography(it.data.biography)
-                }
+                is Result.Success -> setBiography(it.data.biography)
                 is Result.Error -> {
                     Timber.d(it.exception)
                     // TODO showErrorState()
@@ -56,9 +53,7 @@ class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
 
         viewModel.getCredits(person.id).observe(this, Observer {
             when (it) {
-                is Result.Success -> {
-                    setFilmography(it.data)
-                }
+                is Result.Success -> setFilmography(it.data)
                 is Result.Error -> {
                     Timber.d(it.exception)
                 }
@@ -73,9 +68,11 @@ class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
     private fun setFilmography(credits: PersonCreditList<CreditBasic>) {
         setFilmographyFilters(credits)
 
+        knownForAdapter = KnownForAdapter(getSortedCreditList(credits))
+
         filmography_recyclerview.apply {
             isNestedScrollingEnabled = false
-            adapter = KnownForAdapter(getSortedCreditList(credits))
+            adapter = knownForAdapter
             layoutManager = LinearLayoutManager(context)
         }
     }
@@ -123,7 +120,7 @@ class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
             // Remove filter
             activeFilters.remove(filter)
         }
-        Timber.d("$activeFilters")
+        knownForAdapter?.filter(activeFilters)
     }
 
     override fun onSupportNavigateUp(): Boolean {

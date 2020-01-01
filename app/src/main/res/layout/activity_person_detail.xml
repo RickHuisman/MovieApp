@@ -44,7 +44,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing16"
                     android:layout_marginTop="@dimen/spacing16"
-                    app:srcCompat="@drawable/ic_info_24dp" />
+                    app:srcCompat="@drawable/ic_info_24dp"
+                    android:tint="@color/gray_500" />
 
                 <at.blogc.android.views.ExpandableTextView
                     android:id="@+id/biography_textview"

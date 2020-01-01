@@ -79,9 +79,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private val spinnerOnItemSelected = object : AdapterView.OnItemSelectedListener {
-        override fun onNothingSelected(parent: AdapterView<*>) {
-
-        }
+        override fun onNothingSelected(parent: AdapterView<*>) {}
 
         override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
             setCurrentFragment(position)
@@ -146,15 +144,31 @@ class HomeActivity : AppCompatActivity() {
         selectedMenuItem.isEnabled = false
 
         when (menuItemId) {
-            R.id.action_movies_sorting_popular -> viewModel.moviesPaginator.setSortMode(MoviesSortOptions.POPULAR)
-            R.id.action_movies_sorting_top_rated -> viewModel.moviesPaginator.setSortMode(MoviesSortOptions.TOP_RATED)
-            R.id.action_movies_sorting_upcoming -> viewModel.moviesPaginator.setSortMode(MoviesSortOptions.UPCOMING)
-            R.id.action_movies_sorting_now_playing -> viewModel.moviesPaginator.setSortMode(MoviesSortOptions.NOW_PLAYING)
+            R.id.action_movies_sorting_popular -> viewModel.moviesPaginator.setSortMode(
+                MoviesSortOptions.POPULAR
+            )
+            R.id.action_movies_sorting_top_rated -> viewModel.moviesPaginator.setSortMode(
+                MoviesSortOptions.TOP_RATED
+            )
+            R.id.action_movies_sorting_upcoming -> viewModel.moviesPaginator.setSortMode(
+                MoviesSortOptions.UPCOMING
+            )
+            R.id.action_movies_sorting_now_playing -> viewModel.moviesPaginator.setSortMode(
+                MoviesSortOptions.NOW_PLAYING
+            )
 
-            R.id.action_tv_shows_sorting_popular -> viewModel.tvShowsPaginator.setSortMode(TVShowsSortOptions.POPULAR)
-            R.id.action_tv_shows_sorting_top_rated -> viewModel.tvShowsPaginator.setSortMode(TVShowsSortOptions.TOP_RATED)
-            R.id.action_tv_shows_sorting_on_tv -> viewModel.tvShowsPaginator.setSortMode(TVShowsSortOptions.ON_TV)
-            R.id.action_tv_shows_sorting_airing_today -> viewModel.tvShowsPaginator.setSortMode(TVShowsSortOptions.AIRING_TODAY)
+            R.id.action_tv_shows_sorting_popular -> viewModel.tvShowsPaginator.setSortMode(
+                TVShowsSortOptions.POPULAR
+            )
+            R.id.action_tv_shows_sorting_top_rated -> viewModel.tvShowsPaginator.setSortMode(
+                TVShowsSortOptions.TOP_RATED
+            )
+            R.id.action_tv_shows_sorting_on_tv -> viewModel.tvShowsPaginator.setSortMode(
+                TVShowsSortOptions.ON_TV
+            )
+            R.id.action_tv_shows_sorting_airing_today -> viewModel.tvShowsPaginator.setSortMode(
+                TVShowsSortOptions.AIRING_TODAY
+            )
             else -> throw IllegalArgumentException("No sort option for menuItemId: $menuItemId")
         }
     }
