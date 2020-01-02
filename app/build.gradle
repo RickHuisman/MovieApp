@@ -86,4 +86,7 @@ dependencies {
 
     // ExpandableTextView
     implementation 'at.blogc:expandabletextview:1.0.5'
+
+    // Hauler
+    implementation("com.github.thefuntasty.hauler:library:2.0.0")
 }

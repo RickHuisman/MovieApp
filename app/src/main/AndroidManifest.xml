@@ -20,7 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.PlaygroundActivity" />
+        <activity
+            android:name=".ui.PlaygroundActivity"
+            android:theme="@style/MovieAppTheme.Draggable" />
         <activity android:name=".ui.persondetail.PersonDetailActivity" />
     </application>
 

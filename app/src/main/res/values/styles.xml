@@ -10,6 +10,14 @@
         <item name="android:buttonStyle">@style/MovieAppButton</item>
     </style>
 
+    <style name="MovieAppTheme.Draggable" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/dark_gray</item>
+    </style>
+
     <style name="MovieAppToolbar">
         <item name="titleTextAppearance">@style/MovieAppToolbarTitleAppearance</item>
         <item name="android:layout_width">match_parent</item>

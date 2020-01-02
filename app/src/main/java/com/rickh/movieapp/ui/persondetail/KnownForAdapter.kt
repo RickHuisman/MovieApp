@@ -27,6 +27,9 @@ class KnownForAdapter(credits: List<CreditBasic>) :
     fun filter(activeFilters: MutableSet<String>) {
         val itemsToBeDeleted = getItemsToBeDeleted(activeFilters)
         deleteItems(itemsToBeDeleted)
+
+        val itemsToBeAdded = getItemsToBeAdded(activeFilters)
+//        addItems(itemsToBeAdded)
     }
 
     private fun getItemsToBeDeleted(activeFilters: MutableSet<String>): List<CreditBasic> {
@@ -51,6 +54,28 @@ class KnownForAdapter(credits: List<CreditBasic>) :
         return itemsToBeDeleted
     }
 
+    private fun getItemsToBeAdded(activeFilters: MutableSet<String>): List<CreditBasic> {
+        val itemsToBeAdded = mutableListOf<CreditBasic>()
+
+//        // Add all acting credits
+//        if (activeFilters.contains("Acting")) {
+//            displayCredits.forEach {
+//                if (it.creditType == CreditType.CAST)
+//                    itemsToBeAdded.add(it)
+//            }
+//        }
+//
+//        // Add all crew credits
+//        displayCredits.forEach {
+//            if (it.creditType == CreditType.CREW) {
+//                if (it.department in activeFilters) {
+//                    itemsToBeAdded.add(it)
+//                }
+//            }
+//        }
+        return itemsToBeAdded
+    }
+
     private fun deleteItems(itemsToBeDeleted: List<CreditBasic>) {
         itemsToBeDeleted.forEach {
             val position = displayCredits.indexOf(it)
@@ -63,7 +88,7 @@ class KnownForAdapter(credits: List<CreditBasic>) :
         notifyItemRemoved(position)
     }
 
-    private fun addList(itemsToBeAdded: List<CreditBasic>) {
+    private fun addItems(itemsToBeAdded: List<CreditBasic>) {
         itemsToBeAdded.forEach { addItem(it) } // TODO add list instead of each item individually
     }
 

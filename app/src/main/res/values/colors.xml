@@ -20,4 +20,6 @@
     <color name="dialog_background">#393a3c</color>
 
     <color name="placeholder">#ff232323</color>
+
+    <color name="dark_gray">#99323232</color>
 </resources>
