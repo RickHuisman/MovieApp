@@ -15,6 +15,8 @@ import com.omertron.themoviedbapi.model.person.PersonFind
 import com.rickh.movieapp.R
 import com.rickh.movieapp.tmdb.Result
 import kotlinx.android.synthetic.main.activity_person_detail.*
+import kotlinx.android.synthetic.main.activity_person_detail.haulerView
+import kotlinx.android.synthetic.main.activity_playground.*
 import org.threeten.bp.LocalDate
 import timber.log.Timber
 
@@ -37,6 +39,10 @@ class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_close_24dp)
             title = person.name
+        }
+
+        haulerView.setOnDragDismissedListener {
+            finish()
         }
 
         biography_container.setOnClickListener { biography_textview.toggle() }

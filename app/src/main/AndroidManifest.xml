@@ -23,7 +23,9 @@
         <activity
             android:name=".ui.PlaygroundActivity"
             android:theme="@style/MovieAppTheme.Draggable" />
-        <activity android:name=".ui.persondetail.PersonDetailActivity" />
+        <activity
+            android:name=".ui.persondetail.PersonDetailActivity"
+            android:theme="@style/MovieAppTheme.Draggable" />
     </application>
 
 </manifest>
