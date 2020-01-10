@@ -3,6 +3,7 @@ package com.rickh.movieapp.ui.persondetail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -16,7 +17,6 @@ import com.rickh.movieapp.R
 import com.rickh.movieapp.tmdb.Result
 import kotlinx.android.synthetic.main.activity_person_detail.*
 import kotlinx.android.synthetic.main.activity_person_detail.haulerView
-import kotlinx.android.synthetic.main.activity_playground.*
 import org.threeten.bp.LocalDate
 import timber.log.Timber
 
@@ -24,7 +24,7 @@ class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
 
     private lateinit var viewModel: PersonDetailViewModel
     private var activeFilters: MutableSet<String> = mutableSetOf()
-    private var knownForAdapter: KnownForAdapter? = null
+    private var personCreditsAdapter: PersonCreditsAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,11 +74,11 @@ class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
     private fun setFilmography(credits: PersonCreditList<CreditBasic>) {
         setFilmographyFilters(credits)
 
-        knownForAdapter = KnownForAdapter(getSortedCreditList(credits))
+        personCreditsAdapter = PersonCreditsAdapter(getSortedCreditList(credits))
 
         filmography_recyclerview.apply {
             isNestedScrollingEnabled = false
-            adapter = knownForAdapter
+            adapter = personCreditsAdapter
             layoutManager = LinearLayoutManager(context)
         }
     }
@@ -126,7 +126,7 @@ class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
             // Remove filter
             activeFilters.remove(filter)
         }
-        knownForAdapter?.filter(activeFilters)
+        personCreditsAdapter?.filter(activeFilters)
     }
 
     override fun onSupportNavigateUp(): Boolean {

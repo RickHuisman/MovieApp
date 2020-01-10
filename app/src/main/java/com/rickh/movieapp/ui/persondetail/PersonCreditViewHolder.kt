@@ -1,6 +1,5 @@
 package com.rickh.movieapp.ui.persondetail
 
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.text.Spannable
 import android.text.SpannableString
@@ -18,7 +17,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.SingleRequest
 import com.bumptech.glide.request.target.Target
 import com.omertron.themoviedbapi.enumeration.CreditType
 import com.omertron.themoviedbapi.model.credits.CreditBasic
@@ -27,7 +25,7 @@ import com.omertron.themoviedbapi.model.credits.CreditTVBasic
 import com.rickh.movieapp.R
 import org.threeten.bp.LocalDate
 
-class KnownForViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class PersonCreditViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val creditImage: ImageView = itemView.findViewById(R.id.credit_image)
     private val title: TextView = itemView.findViewById(R.id.title_textview)
     private val byline: TextView = itemView.findViewById(R.id.byline_textview)

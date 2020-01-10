@@ -104,4 +104,16 @@
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
+
+    <style name="MovieAppProgressBar" />
+
+    <style name="MovieAppProgressBar.Horizontal" parent="android:Widget.Material.ProgressBar.Horizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:indeterminate">true</item>
+    </style>
+
+    <style name="MovieAppProgressBar.Horizontal.TopAligned">
+        <item name="android:layout_marginTop">-7dp</item>
+    </style>
 </resources>

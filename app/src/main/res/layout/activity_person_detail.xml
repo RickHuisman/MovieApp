@@ -16,6 +16,13 @@
             android:id="@+id/toolbar"
             style="@style/MovieAppToolbar" />
 
+        <ProgressBar
+            android:id="@+id/loading"
+            style="@style/MovieAppProgressBar.Horizontal.TopAligned"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar" />
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

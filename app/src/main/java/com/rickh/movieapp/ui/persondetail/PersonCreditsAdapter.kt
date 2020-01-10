@@ -7,8 +7,8 @@ import com.omertron.themoviedbapi.enumeration.CreditType
 import com.omertron.themoviedbapi.model.credits.CreditBasic
 import com.rickh.movieapp.R
 
-class KnownForAdapter(credits: List<CreditBasic>) :
-    RecyclerView.Adapter<KnownForViewHolder>() {
+class PersonCreditsAdapter(credits: List<CreditBasic>) :
+    RecyclerView.Adapter<PersonCreditViewHolder>() {
 
     var displayCredits = credits.toMutableList()
 
@@ -16,8 +16,8 @@ class KnownForAdapter(credits: List<CreditBasic>) :
         setHasStableIds(true)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KnownForViewHolder {
-        return KnownForViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PersonCreditViewHolder {
+        return PersonCreditViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_credit, parent, false)
         )
     }
@@ -97,7 +97,7 @@ class KnownForAdapter(credits: List<CreditBasic>) :
         notifyDataSetChanged() // TODO position
     }
 
-    override fun onBindViewHolder(holder: KnownForViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PersonCreditViewHolder, position: Int) {
         holder.bind(displayCredits[position])
     }
 }
