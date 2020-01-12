@@ -9,10 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rickh.movieapp.R
 
 class FiltersAdapter(
-    private val filters: List<String>,
-    private val onFilterChanged: OnFilterChanged
+    private val filterChangedCallback: FilterChangedCallback
 ) :
     RecyclerView.Adapter<FiltersAdapter.FilterViewHolder>() {
+
+    var filters: List<String> = emptyList()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     init {
         setHasStableIds(true)
@@ -42,7 +47,7 @@ class FiltersAdapter(
             itemView.setOnClickListener {
                 filterActive = !filterActive
                 setFilterMode(filterActive)
-                onFilterChanged.filterChanged(filter, filterActive)
+                filterChangedCallback.onFilterChanged(filter, filterActive)
             }
         }
 

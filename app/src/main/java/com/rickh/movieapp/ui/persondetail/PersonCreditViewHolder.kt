@@ -24,6 +24,7 @@ import com.omertron.themoviedbapi.model.credits.CreditMovieBasic
 import com.omertron.themoviedbapi.model.credits.CreditTVBasic
 import com.rickh.movieapp.R
 import org.threeten.bp.LocalDate
+import timber.log.Timber
 
 class PersonCreditViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val creditImage: ImageView = itemView.findViewById(R.id.credit_image)
@@ -107,7 +108,6 @@ class PersonCreditViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                 }
             })
             .placeholder(R.drawable.round_placeholder)
-            .diskCacheStrategy(DiskCacheStrategy.DATA)
             .centerCrop()
             .circleCrop()
             .transition(DrawableTransitionOptions.withCrossFade())

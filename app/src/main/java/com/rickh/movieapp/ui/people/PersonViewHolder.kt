@@ -1,6 +1,5 @@
 package com.rickh.movieapp.ui.people
 
-import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
@@ -19,7 +18,6 @@ import com.omertron.themoviedbapi.model.movie.MovieBasic
 import com.omertron.themoviedbapi.model.person.PersonFind
 import com.omertron.themoviedbapi.model.tv.TVBasic
 import com.rickh.movieapp.R
-import com.rickh.movieapp.ui.PlaygroundActivity
 import com.rickh.movieapp.ui.persondetail.PersonDetailActivity
 
 class PersonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

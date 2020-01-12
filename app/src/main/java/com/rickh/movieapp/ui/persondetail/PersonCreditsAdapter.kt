@@ -7,10 +7,16 @@ import com.omertron.themoviedbapi.enumeration.CreditType
 import com.omertron.themoviedbapi.model.credits.CreditBasic
 import com.rickh.movieapp.R
 
-class PersonCreditsAdapter(credits: List<CreditBasic>) :
+class PersonCreditsAdapter :
     RecyclerView.Adapter<PersonCreditViewHolder>() {
 
-    var displayCredits = credits.toMutableList()
+    var credits: List<CreditBasic> = emptyList()
+        set(value) {
+            field = value
+            displayCredits = value.toMutableList()
+            notifyDataSetChanged()
+        }
+    private var displayCredits = credits.toMutableList()
 
     init {
         setHasStableIds(true)
@@ -24,77 +30,45 @@ class PersonCreditsAdapter(credits: List<CreditBasic>) :
 
     override fun getItemCount() = displayCredits.size
 
-    fun filter(activeFilters: MutableSet<String>) {
-        val itemsToBeDeleted = getItemsToBeDeleted(activeFilters)
-        deleteItems(itemsToBeDeleted)
-
-        val itemsToBeAdded = getItemsToBeAdded(activeFilters)
-//        addItems(itemsToBeAdded)
+    fun filter(filter: String, active: Boolean) {
+        if (active) {
+            val itemsToAdd = getItemsForFilter(filter, credits)
+            addItems(itemsToAdd)
+        } else {
+            val itemsToRemove = getItemsForFilter(filter, displayCredits)
+            deleteItems(itemsToRemove)
+        }
     }
 
-    private fun getItemsToBeDeleted(activeFilters: MutableSet<String>): List<CreditBasic> {
-        val itemsToBeDeleted = mutableListOf<CreditBasic>()
+    private fun getItemsForFilter(filter: String, list: List<CreditBasic>): MutableList<CreditBasic> {
+        val items = mutableListOf<CreditBasic>()
 
-        // Remove all acting credits
-        if (!activeFilters.contains("Acting")) {
-            displayCredits.forEach {
+        if (filter == "Acting") {
+            list.forEach {
                 if (it.creditType == CreditType.CAST)
-                    itemsToBeDeleted.add(it)
+                    items.add(it)
+            }
+        } else {
+            list.forEach {
+                if (it.department == filter)
+                    items.add(it)
             }
         }
 
-        // Remove all crew credits
-        displayCredits.forEach {
-            if (it.creditType == CreditType.CREW) {
-                if (it.department !in activeFilters) {
-                    itemsToBeDeleted.add(it)
-                }
-            }
-        }
-        return itemsToBeDeleted
-    }
-
-    private fun getItemsToBeAdded(activeFilters: MutableSet<String>): List<CreditBasic> {
-        val itemsToBeAdded = mutableListOf<CreditBasic>()
-
-//        // Add all acting credits
-//        if (activeFilters.contains("Acting")) {
-//            displayCredits.forEach {
-//                if (it.creditType == CreditType.CAST)
-//                    itemsToBeAdded.add(it)
-//            }
-//        }
-//
-//        // Add all crew credits
-//        displayCredits.forEach {
-//            if (it.creditType == CreditType.CREW) {
-//                if (it.department in activeFilters) {
-//                    itemsToBeAdded.add(it)
-//                }
-//            }
-//        }
-        return itemsToBeAdded
+        return items
     }
 
     private fun deleteItems(itemsToBeDeleted: List<CreditBasic>) {
         itemsToBeDeleted.forEach {
-            val position = displayCredits.indexOf(it)
-            removeItem(position)
+            val positionOfItem = displayCredits.indexOf(it)
+            displayCredits.removeAt(positionOfItem)
+            notifyItemRemoved(positionOfItem)
         }
     }
 
-    private fun removeItem(position: Int) {
-        displayCredits.removeAt(position)
-        notifyItemRemoved(position)
-    }
-
     private fun addItems(itemsToBeAdded: List<CreditBasic>) {
-        itemsToBeAdded.forEach { addItem(it) } // TODO add list instead of each item individually
-    }
-
-    private fun addItem(item: CreditBasic) {
-        displayCredits.add(item)
-        notifyDataSetChanged() // TODO position
+        displayCredits.addAll(itemsToBeAdded)
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: PersonCreditViewHolder, position: Int) {

@@ -19,15 +19,14 @@ import kotlinx.android.synthetic.main.activity_person_detail.*
 import kotlinx.android.synthetic.main.activity_person_detail.error
 import kotlinx.android.synthetic.main.activity_person_detail.haulerView
 import kotlinx.android.synthetic.main.activity_person_detail.loading
-import kotlinx.android.synthetic.main.fragment_poster_grid.*
 import org.threeten.bp.LocalDate
-import timber.log.Timber
 
-class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
+class PersonDetailActivity : AppCompatActivity(), FilterChangedCallback {
 
     private lateinit var viewModel: PersonDetailViewModel
     private var activeFilters: MutableSet<String> = mutableSetOf()
-    private var personCreditsAdapter: PersonCreditsAdapter? = null
+    private lateinit var creditsAdapter: PersonCreditsAdapter
+    private lateinit var filtersAdapter: FiltersAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +44,10 @@ class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
         }
 
         haulerView.setOnDragDismissedListener { finish() }
+
+        filtersAdapter = FiltersAdapter(this@PersonDetailActivity)
+        creditsAdapter = PersonCreditsAdapter()
+
         error.setOnRetryClickListener(View.OnClickListener { loadPerson(person.id) })
 
         loadPerson(person.id)
@@ -65,7 +68,7 @@ class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
         content.visibility = View.VISIBLE
 
         setBiography(person.personInfo.biography)
-        setFilmography(person.credits)
+        setCreditList(person.credits)
     }
 
     private fun showLoading(show: Boolean) {
@@ -81,14 +84,14 @@ class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
         biography_container.setOnClickListener { biography_textview.toggle() }
     }
 
-    private fun setFilmography(credits: PersonCreditList<CreditBasic>) {
-        setFilmographyFilters(credits)
+    private fun setCreditList(credits: PersonCreditList<CreditBasic>) {
+        setCreditListFilters(credits)
 
-        personCreditsAdapter = PersonCreditsAdapter(getSortedCreditList(credits))
+        creditsAdapter.credits = getSortedCreditList(credits)
 
         filmography_recyclerview.apply {
+            adapter = creditsAdapter
             isNestedScrollingEnabled = false
-            adapter = personCreditsAdapter
             layoutManager = LinearLayoutManager(context)
         }
     }
@@ -109,17 +112,12 @@ class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
         }
     }
 
-    private fun setFilmographyFilters(credits: PersonCreditList<CreditBasic>) {
-        val filters = mutableSetOf<String>()
-        credits.crew.forEach {
-            filters.add(it.department)
-        }
-        if (credits.cast.size > 0) filters.add("Acting")
-
-        activeFilters = filters
+    private fun setCreditListFilters(credits: PersonCreditList<CreditBasic>) {
+        activeFilters = getCreditListFilters(credits)
+        filtersAdapter.filters = activeFilters.sorted()
 
         filters_recyclerview.apply {
-            adapter = FiltersAdapter(filters.sorted(), this@PersonDetailActivity)
+            adapter = filtersAdapter
             layoutManager = LinearLayoutManager(
                 context,
                 LinearLayoutManager.HORIZONTAL,
@@ -128,15 +126,16 @@ class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
         }
     }
 
-    override fun filterChanged(filter: String, active: Boolean) {
-        if (active) {
-            // Add filter
-            activeFilters.add(filter)
-        } else {
-            // Remove filter
-            activeFilters.remove(filter)
-        }
-        personCreditsAdapter?.filter(activeFilters)
+    private fun getCreditListFilters(credits: PersonCreditList<CreditBasic>): MutableSet<String> {
+        val filters = mutableSetOf<String>()
+        credits.crew.forEach { filters.add(it.department) }
+        if (credits.cast.size > 0) filters.add("Acting")
+        return filters
+    }
+
+    override fun onFilterChanged(filter: String, active: Boolean) {
+        if (active) activeFilters.add(filter) else activeFilters.remove(filter)
+        creditsAdapter.filter(filter, active)
     }
 
     override fun onSupportNavigateUp(): Boolean {
