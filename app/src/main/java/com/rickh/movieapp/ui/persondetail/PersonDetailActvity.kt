@@ -16,7 +16,10 @@ import com.omertron.themoviedbapi.model.person.PersonFind
 import com.rickh.movieapp.R
 import com.rickh.movieapp.tmdb.Result
 import kotlinx.android.synthetic.main.activity_person_detail.*
+import kotlinx.android.synthetic.main.activity_person_detail.error
 import kotlinx.android.synthetic.main.activity_person_detail.haulerView
+import kotlinx.android.synthetic.main.activity_person_detail.loading
+import kotlinx.android.synthetic.main.fragment_poster_grid.*
 import org.threeten.bp.LocalDate
 import timber.log.Timber
 
@@ -41,34 +44,41 @@ class PersonDetailActivity : AppCompatActivity(), OnFilterChanged {
             title = person.name
         }
 
-        haulerView.setOnDragDismissedListener {
-            finish()
-        }
+        haulerView.setOnDragDismissedListener { finish() }
+        error.setOnRetryClickListener(View.OnClickListener { loadPerson(person.id) })
 
-        biography_container.setOnClickListener { biography_textview.toggle() }
+        loadPerson(person.id)
+    }
 
-        viewModel.getPersonInfo(person.id).observe(this, Observer {
+    private fun loadPerson(personId: Int) {
+        showLoading(true)
+        viewModel.getPerson(personId).observe(this, Observer {
             when (it) {
-                is Result.Success -> setBiography(it.data.biography)
-                is Result.Error -> {
-                    Timber.d(it.exception)
-                    // TODO showErrorState()
-                }
+                is Result.Success -> showPersonSuccess(it.data)
+                is Result.Error -> showError()
             }
+            showLoading(false)
         })
+    }
 
-        viewModel.getCredits(person.id).observe(this, Observer {
-            when (it) {
-                is Result.Success -> setFilmography(it.data)
-                is Result.Error -> {
-                    Timber.d(it.exception)
-                }
-            }
-        })
+    private fun showPersonSuccess(person: PersonInfoAndCredits) {
+        content.visibility = View.VISIBLE
+
+        setBiography(person.personInfo.biography)
+        setFilmography(person.credits)
+    }
+
+    private fun showLoading(show: Boolean) {
+        loading.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    private fun showError() {
+        error.visibility = View.VISIBLE
     }
 
     private fun setBiography(biography: String) {
         biography_textview.text = if (biography.isEmpty()) "-" else biography
+        biography_container.setOnClickListener { biography_textview.toggle() }
     }
 
     private fun setFilmography(credits: PersonCreditList<CreditBasic>) {

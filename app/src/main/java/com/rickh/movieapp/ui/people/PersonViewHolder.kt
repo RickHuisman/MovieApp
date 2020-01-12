@@ -37,9 +37,7 @@ class PersonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             profileImage.context.startActivity(intent)
         }
         profileImage.setOnClickListener {
-//            profileImage.context.startActivity(intent)
-            // TODO remove intent
-            profileImage.context.startActivity(Intent(profileImage.context, PlaygroundActivity::class.java))
+            profileImage.context.startActivity(intent)
         }
     }
 
