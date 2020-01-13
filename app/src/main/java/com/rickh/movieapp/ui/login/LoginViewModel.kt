@@ -1,20 +1,18 @@
 package com.rickh.movieapp.ui.login
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.rickh.movieapp.R
+import android.app.Application
+import androidx.lifecycle.*
 import com.rickh.movieapp.tmdb.LoginRepository
 import com.rickh.movieapp.tmdb.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(context: Application) : AndroidViewModel(context) {
 
-    private val loginRepository = LoginRepository
+    private val loginRepository = LoginRepository.getInstance(context)
 
     private var loginJob: Job? = null
 
@@ -23,7 +21,7 @@ class LoginViewModel : ViewModel() {
         get() = _uiState
 
     fun login(username: String, password: String) {
-        // only allow one login at a time
+        // Only allow one login at a time
         if (loginJob?.isActive == true) {
             return
         }
@@ -36,17 +34,12 @@ class LoginViewModel : ViewModel() {
                 return@launch
             }
             withContext(Dispatchers.Main) { showLoading() }
-            val result = loginRepository.login(username, password)
 
+            val result = loginRepository.login(username, password)
             withContext(Dispatchers.Main) {
-                if (result is Result.Success) {
-                    emitUiState(
-                        showSuccess = true
-                    )
-                } else {
-                    emitUiState(
-                        showError = true
-                    )
+                when (result) {
+                    is Result.Success -> showSuccess()
+                    is Result.Error -> showError()
                 }
             }
         }
@@ -54,6 +47,14 @@ class LoginViewModel : ViewModel() {
 
     private fun showLoading() {
         emitUiState(showProgress = true)
+    }
+
+    private fun showSuccess() {
+        emitUiState(showSuccess = true)
+    }
+
+    private fun showError() {
+        emitUiState(showError = true)
     }
 
     private fun isLoginValid(username: String, password: String): Boolean {
@@ -65,8 +66,7 @@ class LoginViewModel : ViewModel() {
         showError: Boolean = false,
         showSuccess: Boolean = false
     ) {
-        val uiModel = LoginUiModel(showProgress, showError, showSuccess)
-        _uiState.value = uiModel
+        _uiState.value = LoginUiModel(showProgress, showError, showSuccess)
     }
 }
 

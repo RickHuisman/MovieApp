@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.rickh.movieapp.R
 import kotlinx.android.synthetic.main.activity_login.*
+import timber.log.Timber
 
 /**
  * Activity for logging in to themoviedb account
@@ -19,38 +20,37 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var viewModel: LoginViewModel
 
+    private val uiStateObserver = Observer<LoginUiModel> {
+        val uiModel = it ?: return@Observer
+
+        showProgress(uiModel.showProgress)
+        if (uiModel.showError) showLoginFailed()
+        if (uiModel.showSuccess) {
+            showLoginSuccess()
+            setResult(Activity.RESULT_OK)
+            finish()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
 
-        viewModel.uiState.observe(this, Observer {
-            val uiModel = it ?: return@Observer
+        viewModel.uiState.observe(this, uiStateObserver)
 
-            showProgress(uiModel.showProgress)
-            if (uiModel.showError) showLoginFailed()
-            if (uiModel.showSuccess) {
-                showLoginSuccess()
-                setResult(Activity.RESULT_OK)
-                finish()
-            }
-        })
-
+        frame.setOnClickListener { dismiss() }
+        sign_up.setOnClickListener { signUp() }
         login.setOnClickListener {
-            viewModel.login(username.toString(), password.toString())
-        }
-        sign_up.setOnClickListener {
-            signUp()
-        }
-        frame.setOnClickListener {
-            dismiss()
+            val username = username.text.toString()
+            val password = password.text.toString()
+            viewModel.login(username, password)
         }
     }
 
     private fun signUp() {
-        val signUpUrl = "https://www.themoviedb.org/account/signup"
-        startActivity(Intent(Intent.ACTION_VIEW, signUpUrl.toUri()))
+        startActivity(Intent(Intent.ACTION_VIEW, SIGN_UP_URL.toUri()))
     }
 
     private fun dismiss() {
@@ -69,9 +69,10 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showLoginSuccess() {
         // TODO remove this toast and open profile sheet after successful login
-        Toast(applicationContext).apply {
-            setText("Login successful")
-            duration = Toast.LENGTH_LONG
-        }.show()
+        Toast.makeText(applicationContext, "Login successful", Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        private const val SIGN_UP_URL = "https://www.themoviedb.org/account/signup"
     }
 }
