@@ -20,4 +20,5 @@
     <dimen name="dialog_corner_radius">2dp</dimen>
     <dimen name="card_corner_radius">8dp</dimen>
     <dimen name="popupwindow_width">284dp</dimen>
+    <dimen name="subreddit_toolbar_sheet_elevation">10dp</dimen>
 </resources>

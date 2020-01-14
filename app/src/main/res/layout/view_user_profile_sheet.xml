@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="?attr/actionBarSize"
+    tools:background="@color/toolbar">
+
+    <com.rickh.movieapp.ui.widgets.TintableCompoundDrawableTextView
+        style="@style/MovieAppButton.UserProfileSheet"
+        android:drawableStart="@drawable/ic_bookmark_24dp"
+        android:text="@string/userprofile_watchlist" />
+
+    <View style="@style/MovieAppSeparator.VerticalContent" />
+
+    <com.rickh.movieapp.ui.widgets.TintableCompoundDrawableTextView
+        style="@style/MovieAppButton.UserProfileSheet"
+        android:drawableStart="@drawable/ic_list_24dp"
+        android:text="@string/userprofile_lists" />
+
+    <View style="@style/MovieAppSeparator.VerticalContent" />
+
+    <com.rickh.movieapp.ui.widgets.TintableCompoundDrawableTextView
+        style="@style/MovieAppButton.UserProfileSheet"
+        android:drawableStart="@drawable/ic_favorite_24dp"
+        android:text="@string/userprofile_favorites" />
+
+    <View style="@style/MovieAppSeparator.VerticalContent" />
+
+    <com.rickh.movieapp.ui.widgets.TintableCompoundDrawableTextView
+        style="@style/MovieAppButton.UserProfileSheet"
+        android:drawableStart="@drawable/ic_star_24dp"
+        android:text="@string/userprofile_rated" />
+
+    <View style="@style/MovieAppSeparator.VerticalContent" />
+
+    <com.rickh.movieapp.ui.widgets.TintableCompoundDrawableTextView
+        style="@style/MovieAppButton.UserProfileSheet"
+        android:drawableStart="@drawable/ic_logout_24dp"
+        android:paddingBottom="@dimen/spacing16"
+        android:text="@string/userprofile_logout" />
+</LinearLayout>
