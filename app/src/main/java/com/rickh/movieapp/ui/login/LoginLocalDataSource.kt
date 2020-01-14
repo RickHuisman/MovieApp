@@ -1,30 +1,40 @@
 package com.rickh.movieapp.ui.login
 
 import androidx.core.content.edit
+import com.squareup.moshi.Moshi
 
 class LoginLocalDataSource(
     private val sessionTokenDataSource: SessionTokenLocalDataSource
 ) {
 
-    fun setSessionId(sessionId: String) {
+    private val moshi = Moshi.Builder().build()
+    private val loggedInUserJsonAdapter = moshi.adapter(LoggedInUser::class.java)
+
+    fun setLoggedInUser(loggedInUser: LoggedInUser) {
+        val jsonLoggedInUser = loggedInUserJsonAdapter.toJson(loggedInUser)
+
         sessionTokenDataSource.getSessionPrefs().edit {
-            putString(KEY_SESSION_ID, sessionId)
+            putString("KEY_LOGGED_IN_USER", jsonLoggedInUser)
         }
     }
 
-    fun getSessionId(): String? {
-        val sessionId = sessionTokenDataSource.getSessionPrefs().getString(KEY_SESSION_ID, "")
+    fun getLoggedInUser(): LoggedInUser? {
+        val jsonLoggedInUser = sessionTokenDataSource.getSessionPrefs().getString(
+            KEY_LOGGED_IN_USER, null
+        )
 
-        return if (sessionId == "") null else sessionId
+        return if (jsonLoggedInUser != null) {
+            loggedInUserJsonAdapter.fromJson(jsonLoggedInUser)
+        } else null
     }
 
     fun logout() {
         sessionTokenDataSource.getSessionPrefs().edit {
-            putString(KEY_SESSION_ID, null)
+            putString(KEY_LOGGED_IN_USER, null)
         }
     }
 
     companion object {
-        private const val KEY_SESSION_ID = "KEY_SESSION_ID"
+        private const val KEY_LOGGED_IN_USER = "KEY_LOGGED_IN_USER"
     }
 }

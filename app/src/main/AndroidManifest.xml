@@ -16,14 +16,13 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.HomeActivity">
-        </activity>
-        <activity android:name=".ui.PlaygroundActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.PlaygroundActivity"/>
         <activity
             android:name=".ui.login.LoginActivity"
             android:launchMode="singleTop"

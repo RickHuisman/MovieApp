@@ -2,9 +2,12 @@ package com.rickh.movieapp.tmdb
 
 import android.content.Context
 import com.omertron.themoviedbapi.model.authentication.TokenSession
+import com.rickh.movieapp.ui.login.LoggedInUser
 import com.rickh.movieapp.ui.login.LoginLocalDataSource
 import com.rickh.movieapp.ui.login.LoginRemoteDataSource
 import com.rickh.movieapp.ui.login.SessionTokenLocalDataSource
+import com.squareup.moshi.Moshi
+import timber.log.Timber
 
 class LoginRepository(context: Context) {
 
@@ -13,21 +16,21 @@ class LoginRepository(context: Context) {
     )
     private val remoteDataSource = LoginRemoteDataSource()
 
-    var sessionId: String? = null
+    var user: LoggedInUser? = null
         private set
 
     init {
-        sessionId = localDataSource.getSessionId()
+        user = localDataSource.getLoggedInUser()
     }
 
     fun logout() {
-        sessionId = null
+        user = null
 
         localDataSource.logout()
         remoteDataSource.logout()
     }
 
-    fun login(username: String, password: String): Result<TokenSession> {
+    fun login(username: String, password: String): Result<LoggedInUser> {
         val result = remoteDataSource.login(username, password)
 
         if (result is Result.Success) {
@@ -36,9 +39,9 @@ class LoginRepository(context: Context) {
         return result
     }
 
-    private fun setLoggedInUser(tokenSession: TokenSession) {
-        sessionId = tokenSession.sessionId
-        localDataSource.setSessionId(tokenSession.sessionId)
+    private fun setLoggedInUser(loggedInUser: LoggedInUser) {
+        user = loggedInUser
+        localDataSource.setLoggedInUser(loggedInUser)
     }
 
     companion object {

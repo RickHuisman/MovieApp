@@ -17,8 +17,8 @@ class DiscoverFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val sessionId = LoginRepository.getInstance(requireContext()).sessionId
-        Timber.d("Session id = $sessionId")
+        val loggedInUser = LoginRepository.getInstance(requireContext()).user
+        Timber.d("Logged in user = $loggedInUser")
         Toast.makeText(context, "Work in progress", Toast.LENGTH_SHORT).show()
         return inflater.inflate(R.layout.fragment_discover, container, false)
     }
