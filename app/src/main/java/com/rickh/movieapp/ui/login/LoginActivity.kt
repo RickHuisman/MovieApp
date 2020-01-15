@@ -20,15 +20,12 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var viewModel: LoginViewModel
 
-    private val uiStateObserver = Observer<LoginUiModel> {
-        val uiModel = it ?: return@Observer
-
+    private val uiStateObserver = Observer<LoginUiModel> { uiModel ->
         showProgress(uiModel.showProgress)
         if (uiModel.showError) showLoginFailed()
         if (uiModel.showSuccess) {
-            showLoginSuccess()
             setResult(Activity.RESULT_OK)
-            finish()
+            dismiss()
         }
     }
 
@@ -53,10 +50,6 @@ class LoginActivity : AppCompatActivity() {
         startActivity(Intent(Intent.ACTION_VIEW, SIGN_UP_URL.toUri()))
     }
 
-    private fun dismiss() {
-        finishAfterTransition()
-    }
-
     private fun showProgress(show: Boolean) {
         progress_view.visibility = if (show) View.VISIBLE else View.GONE
     }
@@ -67,9 +60,10 @@ class LoginActivity : AppCompatActivity() {
         username_label.requestFocus()
     }
 
-    private fun showLoginSuccess() {
-        // TODO remove this toast and open profile sheet after successful login
-        Toast.makeText(applicationContext, "Login successful", Toast.LENGTH_SHORT).show()
+    override fun onBackPressed() = dismiss()
+
+    private fun dismiss() {
+        finishAfterTransition()
     }
 
     companion object {

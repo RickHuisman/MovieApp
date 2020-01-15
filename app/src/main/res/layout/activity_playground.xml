@@ -33,15 +33,15 @@
         android:id="@+id/content_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/toolbar_container"
+        android:layout_marginTop="@dimen/spacing16"
         android:orientation="vertical"
-        android:layout_below="@id/toolbar_container">
+        android:paddingStart="@dimen/spacing16">
 
         <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing16"
-            android:layout_marginTop="@dimen/spacing16"
             android:text="User profile"
             tools:ignore="HardcodedText" />
 
@@ -49,9 +49,18 @@
             style="@style/MovieAppButton.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing16"
             android:layout_marginTop="@dimen/spacing16"
             android:text="Borderless button"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            style="@style/MovieAppButton.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing16"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:text="rickhuis"
+            android:textAppearance="@style/MovieAppToolbarTitleAppearance"
             tools:ignore="HardcodedText" />
     </LinearLayout>
 </RelativeLayout>

@@ -10,12 +10,19 @@ import android.widget.AdapterView
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.rickh.movieapp.R
+import com.rickh.movieapp.tmdb.LoginRepository
 import com.rickh.movieapp.ui.login.LoginActivity
 import com.rickh.movieapp.ui.movies.*
+import com.rickh.movieapp.ui.profile.UserProfileSheetView
 import com.rickh.movieapp.ui.widgets.CategoriesSpinnerAdapter
+import com.rickh.movieapp.ui.widgets.ToolbarExpandableSheet
 import com.rickh.movieapp.utils.ViewUtils
+import kotlinx.android.synthetic.main.activity_home.toolbar
+import kotlinx.android.synthetic.main.activity_home.toolbar_sheet
+import kotlinx.android.synthetic.main.activity_playground.*
 import timber.log.Timber
 
 /**
@@ -41,42 +48,49 @@ class HomeActivity : AppCompatActivity() {
         setupSpinner()
         setupSortOptions()
         setUpProfile()
+        setupToolbarSheet()
 
-        window.decorView.apply {
-            // Transparent navigation bar
-            systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            // Add inset because fitsSystemWindows doesn't work when you hide the navigation bar
-            setOnApplyWindowInsetsListener { _, insets ->
-                handleInsets(insets)
-                insets.consumeSystemWindowInsets()
+        val loginRepository: LoginRepository = LoginRepository.getInstance(this)
+        loginRepository.userLoggedInObserver.observe(this, Observer {
+            if (loginRepository.isLoggedIn) handleOnUserLogIn()
+        })
+    }
+
+    private fun handleOnUserLogIn() {
+        if (toolbar_sheet.isCollapsed) showUserProfileSheet()
+    }
+
+    private fun setupToolbarSheet() {
+        toolbar_sheet.hideOnOutsideClick(fragment_container)
+        toolbar_sheet.setStateChangeListener { state ->
+            when (state) {
+                // TODO
+                ToolbarExpandableSheet.State.EXPANDING -> {
+                }
+                ToolbarExpandableSheet.State.EXPANDED -> {
+                }
+                ToolbarExpandableSheet.State.COLLAPSING -> {
+                }
+                ToolbarExpandableSheet.State.COLLAPSED -> {
+                    toolbar_sheet.removeAllViews()
+                    toolbar_sheet.collapse()
+                }
             }
         }
     }
 
-    private fun handleInsets(insets: WindowInsets) {
-        // inset the toolbar down by the status bar height
-        val lpToolbar = (toolbar.layoutParams as ViewGroup.MarginLayoutParams).apply {
-            topMargin += insets.systemWindowInsetTop
-            leftMargin += insets.systemWindowInsetLeft
-            rightMargin += insets.systemWindowInsetRight
-        }
-        toolbar.layoutParams = lpToolbar
-
-        // we place a background behind the status bar to combine with it's semi-transparent
-        // color to get the desired appearance.  Set it's height to the status bar height
-        val statusBarBackground = findViewById<View>(R.id.status_bar_background)
-        val lpStatus = (statusBarBackground.layoutParams as RelativeLayout.LayoutParams).apply {
-            height = insets.systemWindowInsetTop
-        }
-        statusBarBackground.layoutParams = lpStatus
-
-        // clear this listener so insets aren't re-applied
-        window.decorView.setOnApplyWindowInsetsListener(null)
+    private fun showUserProfileSheet() {
+        val sheet = UserProfileSheetView(this).showIn(toolbar_sheet)
+        sheet.post { toolbar_sheet.expand() }
     }
 
     private fun setUpProfile() {
         profile.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
+            if (LoginRepository.getInstance(this).isLoggedIn) {
+                showUserProfileSheet()
+            } else {
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
         }
     }
 
@@ -182,6 +196,14 @@ class HomeActivity : AppCompatActivity() {
                 TVShowsSortOptions.AIRING_TODAY
             )
             else -> throw IllegalArgumentException("No sort option for menuItemId: $menuItemId")
+        }
+    }
+
+    override fun onBackPressed() {
+        if (!toolbar_sheet.isCollapsed) {
+            toolbar_sheet.collapse()
+        } else {
+            super.onBackPressed()
         }
     }
 }

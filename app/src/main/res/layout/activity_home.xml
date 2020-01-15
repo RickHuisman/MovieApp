@@ -5,55 +5,66 @@
     android:layout_height="match_parent"
     tools:context=".ui.HomeActivity">
 
-    <View
-        android:id="@+id/status_bar_background"
+    <FrameLayout
+        android:id="@+id/toolbar_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/status_bar" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:outlineProvider="bounds">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        style="@style/MovieAppToolbar">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/MovieAppToolbar">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="0dp"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_weight="1"
-                android:layout_marginEnd="@dimen/spacing16"
-                android:background="?attr/selectableItemBackgroundBorderless" />
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_marginEnd="@dimen/spacing16"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless" />
 
-            <com.rickh.movieapp.ui.widgets.SortToFilterImageButton
-                android:id="@+id/sort_filter_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing16"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/sort"
-                android:padding="@dimen/spacing4"
-                android:src="@drawable/ic_sort_24dp" />
+                <com.rickh.movieapp.ui.widgets.SortToFilterImageButton
+                    android:id="@+id/sort_filter_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing16"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/sort"
+                    android:padding="@dimen/spacing4"
+                    android:src="@drawable/ic_sort_24dp" />
 
-            <ImageButton
-                android:id="@+id/profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing8"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/profile"
-                android:padding="@dimen/spacing4"
-                android:src="@drawable/ic_profile_24dp" />
-        </LinearLayout>
-    </androidx.appcompat.widget.Toolbar>
+                <ImageButton
+                    android:id="@+id/profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing8"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/profile"
+                    android:padding="@dimen/spacing4"
+                    android:src="@drawable/ic_profile_24dp" />
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+    </FrameLayout>
+
+    <com.rickh.movieapp.ui.widgets.ToolbarExpandableSheet
+        android:id="@+id/toolbar_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@color/toolbar"
+        android:elevation="@dimen/elevation_toolbar" />
 
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar" />
+        android:layout_below="@id/toolbar_container" />
 </RelativeLayout>

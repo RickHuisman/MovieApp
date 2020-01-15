@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
     <View
+        android:id="@+id/frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black_opacity_20" />
@@ -18,7 +18,8 @@
         android:layout_marginStart="@dimen/spacing32"
         android:layout_marginEnd="@dimen/spacing32"
         android:background="@drawable/background_dialog"
-        android:orientation="vertical">
+        android:clickable="true"
+        android:focusable="true">
 
         <TextView
             android:id="@+id/dialog_title"
@@ -42,7 +43,7 @@
             app:errorTextAppearance="@style/MovieAppTextInputLayoutErrorTextAppearance"
             app:hintEnabled="false">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,7 +64,7 @@
             app:hintEnabled="false"
             app:passwordToggleEnabled="true">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,8 +105,8 @@
             android:id="@+id/progress_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/options_container"
             android:layout_alignTop="@id/username_label"
+            android:layout_alignBottom="@+id/options_container"
             android:background="@color/dialog_background"
             android:visibility="gone">
 

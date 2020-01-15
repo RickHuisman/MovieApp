@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.FrameLayout;
 
 import com.rickh.movieapp.R;
 

@@ -1,11 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingTop="?attr/actionBarSize"
     tools:background="@color/toolbar">
+
+    <RelativeLayout
+        android:id="@+id/toolbar_title_container"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="center_vertical"
+        android:background="@color/toolbar"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/toolbar_title"
+            style="@style/MovieAppButton.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:paddingStart="@dimen/spacing12"
+            android:paddingEnd="@dimen/spacing32"
+            android:textAppearance="@style/MovieAppToolbarTitleAppearance"
+            tools:ignore="HardcodedText" />
+
+        <com.github.zagum.expandicon.ExpandIconView
+            android:id="@+id/toolbar_title_arrow"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="-28dp"
+            android:layout_toEndOf="@id/toolbar_title"
+            app:eiv_color="@color/color_accent" />
+    </RelativeLayout>
 
     <com.rickh.movieapp.ui.widgets.TintableCompoundDrawableTextView
         style="@style/MovieAppButton.UserProfileSheet"
@@ -36,8 +66,9 @@
     <View style="@style/MovieAppSeparator.VerticalContent" />
 
     <com.rickh.movieapp.ui.widgets.TintableCompoundDrawableTextView
+        android:id="@+id/userprofile_logout"
         style="@style/MovieAppButton.UserProfileSheet"
         android:drawableStart="@drawable/ic_logout_24dp"
-        android:paddingBottom="@dimen/spacing16"
+        android:paddingBottom="@dimen/spacing12"
         android:text="@string/userprofile_logout" />
 </LinearLayout>
