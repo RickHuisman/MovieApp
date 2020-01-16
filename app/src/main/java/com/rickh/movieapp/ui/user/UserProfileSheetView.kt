@@ -1,6 +1,7 @@
-package com.rickh.movieapp.ui.profile
+package com.rickh.movieapp.ui.user
 
 import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -36,6 +37,10 @@ class UserProfileSheetView(context: Context) : FrameLayout(context) {
         loginRepository.user?.let { user ->
             setupToolbar(user.username)
             setupLogout()
+        }
+
+        userprofile_rated.setOnClickListener {
+            context.startActivity(Intent(context, UserRatedActivity::class.java))
         }
     }
 

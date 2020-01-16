@@ -15,7 +15,7 @@ import com.rickh.movieapp.R
 import com.rickh.movieapp.data.login.LoginRepository
 import com.rickh.movieapp.ui.login.LoginActivity
 import com.rickh.movieapp.ui.movies.*
-import com.rickh.movieapp.ui.profile.UserProfileSheetView
+import com.rickh.movieapp.ui.user.UserProfileSheetView
 import com.rickh.movieapp.ui.widgets.CategoriesSpinnerAdapter
 import com.rickh.movieapp.ui.widgets.ToolbarExpandableSheet
 import com.rickh.movieapp.utils.ViewUtils

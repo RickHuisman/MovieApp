@@ -59,6 +59,7 @@
     <View style="@style/MovieAppSeparator.VerticalContent" />
 
     <com.rickh.movieapp.ui.widgets.TintableCompoundDrawableTextView
+        android:id="@+id/userprofile_rated"
         style="@style/MovieAppButton.UserProfileSheet"
         android:drawableStart="@drawable/ic_star_24dp"
         android:text="@string/userprofile_rated" />

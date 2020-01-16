@@ -3,8 +3,7 @@ package com.rickh.movieapp.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.rickh.movieapp.R
-import com.rickh.movieapp.ui.profile.UserProfileSheetView
-import com.rickh.movieapp.ui.widgets.ToolbarExpandableSheet
+import com.rickh.movieapp.ui.user.UserProfileSheetView
 import kotlinx.android.synthetic.main.activity_playground.*
 
 class PlaygroundActivity : AppCompatActivity() {
