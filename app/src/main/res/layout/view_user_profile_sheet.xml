@@ -69,6 +69,6 @@
         android:id="@+id/userprofile_logout"
         style="@style/MovieAppButton.UserProfileSheet"
         android:drawableStart="@drawable/ic_logout_24dp"
-        android:paddingBottom="@dimen/spacing12"
+        android:paddingBottom="@dimen/spacing16"
         android:text="@string/userprofile_logout" />
 </LinearLayout>

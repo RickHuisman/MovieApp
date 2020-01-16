@@ -4,14 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.rickh.movieapp.R
 import kotlinx.android.synthetic.main.activity_login.*
-import timber.log.Timber
 
 /**
  * Activity for logging in to themoviedb account

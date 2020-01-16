@@ -2,13 +2,12 @@ package com.rickh.movieapp.ui.login
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.rickh.movieapp.tmdb.LoginRepository
-import com.rickh.movieapp.tmdb.Result
+import com.rickh.movieapp.data.login.LoginRepository
+import com.rickh.movieapp.data.tmdb.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 class LoginViewModel(context: Application) : AndroidViewModel(context) {
 

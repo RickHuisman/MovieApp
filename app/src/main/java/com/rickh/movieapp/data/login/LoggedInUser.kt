@@ -1,4 +1,4 @@
-package com.rickh.movieapp.ui.login
+package com.rickh.movieapp.data.login
 
 data class LoggedInUser(
     val sessionId: String,

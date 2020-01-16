@@ -31,7 +31,6 @@ public class ToolbarExpandableSheet extends BaseExpandablePageLayout {
 
     public ToolbarExpandableSheet(Context context, AttributeSet attrs) {
         super(context, attrs);
-//        ButterKnife.bind(this, this); TODO
         elevationOnExpand = context.getResources().getDimensionPixelSize(R.dimen.subreddit_toolbar_sheet_elevation) - getElevation();
 
         // Hide on start.
@@ -118,12 +117,11 @@ public class ToolbarExpandableSheet extends BaseExpandablePageLayout {
                 .start();
     }
 
-    public void hideOnOutsideClick(View view) {
-        view.setOnClickListener(new View.OnClickListener() {
+    public void hideOnOutsideClick(FragmentLayoutInterceptTouchEvent frameLayout) {
+        frameLayout.setTouchEventListener(new FragmentLayoutInterceptTouchEvent.TouchEventListener() {
             @Override
-            public void onClick(View view) {
+            public void onInterceptTouchEvent() {
                 if (isExpandedOrExpanding()) {
-                    Timber.d("collapse");
                     collapse();
                 }
             }

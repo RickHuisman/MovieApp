@@ -1,10 +1,10 @@
-package com.rickh.movieapp.ui.login
+package com.rickh.movieapp.data.login
 
 import androidx.core.content.edit
 import com.squareup.moshi.Moshi
 
 class LoginLocalDataSource(
-    private val sessionTokenDataSource: SessionTokenLocalDataSource
+    private val userDataSource: UserLocalDataSource
 ) {
 
     private val moshi = Moshi.Builder().build()
@@ -13,13 +13,13 @@ class LoginLocalDataSource(
     fun setLoggedInUser(loggedInUser: LoggedInUser) {
         val jsonLoggedInUser = loggedInUserJsonAdapter.toJson(loggedInUser)
 
-        sessionTokenDataSource.getSessionPrefs().edit {
+        userDataSource.loggedInUserPrefs.edit {
             putString("KEY_LOGGED_IN_USER", jsonLoggedInUser)
         }
     }
 
     fun getLoggedInUser(): LoggedInUser? {
-        val jsonLoggedInUser = sessionTokenDataSource.getSessionPrefs().getString(
+        val jsonLoggedInUser = userDataSource.loggedInUserPrefs.getString(
             KEY_LOGGED_IN_USER, null
         )
 
@@ -29,7 +29,7 @@ class LoginLocalDataSource(
     }
 
     fun logout() {
-        sessionTokenDataSource.getSessionPrefs().edit {
+        userDataSource.loggedInUserPrefs.edit {
             putString(KEY_LOGGED_IN_USER, null)
         }
     }

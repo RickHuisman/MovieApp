@@ -12,7 +12,7 @@ import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
 import com.bumptech.glide.util.ViewPreloadSizeProvider
 import com.omertron.themoviedbapi.model.media.MediaBasic
 import com.rickh.movieapp.R
-import com.rickh.movieapp.tmdb.Result
+import com.rickh.movieapp.data.tmdb.Result
 import com.rickh.movieapp.ui.movies.Category.*
 import com.rickh.movieapp.ui.people.Paginator
 import com.rickh.movieapp.ui.widgets.ErrorStateView

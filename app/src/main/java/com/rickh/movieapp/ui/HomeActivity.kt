@@ -8,12 +8,11 @@ import androidx.appcompat.widget.PopupMenu
 import kotlinx.android.synthetic.main.activity_home.*
 import android.widget.AdapterView
 import android.widget.FrameLayout
-import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.rickh.movieapp.R
-import com.rickh.movieapp.tmdb.LoginRepository
+import com.rickh.movieapp.data.login.LoginRepository
 import com.rickh.movieapp.ui.login.LoginActivity
 import com.rickh.movieapp.ui.movies.*
 import com.rickh.movieapp.ui.profile.UserProfileSheetView
@@ -22,8 +21,6 @@ import com.rickh.movieapp.ui.widgets.ToolbarExpandableSheet
 import com.rickh.movieapp.utils.ViewUtils
 import kotlinx.android.synthetic.main.activity_home.toolbar
 import kotlinx.android.synthetic.main.activity_home.toolbar_sheet
-import kotlinx.android.synthetic.main.activity_playground.*
-import timber.log.Timber
 
 /**
  * Main activity
@@ -50,7 +47,7 @@ class HomeActivity : AppCompatActivity() {
         setUpProfile()
         setupToolbarSheet()
 
-        val loginRepository: LoginRepository = LoginRepository.getInstance(this)
+        val loginRepository = LoginRepository.getInstance(this)
         loginRepository.userLoggedInObserver.observe(this, Observer {
             if (loginRepository.isLoggedIn) handleOnUserLogIn()
         })
@@ -64,13 +61,6 @@ class HomeActivity : AppCompatActivity() {
         toolbar_sheet.hideOnOutsideClick(fragment_container)
         toolbar_sheet.setStateChangeListener { state ->
             when (state) {
-                // TODO
-                ToolbarExpandableSheet.State.EXPANDING -> {
-                }
-                ToolbarExpandableSheet.State.EXPANDED -> {
-                }
-                ToolbarExpandableSheet.State.COLLAPSING -> {
-                }
                 ToolbarExpandableSheet.State.COLLAPSED -> {
                     toolbar_sheet.removeAllViews()
                     toolbar_sheet.collapse()

@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.omertron.themoviedbapi.model.movie.MovieInfo
 import com.rickh.movieapp.R
-import com.rickh.movieapp.tmdb.Result
+import com.rickh.movieapp.data.tmdb.Result
 import com.rickh.movieapp.ui.HomeActivity
 import com.rickh.movieapp.ui.widgets.PopupWindowWithMaterialTransition
 import org.threeten.bp.LocalDate

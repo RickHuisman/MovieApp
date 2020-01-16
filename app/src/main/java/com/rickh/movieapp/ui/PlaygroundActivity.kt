@@ -13,24 +13,24 @@ class PlaygroundActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playground)
 
-        setupToolbarSheet()
+//        setupToolbarSheet()
         button.setOnClickListener { showUserProfileSheet() }
     }
 
-    private fun setupToolbarSheet() {
-        toolbar_sheet.hideOnOutsideClick(content_container)
-        toolbar_sheet.setStateChangeListener { state ->
-            when (state) {
-                ToolbarExpandableSheet.State.EXPANDING -> {}
-                ToolbarExpandableSheet.State.EXPANDED -> {}
-                ToolbarExpandableSheet.State.COLLAPSING -> {}
-                ToolbarExpandableSheet.State.COLLAPSED -> {
-                    toolbar_sheet.removeAllViews()
-                    toolbar_sheet.collapse()
-                }
-            }
-        }
-    }
+//    private fun setupToolbarSheet() {
+//        toolbar_sheet.hideOnOutsideClick(content_container)
+//        toolbar_sheet.setStateChangeListener { state ->
+//            when (state) {
+//                ToolbarExpandableSheet.State.EXPANDING -> {}
+//                ToolbarExpandableSheet.State.EXPANDED -> {}
+//                ToolbarExpandableSheet.State.COLLAPSING -> {}
+//                ToolbarExpandableSheet.State.COLLAPSED -> {
+//                    toolbar_sheet.removeAllViews()
+//                    toolbar_sheet.collapse()
+//                }
+//            }
+//        }
+//    }
 
     private fun showUserProfileSheet() {
         val sheet = UserProfileSheetView(this).showIn(toolbar_sheet)

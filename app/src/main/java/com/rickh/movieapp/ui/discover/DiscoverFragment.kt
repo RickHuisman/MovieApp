@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.rickh.movieapp.R
-import com.rickh.movieapp.tmdb.LoginRepository
-import timber.log.Timber
 
 class DiscoverFragment : Fragment() {
 
@@ -17,8 +15,6 @@ class DiscoverFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val loggedInUser = LoginRepository.getInstance(requireContext()).user
-        Timber.d("Logged in user = $loggedInUser")
         Toast.makeText(context, "Work in progress", Toast.LENGTH_SHORT).show()
         return inflater.inflate(R.layout.fragment_discover, container, false)
     }

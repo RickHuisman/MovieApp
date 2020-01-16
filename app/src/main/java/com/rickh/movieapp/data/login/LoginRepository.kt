@@ -1,19 +1,13 @@
-package com.rickh.movieapp.tmdb
+package com.rickh.movieapp.data.login
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import com.omertron.themoviedbapi.model.authentication.TokenSession
-import com.rickh.movieapp.ui.login.LoggedInUser
-import com.rickh.movieapp.ui.login.LoginLocalDataSource
-import com.rickh.movieapp.ui.login.LoginRemoteDataSource
-import com.rickh.movieapp.ui.login.SessionTokenLocalDataSource
-import com.squareup.moshi.Moshi
-import timber.log.Timber
+import com.rickh.movieapp.data.tmdb.Result
 
 class LoginRepository(context: Context) {
 
     private val localDataSource = LoginLocalDataSource(
-        SessionTokenLocalDataSource.getInstance(context)
+        UserLocalDataSource.getInstance(context)
     )
     private val remoteDataSource = LoginRemoteDataSource()
 
@@ -58,9 +52,11 @@ class LoginRepository(context: Context) {
         private var INSTANCE: LoginRepository? = null
 
         fun getInstance(context: Context): LoginRepository {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: LoginRepository(context).also { INSTANCE = it }
-            }
+            return INSTANCE
+                ?: synchronized(this) {
+                    INSTANCE
+                        ?: LoginRepository(context).also { INSTANCE = it }
+                }
         }
     }
 }

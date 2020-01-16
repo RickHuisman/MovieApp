@@ -43,4 +43,5 @@
     <string name="userprofile_favorites">Favorites</string>
     <string name="userprofile_rated">Rated</string>
     <string name="userprofile_logout">Logout</string>
+    <string name="userprofile_confirm_logout">Confirm logout?</string>
 </resources>

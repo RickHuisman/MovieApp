@@ -1,13 +1,12 @@
-package com.rickh.movieapp.ui.login
+package com.rickh.movieapp.data.login
 
 import com.omertron.themoviedbapi.MovieDbException
-import com.omertron.themoviedbapi.TheMovieDbApi
-import com.rickh.movieapp.tmdb.Result
-import timber.log.Timber
+import com.rickh.movieapp.data.tmdb.Result
+import com.rickh.movieapp.data.tmdb.TheMovieDbApi
 
 class LoginRemoteDataSource {
 
-    private val tmdbApi = TheMovieDbApi("ea75e60dfc33c0ff92d6e331c9debbea")
+    private val tmdbApi = TheMovieDbApi.api
 
     fun login(username: String, password: String): Result<LoggedInUser> {
         return try {

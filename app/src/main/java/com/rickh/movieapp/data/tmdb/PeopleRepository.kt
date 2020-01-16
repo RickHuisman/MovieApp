@@ -1,4 +1,4 @@
-package com.rickh.movieapp.tmdb
+package com.rickh.movieapp.data.tmdb
 
 import com.omertron.themoviedbapi.MovieDbException
 import com.omertron.themoviedbapi.TheMovieDbApi
