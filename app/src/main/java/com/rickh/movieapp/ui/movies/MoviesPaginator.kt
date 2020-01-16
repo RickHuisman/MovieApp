@@ -1,8 +1,8 @@
 package com.rickh.movieapp.ui.movies
 
 import com.omertron.themoviedbapi.model.movie.MovieInfo
-import com.rickh.movieapp.tmdb.MoviesRepository
-import com.rickh.movieapp.tmdb.Result
+import com.rickh.movieapp.data.tmdb.MoviesRepository
+import com.rickh.movieapp.data.tmdb.Result
 import com.rickh.movieapp.ui.people.Paginator
 
 class MoviesPaginator : Paginator<MovieInfo>() {

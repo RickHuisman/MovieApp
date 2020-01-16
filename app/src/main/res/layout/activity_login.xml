@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <View
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_opacity_20" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/spacing32"
+        android:layout_marginEnd="@dimen/spacing32"
+        android:background="@drawable/background_dialog"
+        android:clickable="true"
+        android:focusable="true">
+
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing24"
+            android:layout_marginTop="@dimen/spacing16"
+            android:text="@string/tmdb_login"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/username_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dialog_title"
+            android:layout_marginStart="@dimen/spacing20"
+            android:layout_marginTop="@dimen/spacing8"
+            android:layout_marginEnd="@dimen/spacing20"
+            android:layout_marginBottom="@dimen/spacing4"
+            app:errorTextAppearance="@style/MovieAppTextInputLayoutErrorTextAppearance"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/username"
+                android:imeOptions="flagNoFullscreen"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/password_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/username_label"
+            android:layout_marginStart="@dimen/spacing20"
+            android:layout_marginEnd="@dimen/spacing20"
+            android:layout_marginBottom="@dimen/spacing8"
+            app:errorTextAppearance="@style/MovieAppTextInputLayoutErrorTextAppearance"
+            app:hintEnabled="false"
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:imeOptions="flagNoFullscreen"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/options_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/password_label"
+            android:layout_marginBottom="@dimen/spacing8"
+            android:gravity="end|center_vertical"
+            android:paddingStart="@dimen/spacing12"
+            android:paddingEnd="@dimen/spacing12">
+
+            <Button
+                android:id="@+id/sign_up"
+                style="?attr/buttonBarNegativeButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/sign_up"
+                android:textColor="@color/gray_500" />
+
+            <Button
+                android:id="@+id/login"
+                style="?attr/buttonBarPositiveButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/login" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/progress_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/username_label"
+            android:layout_alignBottom="@+id/options_container"
+            android:background="@color/dialog_background"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </FrameLayout>
+    </RelativeLayout>
+</FrameLayout>

@@ -1,8 +1,8 @@
 package com.rickh.movieapp.ui
 
 import com.omertron.themoviedbapi.model.tv.TVInfo
-import com.rickh.movieapp.tmdb.Result
-import com.rickh.movieapp.tmdb.TVShowsRepository
+import com.rickh.movieapp.data.tmdb.Result
+import com.rickh.movieapp.data.tmdb.TVShowsRepository
 import com.rickh.movieapp.ui.movies.TVShowsSortOptions
 import com.rickh.movieapp.ui.people.Paginator
 

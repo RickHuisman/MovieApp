@@ -1,7 +1,7 @@
 package com.rickh.movieapp.ui.movies
 
 import androidx.lifecycle.*
-import com.rickh.movieapp.tmdb.MoviesRepository
+import com.rickh.movieapp.data.tmdb.MoviesRepository
 import com.rickh.movieapp.ui.TVShowsPaginator
 import com.rickh.movieapp.ui.people.PopularPeoplePaginator
 import kotlinx.coroutines.*

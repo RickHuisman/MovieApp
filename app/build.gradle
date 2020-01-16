@@ -49,7 +49,7 @@ dependencies {
 //    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
 
     //  themoviedbapi
-    implementation 'com.github.rickhuisman:themoviedb:30b2c21234'
+    implementation 'com.github.rickhuisman:themoviedb:e7828078f9'
 
     // Material Components
     implementation 'com.google.android.material:material:1.1.0-beta01'

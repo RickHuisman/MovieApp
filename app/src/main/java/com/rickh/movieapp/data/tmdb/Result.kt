@@ -1,4 +1,4 @@
-package com.rickh.movieapp.tmdb
+package com.rickh.movieapp.data.tmdb
 
 /**
  * A generic class that holds a value with its loading status.
