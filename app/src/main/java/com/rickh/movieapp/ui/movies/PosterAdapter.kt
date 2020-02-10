@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.ListPreloader
 import com.bumptech.glide.RequestBuilder
 import com.rickh.movieapp.R
-import com.rickh.movieapp.ui.PosterViewHolder
 
 /**
  * RecyclerView.Adapter for displaying movies and tvshows posters

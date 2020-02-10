@@ -1,4 +1,4 @@
-package com.rickh.movieapp.ui
+package com.rickh.movieapp.ui.movies
 
 import com.omertron.themoviedbapi.model.tv.TVInfo
 import com.rickh.movieapp.data.tmdb.Result

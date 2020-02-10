@@ -29,6 +29,7 @@
             android:theme="@style/MovieAppTheme.DialogLikeActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.user.UserRatedActivity" />
+        <activity android:name=".ui.moviedetail.MovieDetailActivity" />
     </application>
 
 </manifest>

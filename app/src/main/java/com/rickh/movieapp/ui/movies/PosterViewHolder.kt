@@ -1,4 +1,4 @@
-package com.rickh.movieapp.ui
+package com.rickh.movieapp.ui.movies
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -18,10 +18,9 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.omertron.themoviedbapi.enumeration.MediaType
 import com.rickh.movieapp.R
-import com.rickh.movieapp.ui.movies.PosterDetailPopup
-import com.rickh.movieapp.ui.movies.PosterItem
-import com.rickh.movieapp.ui.movies.PosterTarget
+import com.rickh.movieapp.ui.moviedetail.MovieDetailActivity
 import com.rickh.movieapp.utils.AnimUtils
 import com.rickh.movieapp.utils.ObservableColorMatrix
 
@@ -64,6 +63,12 @@ class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .centerCrop()
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(PosterTarget(poster))
+
+        itemView.setOnClickListener {
+            if (item.mediaType == MediaType.MOVIE) {
+                poster.context.startActivity(MovieDetailActivity.newIntent(poster.context, item.id))
+            }
+        }
 
         itemView.setOnLongClickListener {
             val popup = PosterDetailPopup(activity, item.id)
