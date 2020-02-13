@@ -7,12 +7,13 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.omertron.themoviedbapi.model.credits.MediaCreditCast
 import com.omertron.themoviedbapi.model.movie.MovieInfo
 import com.rickh.movieapp.R
 import com.rickh.movieapp.data.tmdb.Result
 import kotlinx.android.synthetic.main.activity_movie_detail.*
-import timber.log.Timber
 
 class MovieDetailActivity : AppCompatActivity() {
 
@@ -51,6 +52,9 @@ class MovieDetailActivity : AppCompatActivity() {
             .into(backdrop_imageview)
 
         setOverview(movieInfo.overview)
+        setCastList(movieInfo.cast)
+
+        content.visibility = View.VISIBLE
     }
 
     private fun setOverview(overview: String) {
@@ -58,8 +62,17 @@ class MovieDetailActivity : AppCompatActivity() {
         overview_container.setOnClickListener { overview_textview.toggle() }
     }
 
+    private fun setCastList(cast: List<MediaCreditCast>) {
+        cast_recyclerview.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = CastCreditsAdapter(cast)
+            isNestedScrollingEnabled = false
+        }
+    }
+
     private fun showError() {
         // TODO Show error state
+        content.visibility = View.INVISIBLE
     }
 
     private fun showLoading(show: Boolean) {

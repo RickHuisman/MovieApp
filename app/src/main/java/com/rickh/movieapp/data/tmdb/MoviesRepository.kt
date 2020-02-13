@@ -46,7 +46,7 @@ object MoviesRepository {
 
     fun getMovieInfo(movieId: Long): Result<MovieInfo> {
         return try {
-            val result = tmdbApi.getMovieInfo(movieId.toInt(), LANGUAGE)
+            val result = tmdbApi.getMovieInfo(movieId.toInt(), LANGUAGE, "credits")
             Result.Success(result)
         } catch (e: MovieDbException) {
             Result.Error(e)
