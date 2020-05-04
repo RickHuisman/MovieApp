@@ -6,7 +6,7 @@ import com.rickh.movieapp.data.tmdb.TheMovieDbApi
 
 class LoginRemoteDataSource {
 
-    private val tmdbApi = TheMovieDbApi.api
+    private val tmdbApi = TheMovieDbApi.TheMovieDbApi
 
     fun login(username: String, password: String): Result<LoggedInUser> {
         return try {

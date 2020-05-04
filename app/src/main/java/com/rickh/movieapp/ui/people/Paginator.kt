@@ -57,7 +57,7 @@ abstract class Paginator<T> {
             PosterItem(
                 it.id.toLong(),
                 it.posterPath,
-                MediaType.MOVIE
+                it.mediaType
             )
         }
     }

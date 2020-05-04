@@ -55,7 +55,7 @@ class PosterFragment : Fragment() {
             viewModel = ViewModelProviders.of(it).get(HomeViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        posterAdapter = PosterAdapter(columns, activity!!)
+        posterAdapter = PosterAdapter(columns, requireActivity())
 
         category = arguments!!.getSerializable(KEY_CATEGORY) as Category
 

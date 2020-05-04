@@ -18,12 +18,15 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.omertron.themoviedbapi.enumeration.MediaType
 import com.rickh.movieapp.R
 import com.rickh.movieapp.ui.movies.PosterDetailPopup
 import com.rickh.movieapp.ui.movies.PosterItem
 import com.rickh.movieapp.ui.movies.PosterTarget
+import com.rickh.movieapp.ui.tvshowdetail.TvShowDetailActivity
 import com.rickh.movieapp.utils.AnimUtils
 import com.rickh.movieapp.utils.ObservableColorMatrix
+import timber.log.Timber
 
 class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val poster: ImageView = itemView.findViewById(R.id.poster)
@@ -65,11 +68,18 @@ class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(PosterTarget(poster))
 
+        // TODO Move click listeners
         itemView.setOnLongClickListener {
             val popup = PosterDetailPopup(activity, item.id)
             popup.showWithAnchor(poster)
 
             true
+        }
+        itemView.setOnClickListener {
+            if (item.mediaType == MediaType.TV) {
+                val intent = TvShowDetailActivity.newIntent(activity, item.id)
+                activity.startActivity(intent)
+            }
         }
     }
 
