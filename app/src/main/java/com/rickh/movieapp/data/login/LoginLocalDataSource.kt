@@ -2,16 +2,21 @@ package com.rickh.movieapp.data.login
 
 import androidx.core.content.edit
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 class LoginLocalDataSource(
     private val userDataSource: UserLocalDataSource
 ) {
 
-    private val moshi = Moshi.Builder().build()
+    private val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
     private val loggedInUserJsonAdapter = moshi.adapter(LoggedInUser::class.java)
 
     fun setLoggedInUser(loggedInUser: LoggedInUser) {
         val jsonLoggedInUser = loggedInUserJsonAdapter.toJson(loggedInUser)
+
+        userDataSource.loggedInUserPrefs.edit {  }
 
         userDataSource.loggedInUserPrefs.edit {
             putString("KEY_LOGGED_IN_USER", jsonLoggedInUser)
