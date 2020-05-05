@@ -83,4 +83,7 @@ dependencies {
 
     // ThreeTenABP
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
+
+    // ExpandableTextView
+    implementation 'at.blogc:expandabletextview:1.0.5'
 }

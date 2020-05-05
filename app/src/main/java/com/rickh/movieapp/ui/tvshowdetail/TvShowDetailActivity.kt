@@ -3,12 +3,14 @@ package com.rickh.movieapp.ui.tvshowdetail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.omertron.themoviedbapi.model.tv.TVInfo
 import com.rickh.movieapp.R
 import com.rickh.movieapp.data.tmdb.Result
+import kotlinx.android.synthetic.main.activity_tv_show_detail.*
 import timber.log.Timber
 
 class TvShowDetailActivity : AppCompatActivity() {
@@ -28,21 +30,33 @@ class TvShowDetailActivity : AppCompatActivity() {
     }
 
     private fun loadTvShow(tvShowId: Long) {
+        showLoading(true)
         viewModel.getTvShowInfo(tvShowId).observe(this, Observer {
             when (it) {
                 is Result.Success -> showTvShowInfo(it.data)
                 is Result.Error -> showError()
             }
-            // TODO Show loading indicatio n
+            showLoading(false)
         })
     }
 
     private fun showTvShowInfo(tvShowInfo: TVInfo) {
-        Timber.d(tvShowInfo.originalName)
+        setOverview(tvShowInfo.overview)
+
+        content.visibility = View.VISIBLE
+    }
+
+    private fun setOverview(overview: String) {
+        overview_textview.text = overview
+        overview_container.setOnClickListener { overview_textview.toggle() }
     }
 
     private fun showError() {
+        // TODO
+    }
 
+    private fun showLoading(show: Boolean) {
+        loading.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     companion object {
