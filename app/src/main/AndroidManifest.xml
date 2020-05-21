@@ -29,6 +29,7 @@
             android:theme="@style/MovieAppTheme.DialogLikeActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.tvshowdetail.TvShowDetailActivity" />
+        <activity android:name=".ui.tvshowdetail.TvShowSeasonActivity" />
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package com.rickh.movieapp.data.tmdb
 
 import com.omertron.themoviedbapi.MovieDbException
 import com.omertron.themoviedbapi.model.tv.TVInfo
+import com.omertron.themoviedbapi.model.tv.TVSeasonInfo
 import com.rickh.movieapp.data.tmdb.TheMovieDbApi.LANGUAGE
 
 object TVShowsRepository {
@@ -44,9 +45,28 @@ object TVShowsRepository {
         }
     }
 
-    fun getTvShowInfo(tvShowId: Long): Result<TVInfo> {
+    fun getTvShowInfo(tvShowId: Int): Result<TVInfo> {
         return try {
-            val result = tmdbApi.getTVInfo(tvShowId.toInt(), LANGUAGE)
+            val result = tmdbApi.getTVInfo(tvShowId, LANGUAGE)
+            Result.Success(result)
+        } catch (e: MovieDbException) {
+            Result.Error(e)
+        }
+    }
+
+    // TODO
+//    fun getTvShowSeasons(tvShowId: int): Result<List<TVSeasonBasic>> {
+//        return try {
+//            val result = tmdbApi.getTVInfo(tvShowId.toInt(), LANGUAGE)
+//            Result.Success(result.seasons)
+//        } catch (e: MovieDbException) {
+//            Result.Error(e)
+//        }
+//    }
+
+    fun getSeasonInfo(tvShowId: Int, seasonNumber: Int): Result<TVSeasonInfo> {
+        return try {
+            val result = tmdbApi.getSeasonInfo(tvShowId, seasonNumber, LANGUAGE)
             Result.Success(result)
         } catch (e: MovieDbException) {
             Result.Error(e)

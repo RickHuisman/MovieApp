@@ -11,7 +11,6 @@ import com.omertron.themoviedbapi.model.tv.TVInfo
 import com.rickh.movieapp.R
 import com.rickh.movieapp.data.tmdb.Result
 import kotlinx.android.synthetic.main.activity_tv_show_detail.*
-import timber.log.Timber
 
 class TvShowDetailActivity : AppCompatActivity() {
 
@@ -31,7 +30,7 @@ class TvShowDetailActivity : AppCompatActivity() {
 
     private fun loadTvShow(tvShowId: Long) {
         showLoading(true)
-        viewModel.getTvShowInfo(tvShowId).observe(this, Observer {
+        viewModel.getTvShowInfo(tvShowId.toInt()).observe(this, Observer {
             when (it) {
                 is Result.Success -> showTvShowInfo(it.data)
                 is Result.Error -> showError()
@@ -41,7 +40,15 @@ class TvShowDetailActivity : AppCompatActivity() {
     }
 
     private fun showTvShowInfo(tvShowInfo: TVInfo) {
+        toolbar.title = tvShowInfo.name
+
         setOverview(tvShowInfo.overview)
+
+        // TODO Remove
+        episodes.setOnClickListener {
+            val intent = TvShowSeasonActivity.newIntent(this, tvShowInfo)
+            startActivity(intent)
+        }
 
         content.visibility = View.VISIBLE
     }

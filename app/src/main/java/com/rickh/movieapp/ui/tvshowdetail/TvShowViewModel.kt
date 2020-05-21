@@ -7,7 +7,7 @@ import kotlinx.coroutines.Dispatchers
 
 class TvShowViewModel : ViewModel() {
 
-    fun getTvShowInfo(tvShowId: Long) = liveData(Dispatchers.IO) {
+    fun getTvShowInfo(tvShowId: Int) = liveData(Dispatchers.IO) {
         emit(TVShowsRepository.getTvShowInfo(tvShowId))
     }
 }
