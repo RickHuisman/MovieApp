@@ -12,6 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.omertron.themoviedbapi.model.tv.TVInfo
 import com.rickh.movieapp.R
+import com.rickh.movieapp.ui.tvshowdetail.seasons.SeasonPagerAdapter
+import com.rickh.movieapp.ui.tvshowdetail.seasons.SeasonSpinnerAdapter
+import com.rickh.movieapp.ui.tvshowdetail.seasons.TvShowSeasonViewModel
 import com.rickh.movieapp.utils.ViewUtils
 import kotlinx.android.synthetic.main.activity_tv_show_episodes.*
 
@@ -37,12 +40,21 @@ class TvShowSeasonActivity : AppCompatActivity() {
 
     private fun setupSpinner(tvShow: TVInfo) {
         with(seasons_spinner) {
-            adapter = SeasonSpinnerAdapter(context, tvShow.seasons)
+            adapter =
+                SeasonSpinnerAdapter(
+                    context,
+                    tvShow.seasons
+                )
             dropDownVerticalOffset = ViewUtils.dpToPix(context, 8)
             onItemSelectedListener = spinnerOnItemSelected
         }
 
-        seasonPagerAdapter = SeasonPagerAdapter(tvShow.id, tvShow.seasons, supportFragmentManager)
+        seasonPagerAdapter =
+            SeasonPagerAdapter(
+                tvShow.id,
+                tvShow.seasons,
+                supportFragmentManager
+            )
     }
 
     private val spinnerOnItemSelected = object : OnItemSelectedListener {

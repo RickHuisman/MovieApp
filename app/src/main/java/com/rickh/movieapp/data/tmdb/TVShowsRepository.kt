@@ -54,16 +54,6 @@ object TVShowsRepository {
         }
     }
 
-    // TODO
-//    fun getTvShowSeasons(tvShowId: int): Result<List<TVSeasonBasic>> {
-//        return try {
-//            val result = tmdbApi.getTVInfo(tvShowId.toInt(), LANGUAGE)
-//            Result.Success(result.seasons)
-//        } catch (e: MovieDbException) {
-//            Result.Error(e)
-//        }
-//    }
-
     fun getSeasonInfo(tvShowId: Int, seasonNumber: Int): Result<TVSeasonInfo> {
         return try {
             val result = tmdbApi.getSeasonInfo(tvShowId, seasonNumber, LANGUAGE)

@@ -1,4 +1,4 @@
-package com.rickh.movieapp.ui.tvshowdetail
+package com.rickh.movieapp.ui.tvshowdetail.seasons
 
 import android.content.Context
 import android.view.LayoutInflater

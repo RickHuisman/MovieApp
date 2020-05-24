@@ -1,4 +1,4 @@
-package com.rickh.movieapp.ui.tvshowdetail
+package com.rickh.movieapp.ui.tvshowdetail.seasons
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -12,7 +12,10 @@ class SeasonPagerAdapter(
 ) : FragmentStatePagerAdapter(manager) {
 
     override fun getItem(position: Int): Fragment {
-        return TvShowSeasonFragment.create(tvShowId, seasons[position].seasonNumber)
+        return TvShowSeasonFragment.create(
+            tvShowId,
+            seasons[position].seasonNumber
+        )
     }
 
     override fun getCount(): Int {

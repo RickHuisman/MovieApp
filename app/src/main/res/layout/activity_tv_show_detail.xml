@@ -29,7 +29,7 @@
             android:visibility="invisible">
 
             <ImageView
-                android:id="@+id/backdrop_imageview"
+                android:id="@+id/backdrop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -37,7 +37,7 @@
                 android:id="@+id/overview_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/backdrop_imageview"
+                android:layout_below="@id/backdrop"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
