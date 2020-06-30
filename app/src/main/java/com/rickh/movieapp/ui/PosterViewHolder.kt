@@ -1,15 +1,15 @@
 package com.rickh.movieapp.ui
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
 import android.app.Activity
+import android.graphics.Bitmap
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
+import androidx.core.graphics.drawable.toBitmap
+import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -18,12 +18,14 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.omertron.themoviedbapi.enumeration.MediaType
 import com.rickh.movieapp.R
-import com.rickh.movieapp.ui.movies.PosterDetailPopup
-import com.rickh.movieapp.ui.movies.PosterItem
-import com.rickh.movieapp.ui.movies.PosterTarget
-import com.rickh.movieapp.utils.AnimUtils
-import com.rickh.movieapp.utils.ObservableColorMatrix
+import com.rickh.movieapp.ui.posters.Category
+import com.rickh.movieapp.ui.posters.PosterDetailPopup
+import com.rickh.movieapp.ui.posters.PosterItem
+import com.rickh.movieapp.ui.posters.PosterTarget
+import com.rickh.movieapp.ui.tvshowdetail.TvShowDetailActivity
+import timber.log.Timber
 
 class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val poster: ImageView = itemView.findViewById(R.id.poster)
@@ -65,34 +67,70 @@ class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(PosterTarget(poster))
 
+        // TODO Move click listeners
         itemView.setOnLongClickListener {
-            val popup = PosterDetailPopup(activity, item.id)
-            popup.showWithAnchor(poster)
+            test(poster, activity, itemId)
+
+//            val popup = PosterDetailPopup(
+//                activity,
+//                Category.MOVIES,
+//                item.id
+//            )
+//            popup.showWithAnchor(poster)
 
             true
         }
+        itemView.setOnClickListener {
+            if (item.mediaType == MediaType.TV) {
+                val intent = TvShowDetailActivity.newIntent(activity, item.id)
+                activity.startActivity(intent)
+            }
+        }
     }
 
-    private fun fade() {
-        poster.setHasTransientState(true)
-        val cm = ObservableColorMatrix()
-        ObjectAnimator.ofFloat(cm, ObservableColorMatrix.SATURATION, 0f, 1f).apply {
-            addUpdateListener {
-                // Setting the saturation overwrites any darkening so need to reapply.
-                // Just animating the color matrix does not invalidate the
-                // drawable so need this update listener.  Also have to create a
-                // new CMCF as the matrix is immutable :(
-                darkenImage(cm)
+    private fun test(view: ImageView, activity: Activity, itemId: Long) {
+        Palette.from(view.drawable.toBitmap()).clearFilters().generate { palette ->
+            palette?.vibrantSwatch?.rgb?.let {
+                val popup = PosterDetailPopup(
+                    activity,
+                    Category.MOVIES,
+                    itemId,
+                    "#${Integer.toHexString(it)}"
+//                    "#EB962D"
+                )
+
+                popup.showWithAnchor(poster)
             }
-            duration = 2000L
-            interpolator = AnimUtils.getFastOutSlowInInterpolator(poster.context)
-            addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    poster.setHasTransientState(false)
-                }
-            })
-            start()
+
+
         }
+    }
+
+//    private fun generateTintFromPalette(palette: Palette): Int {
+//
+//    }
+
+    private fun fade() {
+        // TODO
+//        poster.setHasTransientState(true)
+//        val cm = ObservableColorMatrix()
+//        ObjectAnimator.ofFloat(cm, ObservableColorMatrix.SATURATION, 0f, 1f).apply {
+//            addUpdateListener {
+//                // Setting the saturation overwrites any darkening so need to reapply.
+//                // Just animating the color matrix does not invalidate the
+//                // drawable so need this update listener.  Also have to create a
+//                // new CMCF as the matrix is immutable :(
+//                darkenImage(cm)
+//            }
+//            duration = 2000L
+//            interpolator = AnimUtils.getFastOutSlowInInterpolator(poster.context)
+//            addListener(object : AnimatorListenerAdapter() {
+//                override fun onAnimationEnd(animation: Animator) {
+//                    poster.setHasTransientState(false)
+//                }
+//            })
+//            start()
+//        }
     }
 
     private fun darkenImage(colorMatrix: ColorMatrix = ColorMatrix()) {

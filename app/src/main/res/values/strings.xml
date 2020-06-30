@@ -36,4 +36,13 @@
     <string name="sign_up">Sign up</string>
     <string name="password">Password</string>
     <string name="username">Username</string>
+    <string name="tmdb_login">Log in to tmdb</string>
+    <string name="login_failed">Login failed</string>
+    <string name="userprofile_watchlist">Watchlist</string>
+    <string name="userprofile_lists">Lists</string>
+    <string name="userprofile_favorites">Favorites</string>
+    <string name="userprofile_rated">Rated</string>
+    <string name="userprofile_logout">Logout</string>
+    <string name="userprofile_confirm_logout">Confirm logout?</string>
+    <string name="cast">Cast</string>
 </resources>

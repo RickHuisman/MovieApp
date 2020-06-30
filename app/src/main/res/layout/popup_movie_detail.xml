@@ -5,7 +5,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/background_popup_window"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/moviedetailpopup_container">
 
     <LinearLayout
         android:id="@+id/userprofilepopup_header"
@@ -25,7 +26,6 @@
             android:layout_marginStart="@dimen/spacing16"
             android:paddingBottom="10dp"
             android:paddingTop="6dp"
-            android:textColor="@color/color_accent"
             android:textIsSelectable="true"
             android:textSize="18sp"
             tools:text="Dunkirk" />

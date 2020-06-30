@@ -1,78 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
     <View
-        android:id="@+id/login_background_layer"
+        android:id="@+id/frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black_opacity_20" />
 
-    <LinearLayout
-        android:id="@+id/login_content_container"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/spacing32"
         android:layout_marginEnd="@dimen/spacing32"
-        android:animateLayoutChanges="true"
-        android:background="@drawable/background_popup_window"
-        android:elevation="120dp"
-        android:orientation="vertical"
-        tools:ignore="UselessParent">
+        android:background="@drawable/background_dialog"
+        android:clickable="true"
+        android:focusable="true">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@id/toolbar"
-            style="@style/MovieAppToolbar"
-            android:background="@null"
-            app:title="Log in to The Movie DB"
-            app:titleTextColor="@color/color_accent" />
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing24"
+            android:layout_marginTop="@dimen/spacing16"
+            android:text="@string/tmdb_login"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/username"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/username_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing16"
-            android:layout_marginEnd="@dimen/spacing16"
-            android:hint="@string/username" />
+            android:layout_below="@+id/dialog_title"
+            android:layout_marginStart="@dimen/spacing20"
+            android:layout_marginTop="@dimen/spacing8"
+            android:layout_marginEnd="@dimen/spacing20"
+            android:layout_marginBottom="@dimen/spacing4"
+            app:errorTextAppearance="@style/MovieAppTextInputLayoutErrorTextAppearance"
+            app:hintEnabled="false">
 
-        <EditText
-            android:id="@+id/password"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/username"
+                android:imeOptions="flagNoFullscreen"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/password_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing16"
-            android:layout_marginTop="@dimen/spacing4"
-            android:layout_marginEnd="@dimen/spacing16"
-            android:hint="@string/password" />
+            android:layout_below="@id/username_label"
+            android:layout_marginStart="@dimen/spacing20"
+            android:layout_marginEnd="@dimen/spacing20"
+            android:layout_marginBottom="@dimen/spacing8"
+            app:errorTextAppearance="@style/MovieAppTextInputLayoutErrorTextAppearance"
+            app:hintEnabled="false"
+            app:passwordToggleEnabled="true">
 
-        <FrameLayout
-            android:id="@+id/actions_container"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:imeOptions="flagNoFullscreen"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/options_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing16">
+            android:layout_below="@+id/password_label"
+            android:layout_marginBottom="@dimen/spacing8"
+            android:gravity="end|center_vertical"
+            android:paddingStart="@dimen/spacing12"
+            android:paddingEnd="@dimen/spacing12">
 
             <Button
-                android:id="@+id/signup"
-                style="@style/MovieAppButton.Borderless"
+                android:id="@+id/sign_up"
+                style="?attr/buttonBarNegativeButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
+                android:fontFamily="@font/roboto_regular"
                 android:text="@string/sign_up"
-                android:textColor="?attr/colorSecondary" />
+                android:textColor="@color/gray_500" />
 
             <Button
                 android:id="@+id/login"
+                style="?attr/buttonBarPositiveButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:enabled="false"
+                android:fontFamily="@font/roboto_regular"
                 android:text="@string/login" />
+        </LinearLayout>
 
+        <FrameLayout
+            android:id="@+id/progress_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/username_label"
+            android:layout_alignBottom="@+id/options_container"
+            android:background="@color/dialog_background"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
         </FrameLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </FrameLayout>
