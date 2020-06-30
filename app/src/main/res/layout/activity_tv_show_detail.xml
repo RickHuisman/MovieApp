@@ -4,21 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        style="@style/MovieAppToolbar" />
-
     <ProgressBar
         android:id="@+id/loading"
         style="@style/MovieAppProgressBar.Horizontal.TopAligned"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar" />
+        android:layout_alignParentTop="true" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
+        android:layout_alignParentTop="true"
         android:fillViewport="true">
 
         <RelativeLayout
@@ -26,18 +22,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar"
+            android:background="#B2BDB4"
             android:visibility="invisible">
 
             <ImageView
-                android:id="@+id/backdrop"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:id="@+id/poster"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:background="@color/amber_300"
+                android:transitionName="example_transition" />
+
+
+            <!--            <ImageView-->
+<!--                android:id="@+id/poster"-->
+<!--                android:layout_width="200dp"-->
+<!--                android:layout_height="200dp"-->
+<!--                android:transitionName="example_transition" />-->
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                style="@style/MovieAppToolbar"
+                android:background="#8E9F91"
+                app:titleTextColor="#00524B"
+                android:layout_below="@id/poster" />
 
             <RelativeLayout
                 android:id="@+id/overview_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/backdrop"
+                android:layout_below="@id/toolbar"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
@@ -51,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing16"
                     android:layout_marginTop="@dimen/spacing16"
-                    android:tint="@color/gray_500"
+                    android:tint="#00524B"
                     app:srcCompat="@drawable/ic_info_24dp" />
 
                 <at.blogc.android.views.ExpandableTextView
@@ -66,11 +79,13 @@
                     android:ellipsize="end"
                     android:maxLines="6"
                     android:textSize="14sp"
+                    android:textColor="#00524B"
                     app:animation_duration="750" />
 
                 <View
                     style="@style/MovieAppSeparator.VerticalContent"
                     android:layout_below="@id/overview_textview"
+                    android:background="#0C00524B"
                     android:layout_marginTop="@dimen/spacing16" />
             </RelativeLayout>
 
@@ -80,28 +95,28 @@
                 android:layout_below="@id/overview_container">
 
                 <!-- TODO Remove -->
-                <Button
-                    android:id="@+id/episodes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Episodes" />
+<!--                <Button-->
+<!--                    android:id="@+id/episodes"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Episodes" />-->
 
-                <TextView
-                    android:id="@+id/filmography_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="72dp"
-                    android:layout_marginTop="@dimen/spacing16"
-                    android:text="@string/cast"
-                    android:textColor="@color/color_accent"
-                    android:textSize="16sp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/filmography_textview"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="72dp"-->
+<!--                    android:layout_marginTop="@dimen/spacing16"-->
+<!--                    android:text="@string/cast"-->
+<!--                    android:textColor="@color/color_accent"-->
+<!--                    android:textSize="16sp" />-->
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/cast_recyclerview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/filmography_textview"
-                    android:layout_marginTop="@dimen/spacing16" />
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:id="@+id/cast_recyclerview"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@id/filmography_textview"-->
+<!--                    android:layout_marginTop="@dimen/spacing16" />-->
 
             </RelativeLayout>
         </RelativeLayout>

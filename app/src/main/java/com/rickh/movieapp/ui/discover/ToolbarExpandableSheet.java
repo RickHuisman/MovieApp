@@ -38,7 +38,6 @@ public class ToolbarExpandableSheet extends BaseExpandablePageLayout {
         super(context, attrs);
 //        ButterKnife.bind(this, this); TODO
         elevationOnExpand = context.getResources().getDimensionPixelSize(R.dimen.subreddit_toolbar_sheet_elevation) - getElevation();
-        elevationOnExpand = -getElevation();
 
         // Hide on start.
         currentState = State.COLLAPSED;
@@ -129,33 +128,17 @@ public class ToolbarExpandableSheet extends BaseExpandablePageLayout {
             @Override
             public void onClick(View view) {
                 if (isExpandedOrExpanding()) {
-                    Timber.d("collapse");
                     collapse();
                 }
             }
         });
-
-//        frameLayout.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener() { TODO remove
-//            @Override
-//            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-//                if (isExpandedOrExpanding()) {
-//                    collapse();
-//                    return true;
-//                }
-//                return super.onInterceptTouchEvent(rv, e);
-//            }
-//        });
     }
 
     public void setStateChangeListener(StateChangeListener listener) {
         stateChangeListener = listener;
     }
 
-    public long getCollapseAnimationDuration() {
-        return getAnimationDurationMillis();
-    }
-
-// ======== PUBLIC APIs END ======== //
+    // ======== PUBLIC APIs END ======== //
 
     private void dispatchStateChangeCallback(State state) {
         currentState = state;

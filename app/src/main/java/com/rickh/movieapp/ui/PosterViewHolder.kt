@@ -1,14 +1,15 @@
 package com.rickh.movieapp.ui
 
 import android.app.Activity
-import android.graphics.Bitmap
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.ViewCompat
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -25,7 +26,6 @@ import com.rickh.movieapp.ui.posters.PosterDetailPopup
 import com.rickh.movieapp.ui.posters.PosterItem
 import com.rickh.movieapp.ui.posters.PosterTarget
 import com.rickh.movieapp.ui.tvshowdetail.TvShowDetailActivity
-import timber.log.Timber
 
 class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val poster: ImageView = itemView.findViewById(R.id.poster)
@@ -83,7 +83,11 @@ class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.setOnClickListener {
             if (item.mediaType == MediaType.TV) {
                 val intent = TvShowDetailActivity.newIntent(activity, item.id)
-                activity.startActivity(intent)
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        activity, poster, ViewCompat.getTransitionName(poster)!!
+                    )
+
+                activity.startActivity(intent, options.toBundle())
             }
         }
     }
