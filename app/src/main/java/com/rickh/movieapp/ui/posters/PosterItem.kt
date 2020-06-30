@@ -1,4 +1,4 @@
-package com.rickh.movieapp.ui.movies
+package com.rickh.movieapp.ui.posters
 
 import com.omertron.themoviedbapi.enumeration.MediaType
 

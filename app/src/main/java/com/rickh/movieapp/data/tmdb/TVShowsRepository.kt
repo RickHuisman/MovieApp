@@ -45,7 +45,7 @@ object TVShowsRepository {
         }
     }
 
-    fun getTvShowInfo(tvShowId: Int): Result<TVInfo> {
+    fun getTvShow(tvShowId: Int): Result<TVInfo> {
         return try {
             val result = tmdbApi.getTVInfo(tvShowId, LANGUAGE)
             Result.Success(result)

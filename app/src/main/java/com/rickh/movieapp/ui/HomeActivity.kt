@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.rickh.movieapp.R
 import com.rickh.movieapp.data.login.LoginRepository
 import com.rickh.movieapp.ui.login.LoginActivity
-import com.rickh.movieapp.ui.movies.*
+import com.rickh.movieapp.ui.posters.*
 import com.rickh.movieapp.ui.profile.UserProfileSheetView
 import com.rickh.movieapp.ui.widgets.CategoriesSpinnerAdapter
 import com.rickh.movieapp.ui.widgets.ToolbarExpandableSheet
@@ -39,7 +39,10 @@ class HomeActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
         fragmentContainer = fragment_container
-        categoryPagerAdapter = CategoryPagerAdapter(supportFragmentManager)
+        categoryPagerAdapter =
+            CategoryPagerAdapter(
+                supportFragmentManager
+            )
 
         setSupportActionBar(toolbar)
         setupSpinner()

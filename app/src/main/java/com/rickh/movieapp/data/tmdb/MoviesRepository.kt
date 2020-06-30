@@ -44,7 +44,7 @@ object MoviesRepository {
         }
     }
 
-    fun getMovie(movieId: Long): Result<MovieInfo> {
+    fun getMovie(movieId: Int): Result<MovieInfo> {
         return try {
             val result = tmdbApi.getMovieInfo(movieId.toInt(), LANGUAGE)
             Result.Success(result)

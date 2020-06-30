@@ -1,4 +1,4 @@
-package com.rickh.movieapp.ui.movies
+package com.rickh.movieapp.ui.posters
 
 import com.rickh.movieapp.R
 
@@ -20,6 +20,11 @@ enum class Category(
     }
 
     companion object {
-        var ALL = arrayOf(MOVIES, TV_SHOWS, DISCOVER, POPULAR_PEOPLE)
+        var ALL = arrayOf(
+            MOVIES,
+            TV_SHOWS,
+            DISCOVER,
+            POPULAR_PEOPLE
+        )
     }
 }

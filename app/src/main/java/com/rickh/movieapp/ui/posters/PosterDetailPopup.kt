@@ -1,28 +1,41 @@
-package com.rickh.movieapp.ui.movies
+package com.rickh.movieapp.ui.posters
 
 import android.app.Activity
+import android.graphics.Color
 import android.graphics.Point
+import android.graphics.PorterDuff
 import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import com.omertron.themoviedbapi.model.media.MediaBasic
 import com.omertron.themoviedbapi.model.movie.MovieInfo
+import com.omertron.themoviedbapi.model.tv.TVInfo
 import com.rickh.movieapp.R
 import com.rickh.movieapp.data.tmdb.Result
 import com.rickh.movieapp.ui.HomeActivity
+import com.rickh.movieapp.ui.posters.Category.MOVIES
+import com.rickh.movieapp.ui.posters.Category.TV_SHOWS
 import com.rickh.movieapp.ui.widgets.PopupWindowWithMaterialTransition
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
 import timber.log.Timber
 
-class PosterDetailPopup(private val activity: Activity, private val movieId: Long) :
+class PosterDetailPopup(
+    private val activity: Activity,
+    private val category: Category,
+    private val movieId: Long,
+    private val textColor: String
+) :
     PopupWindowWithMaterialTransition(activity) {
 
     private val viewModel: HomeViewModel
 
+    private lateinit var popupContainer: RelativeLayout
     private lateinit var titleTextView: TextView
     private lateinit var ratingTextView: TextView
     private lateinit var yearReleasedTextView: TextView
@@ -32,7 +45,8 @@ class PosterDetailPopup(private val activity: Activity, private val movieId: Lon
         val popupView = LayoutInflater.from(activity).inflate(R.layout.popup_movie_detail, null)
         contentView = popupView
 
-        viewModel = ViewModelProviders.of(activity as HomeActivity).get(HomeViewModel::class.java)
+        viewModel = ViewModelProvider(activity as HomeActivity).get(HomeViewModel::class.java)
+
         initViewBindings()
         initViewModelObservers()
     }
@@ -46,6 +60,7 @@ class PosterDetailPopup(private val activity: Activity, private val movieId: Lon
     }
 
     private fun initViewBindings() {
+        popupContainer = contentView.findViewById(R.id.moviedetailpopup_container)
         titleTextView = contentView.findViewById(R.id.moviedetailpopup_title)
         ratingTextView = contentView.findViewById(R.id.moviedetailpopup_rating)
         yearReleasedTextView = contentView.findViewById(R.id.moviedetailpopup_year_released)
@@ -53,19 +68,46 @@ class PosterDetailPopup(private val activity: Activity, private val movieId: Lon
     }
 
     private fun initViewModelObservers() {
-        viewModel.getMovie(movieId).observe(activity as HomeActivity, Observer {
-            when (it) {
-                is Result.Success -> renderMovieDetail(it.data)
-                is Result.Error -> Timber.d(it.exception)
+        when (category) {
+            MOVIES -> {
+                viewModel.getMovie(movieId.toInt()).observe(activity as HomeActivity, Observer {
+                    when (it) {
+                        is Result.Success -> renderPopupDetail(it.data)
+                        is Result.Error -> Timber.d(it.exception)
+                    }
+                })
             }
-        })
+            TV_SHOWS -> {
+                viewModel.getTvShow(movieId.toInt()).observe(activity as HomeActivity, Observer {
+                    when (it) {
+                        is Result.Success -> renderPopupDetail(it.data)
+                        is Result.Error -> Timber.d(it.exception)
+                    }
+                })
+            }
+        }
     }
 
-    private fun renderMovieDetail(movie: MovieInfo) {
-        titleTextView.text = movie.title
-        ratingTextView.text = movie.voteAverage.toString()
-        yearReleasedTextView.text = getReleaseDate(movie.releaseDate)
-        runtimeTextView.text = constructRuntime(movie.runtime)
+    private fun renderPopupDetail(media: MediaBasic) {
+        when (category) {
+            MOVIES -> {
+                media as MovieInfo
+                titleTextView.text = media.title
+//                titleTextView.setTextColor(Color.parseColor(textColor))
+                popupContainer.background.setColorFilter(Color.parseColor(textColor), PorterDuff.Mode.SRC_ATOP)
+
+                ratingTextView.text = media.voteAverage.toString()
+                yearReleasedTextView.text = getReleaseDate(media.releaseDate)
+                runtimeTextView.text = constructRuntime(media.runtime)
+            }
+            TV_SHOWS -> {
+                media as TVInfo
+                titleTextView.text = media.name
+                ratingTextView.text = media.voteAverage.toString()
+                yearReleasedTextView.text = getReleaseDate(media.firstAirDate)
+//                runtimeTextView.text = constructRuntime(media.)
+            }
+        }
     }
 
     private fun getReleaseDate(releaseDate: String): String {

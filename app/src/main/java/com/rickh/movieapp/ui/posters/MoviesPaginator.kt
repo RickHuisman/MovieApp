@@ -1,4 +1,4 @@
-package com.rickh.movieapp.ui.movies
+package com.rickh.movieapp.ui.posters
 
 import com.omertron.themoviedbapi.model.movie.MovieInfo
 import com.rickh.movieapp.data.tmdb.MoviesRepository
@@ -7,7 +7,8 @@ import com.rickh.movieapp.ui.people.Paginator
 
 class MoviesPaginator : Paginator<MovieInfo>() {
 
-    private var sortOption = MoviesSortOptions.TOP_RATED
+    private var sortOption =
+        MoviesSortOptions.TOP_RATED
 
     override fun loadData(): Result<Any> {
         return when (sortOption) {

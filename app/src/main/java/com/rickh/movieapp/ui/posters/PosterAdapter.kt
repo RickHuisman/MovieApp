@@ -1,11 +1,9 @@
-package com.rickh.movieapp.ui.movies
+package com.rickh.movieapp.ui.posters
 
 import android.app.Activity
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -15,7 +13,7 @@ import com.rickh.movieapp.R
 import com.rickh.movieapp.ui.PosterViewHolder
 
 /**
- * RecyclerView.Adapter for displaying movies and tvshows posters
+ * RecyclerView.Adapter for displaying movies and tv shows posters
  */
 class PosterAdapter(
     private val columns: Int,
@@ -37,20 +35,19 @@ class PosterAdapter(
             }
         }
 
-    private val shotLoadingPlaceholders: Array<ColorDrawable?>
+    private val posterLoadingPlaceholders = initPlaceholderColors()
     private var showLoadingMore = false
     private val loadingMoreItemPosition: Int
         get() = if (showLoadingMore) itemCount - 1 else RecyclerView.NO_POSITION
 
-
     init {
         setHasStableIds(true)
 
+    }
+
+    private fun initPlaceholderColors(): List<ColorDrawable> {
         val placeholderColors = activity.resources.getIntArray(R.array.loading_placeholders_dark)
-        shotLoadingPlaceholders = arrayOfNulls(placeholderColors.size)
-        placeholderColors.indices.forEach {
-            shotLoadingPlaceholders[it] = ColorDrawable(placeholderColors[it])
-        }
+        return placeholderColors.map { ColorDrawable(it) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -59,7 +56,7 @@ class PosterAdapter(
             TYPE_POSTER -> PosterViewHolder(
                 layoutInflater.inflate(R.layout.item_poster, parent, false)
             )
-            TYPE_LOADING_MORE -> LoadingMoreHolder(
+            TYPE_LOADING_MORE -> LoadingMoreViewHolder(
                 layoutInflater.inflate(R.layout.infinite_loading, parent, false)
             )
             else -> throw IllegalStateException("Unsupported View type")
@@ -70,10 +67,10 @@ class PosterAdapter(
         when (getItemViewType(position)) {
             TYPE_POSTER -> (holder as PosterViewHolder).bind(
                 items[position],
-                shotLoadingPlaceholders[position % shotLoadingPlaceholders.size]!!,
+                posterLoadingPlaceholders[position % posterLoadingPlaceholders.size],
                 activity
             )
-            TYPE_LOADING_MORE -> (holder as LoadingMoreHolder).bind(position, showLoadingMore)
+            TYPE_LOADING_MORE -> (holder as LoadingMoreViewHolder).bind(position, showLoadingMore)
         }
     }
 
@@ -130,38 +127,6 @@ class PosterAdapter(
         return Glide.with(activity).load(
             activity.getString(R.string.tmdb_base_img_url, item.posterPath)
         )
-    }
-
-    private class LoadingMoreHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-
-        private val progress = itemView as ProgressBar
-
-        fun bind(position: Int, showLoadingMore: Boolean) {
-            progress.visibility =
-                if (position > 0 && showLoadingMore) View.VISIBLE else View.INVISIBLE
-        }
-    }
-
-    class PosterDiffCallback(
-        private var oldItemsList: List<PosterItem>,
-        private var newItemsList: List<PosterItem>
-    ) : DiffUtil.Callback() {
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldItemsList[oldItemPosition].id == newItemsList[newItemPosition].id
-        }
-
-        override fun getOldListSize(): Int {
-            return oldItemsList.size
-        }
-
-        override fun getNewListSize(): Int {
-            return newItemsList.size
-        }
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldItemsList[oldItemPosition] == newItemsList[newItemPosition]
-        }
     }
 
     companion object {

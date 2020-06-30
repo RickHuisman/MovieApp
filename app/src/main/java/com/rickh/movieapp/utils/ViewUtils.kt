@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.RippleDrawable
 import android.util.DisplayMetrics
 import androidx.palette.graphics.Palette
+import timber.log.Timber
 import kotlin.math.roundToInt
 
 class ViewUtils {

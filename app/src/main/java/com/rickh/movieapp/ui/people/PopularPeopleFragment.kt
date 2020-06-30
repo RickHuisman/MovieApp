@@ -13,8 +13,8 @@ import com.bumptech.glide.util.ViewPreloadSizeProvider
 import com.omertron.themoviedbapi.model.person.PersonFind
 import com.rickh.movieapp.R
 import com.rickh.movieapp.data.tmdb.Result
-import com.rickh.movieapp.ui.movies.HomeViewModel
-import com.rickh.movieapp.ui.movies.InfiniteScrollListener
+import com.rickh.movieapp.ui.posters.HomeViewModel
+import com.rickh.movieapp.ui.posters.InfiniteScrollListener
 import kotlinx.android.synthetic.main.fragment_popular_people.*
 import kotlinx.android.synthetic.main.fragment_poster_grid.loading
 import timber.log.Timber
