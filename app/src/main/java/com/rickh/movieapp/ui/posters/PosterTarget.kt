@@ -21,13 +21,13 @@ class PosterTarget(
 
     override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
         super.onResourceReady(resource, transition)
-        Palette.from(resource.toBitmap()).clearFilters().generate {palette ->
+        Palette.from(resource.toBitmap()).clearFilters().generate { palette ->
             posterImageView.foreground = ViewUtils.createRipple(
                 palette,
                 0.25f,
                 0.5f,
-                ContextCompat.getColor(view.context, R.color.mid_grey)
-                , true
+                ContextCompat.getColor(view.context, R.color.mid_grey),
+                true
             )
         }
     }

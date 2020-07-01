@@ -1,5 +1,8 @@
 package com.rickh.movieapp.ui
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
@@ -26,6 +29,9 @@ import com.rickh.movieapp.ui.posters.PosterDetailPopup
 import com.rickh.movieapp.ui.posters.PosterItem
 import com.rickh.movieapp.ui.posters.PosterTarget
 import com.rickh.movieapp.ui.tvshowdetail.TvShowDetailActivity
+import com.rickh.movieapp.utils.AnimUtils
+import com.rickh.movieapp.utils.ObservableColorMatrix
+import timber.log.Timber
 
 class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val poster: ImageView = itemView.findViewById(R.id.poster)
@@ -35,6 +41,7 @@ class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     fun bind(item: PosterItem, placeholder: ColorDrawable, activity: Activity) {
+        Timber.d(poster.context.getString(R.string.tmdb_base_img_url, item.posterPath))
         Glide.with(poster)
             .load(
                 poster.context.getString(R.string.tmdb_base_img_url, item.posterPath)
@@ -64,7 +71,7 @@ class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .placeholder(placeholder)
             .diskCacheStrategy(DiskCacheStrategy.DATA)
             .centerCrop()
-            .transition(DrawableTransitionOptions.withCrossFade())
+//            .transition(DrawableTransitionOptions.withCrossFade())
             .into(PosterTarget(poster))
 
         // TODO Move click listeners
@@ -83,9 +90,7 @@ class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.setOnClickListener {
             if (item.mediaType == MediaType.TV) {
                 val intent = TvShowDetailActivity.newIntent(activity, item.id)
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        activity, poster, ViewCompat.getTransitionName(poster)!!
-                    )
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, poster, ViewCompat.getTransitionName(poster)!!)
 
                 activity.startActivity(intent, options.toBundle())
             }
@@ -116,25 +121,25 @@ class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private fun fade() {
         // TODO
-//        poster.setHasTransientState(true)
-//        val cm = ObservableColorMatrix()
-//        ObjectAnimator.ofFloat(cm, ObservableColorMatrix.SATURATION, 0f, 1f).apply {
-//            addUpdateListener {
-//                // Setting the saturation overwrites any darkening so need to reapply.
-//                // Just animating the color matrix does not invalidate the
-//                // drawable so need this update listener.  Also have to create a
-//                // new CMCF as the matrix is immutable :(
-//                darkenImage(cm)
-//            }
-//            duration = 2000L
-//            interpolator = AnimUtils.getFastOutSlowInInterpolator(poster.context)
-//            addListener(object : AnimatorListenerAdapter() {
-//                override fun onAnimationEnd(animation: Animator) {
-//                    poster.setHasTransientState(false)
-//                }
-//            })
-//            start()
-//        }
+        poster.setHasTransientState(true)
+        val cm = ObservableColorMatrix()
+        ObjectAnimator.ofFloat(cm, ObservableColorMatrix.SATURATION, 0f, 1f).apply {
+            addUpdateListener {
+                // Setting the saturation overwrites any darkening so need to reapply.
+                // Just animating the color matrix does not invalidate the
+                // drawable so need this update listener.  Also have to create a
+                // new CMCF as the matrix is immutable :(
+                darkenImage(cm)
+            }
+            duration = 2000L
+            interpolator = AnimUtils.getFastOutSlowInInterpolator(poster.context)
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    poster.setHasTransientState(false)
+                }
+            })
+            start()
+        }
     }
 
     private fun darkenImage(colorMatrix: ColorMatrix = ColorMatrix()) {

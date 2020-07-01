@@ -5,22 +5,22 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.omertron.themoviedbapi.model.tv.TVInfo
 import com.rickh.movieapp.R
 import com.rickh.movieapp.data.tmdb.Result
-import com.rickh.movieapp.ui.posters.PosterTarget
 import kotlinx.android.synthetic.main.activity_tv_show_detail.*
+
 
 class TvShowDetailActivity : AppCompatActivity() {
 
@@ -34,7 +34,7 @@ class TvShowDetailActivity : AppCompatActivity() {
 
         val tvShowId = intent.getLongExtra(INTENT_TV_SHOW_ID, DEF_VALUE)
         if (tvShowId != DEF_VALUE) {
-            loadTvShow(87108) // TODO load tvShowId
+            loadTvShow(tvShowId) // TODO load tvShowId
         }
     }
 
@@ -52,6 +52,7 @@ class TvShowDetailActivity : AppCompatActivity() {
     private fun showTvShowInfo(tvShowInfo: TVInfo) {
         toolbar.title = tvShowInfo.name
 
+        setStatusBarColor(ContextCompat.getColor(this@TvShowDetailActivity, R.color.amber_400))
         setPoster(tvShowInfo)
         setOverview(tvShowInfo.overview)
 
@@ -65,7 +66,6 @@ class TvShowDetailActivity : AppCompatActivity() {
     }
 
     private fun setPoster(tvShowInfo: TVInfo) {
-        return
         Glide.with(this)
             .load(
                 this.getString(R.string.tmdb_base_img_url, tvShowInfo.posterPath)
@@ -113,6 +113,19 @@ class TvShowDetailActivity : AppCompatActivity() {
     private fun showLoading(show: Boolean) {
         loading.visibility = if (show) View.VISIBLE else View.GONE
     }
+
+    private fun setStatusBarColor(color: Int) {
+        window.apply {
+            clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            statusBarColor = color
+        }
+    }
+
+//    override fun onSupportNavigateUp(): Boolean {
+//        finishAfterTransition()
+//        return true
+//    }
 
     companion object {
         private const val DEF_VALUE = -1L
