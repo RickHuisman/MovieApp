@@ -10,6 +10,10 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.ViewCompat
+import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -18,12 +22,16 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.omertron.themoviedbapi.enumeration.MediaType
 import com.rickh.movieapp.R
-import com.rickh.movieapp.ui.movies.PosterDetailPopup
-import com.rickh.movieapp.ui.movies.PosterItem
-import com.rickh.movieapp.ui.movies.PosterTarget
+import com.rickh.movieapp.ui.posters.Category
+import com.rickh.movieapp.ui.posters.PosterDetailPopup
+import com.rickh.movieapp.ui.posters.PosterItem
+import com.rickh.movieapp.ui.posters.PosterTarget
+import com.rickh.movieapp.ui.tvshowdetail.TvShowDetailActivity
 import com.rickh.movieapp.utils.AnimUtils
 import com.rickh.movieapp.utils.ObservableColorMatrix
+import timber.log.Timber
 
 class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val poster: ImageView = itemView.findViewById(R.id.poster)
@@ -33,6 +41,7 @@ class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     fun bind(item: PosterItem, placeholder: ColorDrawable, activity: Activity) {
+        Timber.d(poster.context.getString(R.string.tmdb_base_img_url, item.posterPath))
         Glide.with(poster)
             .load(
                 poster.context.getString(R.string.tmdb_base_img_url, item.posterPath)
@@ -62,18 +71,56 @@ class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .placeholder(placeholder)
             .diskCacheStrategy(DiskCacheStrategy.DATA)
             .centerCrop()
-            .transition(DrawableTransitionOptions.withCrossFade())
+//            .transition(DrawableTransitionOptions.withCrossFade())
             .into(PosterTarget(poster))
 
+        // TODO Move click listeners
         itemView.setOnLongClickListener {
-            val popup = PosterDetailPopup(activity, item.id)
-            popup.showWithAnchor(poster)
+            test(poster, activity, itemId)
+
+//            val popup = PosterDetailPopup(
+//                activity,
+//                Category.MOVIES,
+//                item.id
+//            )
+//            popup.showWithAnchor(poster)
 
             true
         }
+        itemView.setOnClickListener {
+            if (item.mediaType == MediaType.TV) {
+                val intent = TvShowDetailActivity.newIntent(activity, item.id)
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, poster, ViewCompat.getTransitionName(poster)!!)
+
+                activity.startActivity(intent, options.toBundle())
+            }
+        }
     }
 
+    private fun test(view: ImageView, activity: Activity, itemId: Long) {
+        Palette.from(view.drawable.toBitmap()).clearFilters().generate { palette ->
+            palette?.vibrantSwatch?.rgb?.let {
+                val popup = PosterDetailPopup(
+                    activity,
+                    Category.MOVIES,
+                    itemId,
+                    "#${Integer.toHexString(it)}"
+//                    "#EB962D"
+                )
+
+                popup.showWithAnchor(poster)
+            }
+
+
+        }
+    }
+
+//    private fun generateTintFromPalette(palette: Palette): Int {
+//
+//    }
+
     private fun fade() {
+        // TODO
         poster.setHasTransientState(true)
         val cm = ObservableColorMatrix()
         ObjectAnimator.ofFloat(cm, ObservableColorMatrix.SATURATION, 0f, 1f).apply {

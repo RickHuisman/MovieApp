@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.rickh.movieapp.R
 import android.view.LayoutInflater
-import com.rickh.movieapp.ui.movies.Category
+import com.rickh.movieapp.ui.posters.Category
 import kotlinx.android.synthetic.main.item_spinner_category.view.*
 
 class CategoriesSpinnerAdapter(context: Context) :

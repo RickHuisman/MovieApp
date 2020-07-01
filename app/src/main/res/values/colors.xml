@@ -22,4 +22,6 @@
     <color name="placeholder">#ff232323</color>
 
     <color name="dark_gray">#99323232</color>
+
+    <color name="error_text_color">@color/red_A100</color>
 </resources>

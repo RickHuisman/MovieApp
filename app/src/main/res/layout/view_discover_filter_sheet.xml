@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/subredditpicker_root"
+    android:layout_width="match_parent"
+    android:layout_height="336dp"
+    tools:background="@color/toolbar">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:text="test" />
+
+    <!-- Background is necessary on this View for ripples of its child Views
+         to be drawn. -->
+    <FrameLayout
+        android:id="@+id/subredditpicker_options_container"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/toolbar"
+        android:gravity="end|center_vertical"
+        android:paddingEnd="4dp">
+
+        <ImageButton
+            android:id="@+id/profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="@dimen/spacing8"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/spacing4"
+            android:src="@drawable/ic_restore_24dp" />
+    </FrameLayout>
+</RelativeLayout>
