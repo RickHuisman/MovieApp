@@ -14,7 +14,7 @@ import com.omertron.themoviedbapi.model.credits.CreditTVBasic
 import com.omertron.themoviedbapi.model.person.PersonCreditList
 import com.omertron.themoviedbapi.model.person.PersonFind
 import com.rickh.movieapp.R
-import com.rickh.movieapp.tmdb.Result
+import com.rickh.movieapp.data.tmdb.Result
 import kotlinx.android.synthetic.main.activity_person_detail.*
 import kotlinx.android.synthetic.main.activity_person_detail.error
 import kotlinx.android.synthetic.main.activity_person_detail.haulerView

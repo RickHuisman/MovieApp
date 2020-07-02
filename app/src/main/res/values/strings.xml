@@ -31,9 +31,7 @@
     <string name="popup_movie_detail_runtime_in_hours_and_minutes">%dh %dm</string>
     <string name="retry">Retry</string>
     <string name="error">Uh oh, something went wrong.</string>
-<<<<<<< HEAD
     <string name="filmography">Filmography</string>
-=======
     <string name="profile">Profile</string>
     <string name="login">Log in</string>
     <string name="sign_up">Sign up</string>

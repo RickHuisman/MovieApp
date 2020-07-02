@@ -2,7 +2,7 @@ package com.rickh.movieapp.ui.persondetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import com.rickh.movieapp.tmdb.PeopleRepository
+import com.rickh.movieapp.data.tmdb.PeopleRepository
 import kotlinx.coroutines.Dispatchers
 
 class PersonDetailViewModel : ViewModel() {
